@@ -34,6 +34,14 @@ FLOAT=\d*\.?\d+
 // Why allow 29.%?
 PERCENT={FLOAT}%
 STATS=(my\s+stats)|(\S+\s+stats)|((alt-)?\w\w)|{IDENTIFIER}
+FIREFOX=Firefox|fx|ff|FirefoxAndroid|and_ff
+SAFARI=Safari|iOS|ios_saf
+EXPLORER=Explorer|ie|ExplorerMobile|ie_mob
+BLACKBERRY=BlackBerry|bb
+OPERA=Opere|OperaMini|op_mini|OperaMobile|op_mob
+CHROME=Chrome|ChromeAndroid|and_chr
+BROWSER={FIREFOX}|{CHROME}|{SAFARI}|{EXPLORER}|{BLACKBERRY}|{OPERA}|Android|Baidu|Edge|Samsung|UCAndroid|and_uc|QQandroid|and_qq|UCAndroid|and_uc|kaios
+TARGET={BROWSER}|electron|Node
 
 %%
 
@@ -41,13 +49,14 @@ STATS=(my\s+stats)|(\S+\s+stats)|((alt-)?\w\w)|{IDENTIFIER}
     "in"                           { return BrowserslistTypes.IN; }
     "last"                           { return BrowserslistTypes.LAST; }
     "major"                           { return BrowserslistTypes.MAJOR; }
-    "versions"                           { return BrowserslistTypes.VERSIONS; }
-    //"unreleased"                          { return BrowserslistTypes.UNRELEASED; }
+    versions?                           { return BrowserslistTypes.VERSIONS; }
+    "unreleased"                          { return BrowserslistTypes.UNRELEASED; }
     //"years"                          { return BrowserslistTypes.YEARS; }
     //"since"                          { return BrowserslistTypes.SINCE; }
     //"supports"                          { return BrowserslistTypes.SUPPORTS; }
     //"cover"                          { return BrowserslistTypes.COVER; }
     "defaults"                          { return BrowserslistTypes.DEFAULTS; }
+    {TARGET}                           { return BrowserslistTypes.TARGET; }
     {END_OF_LINE_COMMENT}                           { return BrowserslistTypes.COMMENT; }
     {COMPARE}                           { return BrowserslistTypes.COMPARE; }
     {INTEGER}                           { return BrowserslistTypes.INTEGER; }

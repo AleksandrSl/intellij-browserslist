@@ -60,7 +60,7 @@ public class BrowserslistParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // LAST INTEGER MAJOR? VERSIONS
+  // LAST INTEGER TARGET? MAJOR? VERSIONS
   public static boolean lastQuery(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "lastQuery")) return false;
     if (!nextTokenIs(builder_, LAST)) return false;
@@ -68,23 +68,30 @@ public class BrowserslistParser implements PsiParser, LightPsiParser {
     Marker marker_ = enter_section_(builder_);
     result_ = consumeTokens(builder_, 0, LAST, INTEGER);
     result_ = result_ && lastQuery_2(builder_, level_ + 1);
+    result_ = result_ && lastQuery_3(builder_, level_ + 1);
     result_ = result_ && consumeToken(builder_, VERSIONS);
     exit_section_(builder_, marker_, LAST_QUERY, result_);
     return result_;
   }
 
-  // MAJOR?
+  // TARGET?
   private static boolean lastQuery_2(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "lastQuery_2")) return false;
+    consumeToken(builder_, TARGET);
+    return true;
+  }
+
+  // MAJOR?
+  private static boolean lastQuery_3(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "lastQuery_3")) return false;
     consumeToken(builder_, MAJOR);
     return true;
   }
 
   /* ********************************************************** */
-  // (statsQuery | lastQuery) EOL
+  // (statsQuery | lastQuery | unreleasedQuery) EOL
   static boolean query_(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "query_")) return false;
-    if (!nextTokenIs(builder_, "", COMPARE, LAST)) return false;
     boolean result_;
     Marker marker_ = enter_section_(builder_);
     result_ = query__0(builder_, level_ + 1);
@@ -93,12 +100,13 @@ public class BrowserslistParser implements PsiParser, LightPsiParser {
     return result_;
   }
 
-  // statsQuery | lastQuery
+  // statsQuery | lastQuery | unreleasedQuery
   private static boolean query__0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "query__0")) return false;
     boolean result_;
     result_ = statsQuery(builder_, level_ + 1);
     if (!result_) result_ = lastQuery(builder_, level_ + 1);
+    if (!result_) result_ = unreleasedQuery(builder_, level_ + 1);
     return result_;
   }
 
@@ -130,6 +138,27 @@ public class BrowserslistParser implements PsiParser, LightPsiParser {
     result_ = consumeTokens(builder_, 0, IN, STATS);
     exit_section_(builder_, marker_, null, result_);
     return result_;
+  }
+
+  /* ********************************************************** */
+  // UNRELEASED TARGET? VERSIONS
+  public static boolean unreleasedQuery(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "unreleasedQuery")) return false;
+    if (!nextTokenIs(builder_, UNRELEASED)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, UNRELEASED);
+    result_ = result_ && unreleasedQuery_1(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, VERSIONS);
+    exit_section_(builder_, marker_, UNRELEASED_QUERY, result_);
+    return result_;
+  }
+
+  // TARGET?
+  private static boolean unreleasedQuery_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "unreleasedQuery_1")) return false;
+    consumeToken(builder_, TARGET);
+    return true;
   }
 
 }

@@ -10,6 +10,7 @@ public interface BrowserslistTypes {
 
   IElementType LAST_QUERY = new BrowserslistElementType("LAST_QUERY");
   IElementType STATS_QUERY = new BrowserslistElementType("STATS_QUERY");
+  IElementType UNRELEASED_QUERY = new BrowserslistElementType("UNRELEASED_QUERY");
 
   IElementType COMMENT = new BrowserslistTokenType("COMMENT");
   IElementType COMPARE = new BrowserslistTokenType("COMPARE");
@@ -23,6 +24,8 @@ public interface BrowserslistTypes {
   IElementType PERCENT = new BrowserslistTokenType("PERCENT");
   IElementType RBRACKET = new BrowserslistTokenType("]");
   IElementType STATS = new BrowserslistTokenType("STATS");
+  IElementType TARGET = new BrowserslistTokenType("TARGET");
+  IElementType UNRELEASED = new BrowserslistTokenType("UNRELEASED");
   IElementType VERSIONS = new BrowserslistTokenType("VERSIONS");
 
   class Factory {
@@ -33,6 +36,9 @@ public interface BrowserslistTypes {
       }
       else if (type == STATS_QUERY) {
         return new BrowserslistStatsQueryImpl(node);
+      }
+      else if (type == UNRELEASED_QUERY) {
+        return new BrowserslistUnreleasedQueryImpl(node);
       }
       throw new AssertionError("Unknown element type: " + type);
     }
