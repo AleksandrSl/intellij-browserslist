@@ -1,6 +1,6 @@
 <idea-plugin>
     <id>com.github.aleksandrsl.intellijbrowserslist</id>
-    <name>intellij-browserslist</name>
+    <name>IntelliJ-Browserslist</name>
     <vendor>aleksandrsl</vendor>
 
     <!-- Product and plugin compatibility requirements -->
@@ -8,8 +8,14 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.github.aleksandrsl.intellijbrowserslist.services.MyApplicationService"/>
+        <applicationService
+                serviceImplementation="com.github.aleksandrsl.intellijbrowserslist.services.MyApplicationService"/>
         <projectService serviceImplementation="com.github.aleksandrsl.intellijbrowserslist.services.MyProjectService"/>
+        <fileType name="Browserslist File"
+                  implementationClass="com.github.aleksandrsl.intellijbrowserslist.BrowserslistFileType"
+                  fieldName="INSTANCE" language="browserslist" extensions="browserslistrc"/>
+        <lang.parserDefinition language="browserslist"
+                               implementationClass="com.github.aleksandrsl.intellijbrowserslist.BrowserslistParserDefinition"/>
     </extensions>
 
     <applicationListeners>

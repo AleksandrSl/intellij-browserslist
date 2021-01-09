@@ -2,12 +2,13 @@ import io.gitlab.arturbosch.detekt.Detekt
 import org.jetbrains.changelog.closure
 import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.grammarkit.tasks.*
 
 plugins {
     // Java support
     id("java")
     // Kotlin support
-    id("org.jetbrains.kotlin.jvm") version "1.4.21"
+    kotlin("jvm") version "1.4.21"
     // gradle-intellij-plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
     id("org.jetbrains.intellij") version "0.6.5"
     // gradle-changelog-plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
@@ -16,7 +17,10 @@ plugins {
     id("io.gitlab.arturbosch.detekt") version "1.15.0"
     // ktlint linter - read more: https://github.com/JLLeitschuh/ktlint-gradle
     id("org.jlleitschuh.gradle.ktlint") version "9.4.1"
+
+    id("org.jetbrains.grammarkit") version "2020.3.2"
 }
+
 
 // Import variables from gradle.properties file
 val pluginGroup: String by project
@@ -71,13 +75,44 @@ detekt {
     }
 }
 
+grammarKit {
+    // version of IntelliJ patched JFlex (see bintray link below), Default is 1.7.0-1
+    jflexRelease = "1.7.0-1"
+
+    // tag or short commit hash of Grammar-Kit to use (see link below). Default is 2020.3.1
+    grammarKitRelease = "6452fde524"
+}
+
+sourceSets["main"].java.srcDirs("src/main/gen")
+
 tasks {
+
+    val generateParser = task<GenerateParser>("generateParser") {
+        // source bnf file
+        source = "src/main/grammar/Browserslist.bnf"
+
+        // optional, task-specific root for the generated files. Default: none
+        targetRoot = "src/gen"
+
+        // path to a parser file, relative to the targetRoot
+        pathToParser = "/com/github/aleksandrsl/intellijbrowserslist/parser/BrowserslistParserGenerated.java"
+
+        // path to a directory with generated psi files, relative to the targetRoot
+        pathToPsiRoot = "/com/github/aleksandrsl/intellijbrowserslist/psi"
+
+        // if set, plugin will remove a parser output file and psi output directory before generating new ones. Default: false
+        purgeOldFiles = true
+    }
+
     // Set the compatibility versions to 1.8
     withType<JavaCompile> {
+//        dependsOn(generateParser)
         sourceCompatibility = "1.8"
         targetCompatibility = "1.8"
     }
+
     withType<KotlinCompile> {
+//        dependsOn(generateParser)
         kotlinOptions.jvmTarget = "1.8"
     }
 

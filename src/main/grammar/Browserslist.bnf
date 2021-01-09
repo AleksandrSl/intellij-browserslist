@@ -1,0 +1,21 @@
+{
+  parserClass="com.github.aleksandrsl.intellijbrowserslist.parser.BrowserslistParser"
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="Browserslist"
+  psiImplClassSuffix="Impl"
+  psiPackage="com.github.aleksandrsl.intellijbrowserslist.psi"
+  psiImplPackage="com.github.aleksandrsl.intellijbrowserslist.psi.impl"
+
+  elementTypeHolderClass="com.github.aleksandrsl.intellijbrowserslist.psi.BrowserslistTypes"
+  elementTypeClass="com.github.aleksandrsl.intellijbrowserslist.psi.BrowserslistElementType"
+  tokenTypeClass="com.github.aleksandrsl.intellijbrowserslist.psi.BrowserslistTokenType"
+}
+
+browserslistFile ::= item_*
+
+private item_ ::= (query_|COMMENT|CRLF)
+
+private query_ ::= statsQuery
+//section ::= LBRACKET IDENTIFIER (WHITESPACE IDENTIFIER)* RBRACKET CRLF query*
+statsQuery ::= COMPARE PERCENT (IN STATS)? CRLF
