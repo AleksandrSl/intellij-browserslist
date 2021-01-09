@@ -76,43 +76,36 @@ detekt {
 }
 
 grammarKit {
-    // version of IntelliJ patched JFlex (see bintray link below), Default is 1.7.0-1
-    jflexRelease = "1.7.0-1"
-
-    // tag or short commit hash of Grammar-Kit to use (see link below). Default is 2020.3.1
-    grammarKitRelease = "6452fde524"
+    grammarKitRelease = "2020.3.1"
 }
 
 sourceSets["main"].java.srcDirs("src/main/gen")
 
 tasks {
 
+    val generateLexer = task<GenerateLexer>("generateLexer") {
+        source = "src/main/grammar/Browserslist.flex"
+        targetDir = "src/main/gen/com/github/aleksandrsl/intellijbrowserslist/lexer"
+        targetClass = "BrowserslistLexer"
+        purgeOldFiles = true
+    }
+
     val generateParser = task<GenerateParser>("generateParser") {
-        // source bnf file
         source = "src/main/grammar/Browserslist.bnf"
-
-        // optional, task-specific root for the generated files. Default: none
-        targetRoot = "src/gen"
-
-        // path to a parser file, relative to the targetRoot
+        targetRoot = "src/main/gen"
         pathToParser = "/com/github/aleksandrsl/intellijbrowserslist/parser/BrowserslistParserGenerated.java"
-
-        // path to a directory with generated psi files, relative to the targetRoot
         pathToPsiRoot = "/com/github/aleksandrsl/intellijbrowserslist/psi"
-
-        // if set, plugin will remove a parser output file and psi output directory before generating new ones. Default: false
         purgeOldFiles = true
     }
 
     // Set the compatibility versions to 1.8
     withType<JavaCompile> {
-//        dependsOn(generateParser)
         sourceCompatibility = "1.8"
         targetCompatibility = "1.8"
     }
 
     withType<KotlinCompile> {
-//        dependsOn(generateParser)
+        dependsOn(generateParser, generateLexer)
         kotlinOptions.jvmTarget = "1.8"
     }
 

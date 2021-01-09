@@ -1,4 +1,5 @@
 {
+  generate=[java="8"]
   parserClass="com.github.aleksandrsl.intellijbrowserslist.parser.BrowserslistParser"
   extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
 

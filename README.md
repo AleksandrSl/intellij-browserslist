@@ -42,3 +42,8 @@ Plugin based on the [IntelliJ Platform Plugin Template][template].
 # TODO
 
 Recommendations to install plugin
+
+## Notes
+
+Gradle must use 11 java or higher due to grammar-kit-plugin. See [issue](https://github.com/JetBrains/gradle-grammar-kit-plugin/issues/32).
+Don't use version of grammarKit from plugin README it doesn't work for obscure reasons, maybe IDEA compatibility.
