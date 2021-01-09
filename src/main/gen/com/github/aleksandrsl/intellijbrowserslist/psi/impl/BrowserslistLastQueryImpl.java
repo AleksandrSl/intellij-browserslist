@@ -11,32 +11,20 @@ import static com.github.aleksandrsl.intellijbrowserslist.psi.BrowserslistTypes.
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.aleksandrsl.intellijbrowserslist.psi.*;
 
-public class BrowserslistStatsQueryImpl extends ASTWrapperPsiElement implements BrowserslistStatsQuery {
+public class BrowserslistLastQueryImpl extends ASTWrapperPsiElement implements BrowserslistLastQuery {
 
-  public BrowserslistStatsQueryImpl(ASTNode node) {
+  public BrowserslistLastQueryImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull BrowserslistVisitor visitor) {
-    visitor.visitStatsQuery(this);
+    visitor.visitLastQuery(this);
   }
 
   @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof BrowserslistVisitor) accept((BrowserslistVisitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getCompare() {
-    return findNotNullChildByType(COMPARE);
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getPercent() {
-    return findNotNullChildByType(PERCENT);
   }
 
 }

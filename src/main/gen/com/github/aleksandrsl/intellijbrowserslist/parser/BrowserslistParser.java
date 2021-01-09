@@ -14,85 +14,122 @@ import com.intellij.lang.LightPsiParser;
 @SuppressWarnings({"SimplifiableIfStatement", "UnusedAssignment"})
 public class BrowserslistParser implements PsiParser, LightPsiParser {
 
-  public ASTNode parse(IElementType t, PsiBuilder b) {
-    parseLight(t, b);
-    return b.getTreeBuilt();
+  public ASTNode parse(IElementType root_, PsiBuilder builder_) {
+    parseLight(root_, builder_);
+    return builder_.getTreeBuilt();
   }
 
-  public void parseLight(IElementType t, PsiBuilder b) {
-    boolean r;
-    b = adapt_builder_(t, b, this, null);
-    Marker m = enter_section_(b, 0, _COLLAPSE_, null);
-    r = parse_root_(t, b);
-    exit_section_(b, 0, m, t, r, true, TRUE_CONDITION);
+  public void parseLight(IElementType root_, PsiBuilder builder_) {
+    boolean result_;
+    builder_ = adapt_builder_(root_, builder_, this, null);
+    Marker marker_ = enter_section_(builder_, 0, _COLLAPSE_, null);
+    result_ = parse_root_(root_, builder_);
+    exit_section_(builder_, 0, marker_, root_, result_, true, TRUE_CONDITION);
   }
 
-  protected boolean parse_root_(IElementType t, PsiBuilder b) {
-    return parse_root_(t, b, 0);
+  protected boolean parse_root_(IElementType root_, PsiBuilder builder_) {
+    return parse_root_(root_, builder_, 0);
   }
 
-  static boolean parse_root_(IElementType t, PsiBuilder b, int l) {
-    return browserslistFile(b, l + 1);
+  static boolean parse_root_(IElementType root_, PsiBuilder builder_, int level_) {
+    return browserslistFile(builder_, level_ + 1);
   }
 
   /* ********************************************************** */
   // item_*
-  static boolean browserslistFile(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "browserslistFile")) return false;
+  static boolean browserslistFile(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "browserslistFile")) return false;
     while (true) {
-      int c = current_position_(b);
-      if (!item_(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "browserslistFile", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!item_(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "browserslistFile", pos_)) break;
     }
     return true;
   }
 
   /* ********************************************************** */
-  // query_|COMMENT|CRLF
-  static boolean item_(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "item_")) return false;
-    boolean r;
-    r = query_(b, l + 1);
-    if (!r) r = consumeToken(b, COMMENT);
-    if (!r) r = consumeToken(b, CRLF);
-    return r;
+  // DEFAULTS|query_|COMMENT|EOL
+  static boolean item_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "item_")) return false;
+    boolean result_;
+    result_ = consumeToken(builder_, DEFAULTS);
+    if (!result_) result_ = query_(builder_, level_ + 1);
+    if (!result_) result_ = consumeToken(builder_, COMMENT);
+    if (!result_) result_ = consumeToken(builder_, EOL);
+    return result_;
   }
 
   /* ********************************************************** */
-  // statsQuery
-  static boolean query_(PsiBuilder b, int l) {
-    return statsQuery(b, l + 1);
+  // LAST INTEGER MAJOR? VERSIONS
+  public static boolean lastQuery(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "lastQuery")) return false;
+    if (!nextTokenIs(builder_, LAST)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeTokens(builder_, 0, LAST, INTEGER);
+    result_ = result_ && lastQuery_2(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, VERSIONS);
+    exit_section_(builder_, marker_, LAST_QUERY, result_);
+    return result_;
+  }
+
+  // MAJOR?
+  private static boolean lastQuery_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "lastQuery_2")) return false;
+    consumeToken(builder_, MAJOR);
+    return true;
   }
 
   /* ********************************************************** */
-  // COMPARE PERCENT (IN STATS)? CRLF
-  public static boolean statsQuery(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "statsQuery")) return false;
-    if (!nextTokenIs(b, COMPARE)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, COMPARE, PERCENT);
-    r = r && statsQuery_2(b, l + 1);
-    r = r && consumeToken(b, CRLF);
-    exit_section_(b, m, STATS_QUERY, r);
-    return r;
+  // (statsQuery | lastQuery) EOL
+  static boolean query_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "query_")) return false;
+    if (!nextTokenIs(builder_, "", COMPARE, LAST)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = query__0(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, EOL);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
+  }
+
+  // statsQuery | lastQuery
+  private static boolean query__0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "query__0")) return false;
+    boolean result_;
+    result_ = statsQuery(builder_, level_ + 1);
+    if (!result_) result_ = lastQuery(builder_, level_ + 1);
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // COMPARE PERCENT (IN STATS)?
+  public static boolean statsQuery(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "statsQuery")) return false;
+    if (!nextTokenIs(builder_, COMPARE)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeTokens(builder_, 0, COMPARE, PERCENT);
+    result_ = result_ && statsQuery_2(builder_, level_ + 1);
+    exit_section_(builder_, marker_, STATS_QUERY, result_);
+    return result_;
   }
 
   // (IN STATS)?
-  private static boolean statsQuery_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "statsQuery_2")) return false;
-    statsQuery_2_0(b, l + 1);
+  private static boolean statsQuery_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "statsQuery_2")) return false;
+    statsQuery_2_0(builder_, level_ + 1);
     return true;
   }
 
   // IN STATS
-  private static boolean statsQuery_2_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "statsQuery_2_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, IN, STATS);
-    exit_section_(b, m, null, r);
-    return r;
+  private static boolean statsQuery_2_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "statsQuery_2_0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeTokens(builder_, 0, IN, STATS);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
 }

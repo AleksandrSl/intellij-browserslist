@@ -11,12 +11,24 @@
   elementTypeHolderClass="com.github.aleksandrsl.intellijbrowserslist.psi.BrowserslistTypes"
   elementTypeClass="com.github.aleksandrsl.intellijbrowserslist.psi.BrowserslistElementType"
   tokenTypeClass="com.github.aleksandrsl.intellijbrowserslist.psi.BrowserslistTokenType"
+
+  tokens=[
+    EOL="regexp:\R"
+    LBRACKET="["
+    RBRACKET="]"
+    IN="in"
+    PERCENT="regexp:\d*\.?\d+%"
+    DEFAULTS="defaults"
+    COMPARE="regexp:>=?|<=?"
+    space="regexp:\s+"
+  ]
 }
 
 browserslistFile ::= item_*
 
-private item_ ::= (query_|COMMENT|CRLF)
+private item_ ::= (DEFAULTS|query_|COMMENT|EOL)
 
-private query_ ::= statsQuery
+private query_ ::= (statsQuery | lastQuery) EOL
 //section ::= LBRACKET IDENTIFIER (WHITESPACE IDENTIFIER)* RBRACKET CRLF query*
-statsQuery ::= COMPARE PERCENT (IN STATS)? CRLF
+statsQuery ::= COMPARE PERCENT (IN STATS)?
+lastQuery ::= LAST INTEGER MAJOR? VERSIONS

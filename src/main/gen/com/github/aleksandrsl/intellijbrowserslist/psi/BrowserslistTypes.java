@@ -8,19 +8,30 @@ import com.github.aleksandrsl.intellijbrowserslist.psi.impl.*;
 
 public interface BrowserslistTypes {
 
+  IElementType LAST_QUERY = new BrowserslistElementType("LAST_QUERY");
   IElementType STATS_QUERY = new BrowserslistElementType("STATS_QUERY");
 
   IElementType COMMENT = new BrowserslistTokenType("COMMENT");
   IElementType COMPARE = new BrowserslistTokenType("COMPARE");
-  IElementType CRLF = new BrowserslistTokenType("CRLF");
-  IElementType IN = new BrowserslistTokenType("IN");
+  IElementType DEFAULTS = new BrowserslistTokenType("defaults");
+  IElementType EOL = new BrowserslistTokenType("EOL");
+  IElementType IN = new BrowserslistTokenType("in");
+  IElementType INTEGER = new BrowserslistTokenType("INTEGER");
+  IElementType LAST = new BrowserslistTokenType("LAST");
+  IElementType LBRACKET = new BrowserslistTokenType("[");
+  IElementType MAJOR = new BrowserslistTokenType("MAJOR");
   IElementType PERCENT = new BrowserslistTokenType("PERCENT");
+  IElementType RBRACKET = new BrowserslistTokenType("]");
   IElementType STATS = new BrowserslistTokenType("STATS");
+  IElementType VERSIONS = new BrowserslistTokenType("VERSIONS");
 
   class Factory {
     public static PsiElement createElement(ASTNode node) {
       IElementType type = node.getElementType();
-      if (type == STATS_QUERY) {
+      if (type == LAST_QUERY) {
+        return new BrowserslistLastQueryImpl(node);
+      }
+      else if (type == STATS_QUERY) {
         return new BrowserslistStatsQueryImpl(node);
       }
       throw new AssertionError("Unknown element type: " + type);

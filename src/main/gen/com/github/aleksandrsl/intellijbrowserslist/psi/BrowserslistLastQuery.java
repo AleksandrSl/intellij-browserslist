@@ -5,12 +5,6 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface BrowserslistStatsQuery extends PsiElement {
-
-  @NotNull
-  PsiElement getCompare();
-
-  @NotNull
-  PsiElement getPercent();
+public interface BrowserslistLastQuery extends PsiElement {
 
 }
