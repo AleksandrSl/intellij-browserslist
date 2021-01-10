@@ -89,7 +89,7 @@ public class BrowserslistParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (statsQuery | lastQuery | unreleasedQuery) EOL
+  // (statsQuery | lastQuery | timeQuery | unreleasedQuery | DEAD ) EOL
   static boolean query_(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "query_")) return false;
     boolean result_;
@@ -100,13 +100,15 @@ public class BrowserslistParser implements PsiParser, LightPsiParser {
     return result_;
   }
 
-  // statsQuery | lastQuery | unreleasedQuery
+  // statsQuery | lastQuery | timeQuery | unreleasedQuery | DEAD
   private static boolean query__0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "query__0")) return false;
     boolean result_;
     result_ = statsQuery(builder_, level_ + 1);
     if (!result_) result_ = lastQuery(builder_, level_ + 1);
+    if (!result_) result_ = timeQuery(builder_, level_ + 1);
     if (!result_) result_ = unreleasedQuery(builder_, level_ + 1);
+    if (!result_) result_ = consumeToken(builder_, DEAD);
     return result_;
   }
 
@@ -136,6 +138,50 @@ public class BrowserslistParser implements PsiParser, LightPsiParser {
     boolean result_;
     Marker marker_ = enter_section_(builder_);
     result_ = consumeTokens(builder_, 0, IN, STATS);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // (LAST (FLOAT|INTEGER) YEARS) | (SINCE TIME|INTEGER)
+  public static boolean timeQuery(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "timeQuery")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, TIME_QUERY, "<time query>");
+    result_ = timeQuery_0(builder_, level_ + 1);
+    if (!result_) result_ = timeQuery_1(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
+  }
+
+  // LAST (FLOAT|INTEGER) YEARS
+  private static boolean timeQuery_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "timeQuery_0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, LAST);
+    result_ = result_ && timeQuery_0_1(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, YEARS);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
+  }
+
+  // FLOAT|INTEGER
+  private static boolean timeQuery_0_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "timeQuery_0_1")) return false;
+    boolean result_;
+    result_ = consumeToken(builder_, FLOAT);
+    if (!result_) result_ = consumeToken(builder_, INTEGER);
+    return result_;
+  }
+
+  // SINCE TIME|INTEGER
+  private static boolean timeQuery_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "timeQuery_1")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = parseTokens(builder_, 0, SINCE, TIME);
+    if (!result_) result_ = consumeToken(builder_, INTEGER);
     exit_section_(builder_, marker_, null, result_);
     return result_;
   }

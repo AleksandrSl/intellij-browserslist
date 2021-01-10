@@ -27,4 +27,16 @@ public class BrowserslistLastQueryImpl extends ASTWrapperPsiElement implements B
     else super.accept(visitor);
   }
 
+  @Override
+  @NotNull
+  public PsiElement getInteger() {
+    return findNotNullChildByType(INTEGER);
+  }
+
+  @Override
+  @NotNull
+  public PsiElement getVersions() {
+    return findNotNullChildByType(VERSIONS);
+  }
+
 }

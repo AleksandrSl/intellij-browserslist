@@ -27,4 +27,10 @@ public class BrowserslistUnreleasedQueryImpl extends ASTWrapperPsiElement implem
     else super.accept(visitor);
   }
 
+  @Override
+  @NotNull
+  public PsiElement getVersions() {
+    return findNotNullChildByType(VERSIONS);
+  }
+
 }

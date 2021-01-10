@@ -21,6 +21,11 @@
     DEFAULTS="defaults"
     COMPARE="regexp:>=?|<=?"
     space="regexp:\s+"
+    LAST="last"
+    INTEGER="regexp:\d+"
+    VERSIONS="regexp:versions?"
+    YEARS="years"
+    FLOAT="regexp:\d*\.?\d+"
   ]
 }
 
@@ -28,8 +33,9 @@ browserslistFile ::= item_*
 
 private item_ ::= (DEFAULTS|query_|COMMENT|EOL)
 
-private query_ ::= (statsQuery | lastQuery | unreleasedQuery) EOL
+private query_ ::= (statsQuery | lastQuery | timeQuery | unreleasedQuery | DEAD ) EOL
 //section ::= LBRACKET IDENTIFIER (WHITESPACE IDENTIFIER)* RBRACKET CRLF query*
 statsQuery ::= COMPARE PERCENT (IN STATS)?
 lastQuery ::= LAST INTEGER TARGET? MAJOR? VERSIONS
 unreleasedQuery ::= UNRELEASED TARGET? VERSIONS
+timeQuery ::= (LAST (FLOAT|INTEGER) YEARS) | (SINCE TIME|INTEGER)

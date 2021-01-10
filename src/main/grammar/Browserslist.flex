@@ -31,7 +31,6 @@ COMPARE=>=?|<=?
 // Maybe it's not for lexer and parser to discern integer from float
 INTEGER=\d+
 FLOAT=\d*\.?\d+
-// Why allow 29.%?
 PERCENT={FLOAT}%
 STATS=(my\s+stats)|(\S+\s+stats)|((alt-)?\w\w)|{IDENTIFIER}
 FIREFOX=Firefox|fx|ff|FirefoxAndroid|and_ff
@@ -42,6 +41,7 @@ OPERA=Opere|OperaMini|op_mini|OperaMobile|op_mob
 CHROME=Chrome|ChromeAndroid|and_chr
 BROWSER={FIREFOX}|{CHROME}|{SAFARI}|{EXPLORER}|{BLACKBERRY}|{OPERA}|Android|Baidu|Edge|Samsung|UCAndroid|and_uc|QQandroid|and_qq|UCAndroid|and_uc|kaios
 TARGET={BROWSER}|electron|Node
+TIME=\d+(-\d+){1,2}
 
 %%
 
@@ -51,15 +51,18 @@ TARGET={BROWSER}|electron|Node
     "major"                           { return BrowserslistTypes.MAJOR; }
     versions?                           { return BrowserslistTypes.VERSIONS; }
     "unreleased"                          { return BrowserslistTypes.UNRELEASED; }
-    //"years"                          { return BrowserslistTypes.YEARS; }
-    //"since"                          { return BrowserslistTypes.SINCE; }
+    "dead"                          { return BrowserslistTypes.DEAD; }
+    "years"                          { return BrowserslistTypes.YEARS; }
+    "since"                          { return BrowserslistTypes.SINCE; }
     //"supports"                          { return BrowserslistTypes.SUPPORTS; }
     //"cover"                          { return BrowserslistTypes.COVER; }
     "defaults"                          { return BrowserslistTypes.DEFAULTS; }
     {TARGET}                           { return BrowserslistTypes.TARGET; }
     {END_OF_LINE_COMMENT}                           { return BrowserslistTypes.COMMENT; }
     {COMPARE}                           { return BrowserslistTypes.COMPARE; }
+    {TIME}                              { return BrowserslistTypes.TIME; }
     {INTEGER}                           { return BrowserslistTypes.INTEGER; }
+    {FLOAT}                             { return BrowserslistTypes.FLOAT; }
     {PERCENT}                           { return BrowserslistTypes.PERCENT; }
     {STATS}                           { return BrowserslistTypes.STATS; }
     {IDENTIFIER}   { return BrowserslistTypes.IDENTIFIER; }

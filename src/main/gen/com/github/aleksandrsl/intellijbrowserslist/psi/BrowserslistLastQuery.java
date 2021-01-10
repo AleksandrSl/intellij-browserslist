@@ -7,4 +7,10 @@ import com.intellij.psi.PsiElement;
 
 public interface BrowserslistLastQuery extends PsiElement {
 
+  @NotNull
+  PsiElement getInteger();
+
+  @NotNull
+  PsiElement getVersions();
+
 }
