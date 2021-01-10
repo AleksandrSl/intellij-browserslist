@@ -15,6 +15,7 @@ public interface BrowserslistTypes {
 
   IElementType COMMENT = new BrowserslistTokenType("COMMENT");
   IElementType COMPARE = new BrowserslistTokenType("COMPARE");
+  IElementType COVER = new BrowserslistTokenType("COVER");
   IElementType DEAD = new BrowserslistTokenType("DEAD");
   IElementType DEFAULTS = new BrowserslistTokenType("defaults");
   IElementType EOL = new BrowserslistTokenType("EOL");

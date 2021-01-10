@@ -55,7 +55,7 @@ TIME=\d+(-\d+){1,2}
     "years"                          { return BrowserslistTypes.YEARS; }
     "since"                          { return BrowserslistTypes.SINCE; }
     //"supports"                          { return BrowserslistTypes.SUPPORTS; }
-    //"cover"                          { return BrowserslistTypes.COVER; }
+    "cover"                          { return BrowserslistTypes.COVER; }
     "defaults"                          { return BrowserslistTypes.DEFAULTS; }
     {TARGET}                           { return BrowserslistTypes.TARGET; }
     {END_OF_LINE_COMMENT}                           { return BrowserslistTypes.COMMENT; }

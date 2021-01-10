@@ -113,15 +113,25 @@ public class BrowserslistParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // COMPARE PERCENT (IN STATS)?
+  // (COMPARE|COVER) PERCENT (IN STATS)?
   public static boolean statsQuery(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "statsQuery")) return false;
-    if (!nextTokenIs(builder_, COMPARE)) return false;
+    if (!nextTokenIs(builder_, "<stats query>", COMPARE, COVER)) return false;
     boolean result_;
-    Marker marker_ = enter_section_(builder_);
-    result_ = consumeTokens(builder_, 0, COMPARE, PERCENT);
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, STATS_QUERY, "<stats query>");
+    result_ = statsQuery_0(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, PERCENT);
     result_ = result_ && statsQuery_2(builder_, level_ + 1);
-    exit_section_(builder_, marker_, STATS_QUERY, result_);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
+  }
+
+  // COMPARE|COVER
+  private static boolean statsQuery_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "statsQuery_0")) return false;
+    boolean result_;
+    result_ = consumeToken(builder_, COMPARE);
+    if (!result_) result_ = consumeToken(builder_, COVER);
     return result_;
   }
 

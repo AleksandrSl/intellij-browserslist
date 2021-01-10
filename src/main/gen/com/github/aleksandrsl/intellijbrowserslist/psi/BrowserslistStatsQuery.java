@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface BrowserslistStatsQuery extends PsiElement {
 
-  @NotNull
+  @Nullable
   PsiElement getCompare();
 
   @NotNull

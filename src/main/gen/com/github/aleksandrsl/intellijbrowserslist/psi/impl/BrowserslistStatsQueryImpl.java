@@ -28,9 +28,9 @@ public class BrowserslistStatsQueryImpl extends ASTWrapperPsiElement implements 
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getCompare() {
-    return findNotNullChildByType(COMPARE);
+    return findChildByType(COMPARE);
   }
 
   @Override
