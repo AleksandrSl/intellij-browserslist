@@ -32,7 +32,7 @@ COMPARE=>=?|<=?
 INTEGER=\d+
 FLOAT=\d*\.?\d+
 PERCENT={FLOAT}%
-STATS=(my\s+stats)|(\S+\s+stats)|((alt-)?\w\w)|{IDENTIFIER}
+STATS=(my\s+stats)|(\S+\s+stats)|((alt-)?\w\w)
 FIREFOX=Firefox|fx|ff|FirefoxAndroid|and_ff
 SAFARI=Safari|iOS|ios_saf
 EXPLORER=Explorer|ie|ExplorerMobile|ie_mob
@@ -42,6 +42,7 @@ CHROME=Chrome|ChromeAndroid|and_chr
 BROWSER={FIREFOX}|{CHROME}|{SAFARI}|{EXPLORER}|{BLACKBERRY}|{OPERA}|Android|Baidu|Edge|Samsung|UCAndroid|and_uc|QQandroid|and_qq|UCAndroid|and_uc|kaios
 TARGET={BROWSER}|electron|Node
 TIME=\d+(-\d+){1,2}
+FEATURE=[-\w]+
 
 %%
 
@@ -54,7 +55,7 @@ TIME=\d+(-\d+){1,2}
     "dead"                          { return BrowserslistTypes.DEAD; }
     "years"                          { return BrowserslistTypes.YEARS; }
     "since"                          { return BrowserslistTypes.SINCE; }
-    //"supports"                          { return BrowserslistTypes.SUPPORTS; }
+    "supports"                          { return BrowserslistTypes.SUPPORTS; }
     "cover"                          { return BrowserslistTypes.COVER; }
     "defaults"                          { return BrowserslistTypes.DEFAULTS; }
     {TARGET}                           { return BrowserslistTypes.TARGET; }
@@ -65,7 +66,8 @@ TIME=\d+(-\d+){1,2}
     {FLOAT}                             { return BrowserslistTypes.FLOAT; }
     {PERCENT}                           { return BrowserslistTypes.PERCENT; }
     {STATS}                           { return BrowserslistTypes.STATS; }
-    {IDENTIFIER}   { return BrowserslistTypes.IDENTIFIER; }
+    // Maybe abstract identifier should be used and meaning added after parsing level, or different states used
+    {FEATURE}                         { return BrowserslistTypes.FEATURE; }
 
 
     {EOL}                       { return BrowserslistTypes.EOL; }

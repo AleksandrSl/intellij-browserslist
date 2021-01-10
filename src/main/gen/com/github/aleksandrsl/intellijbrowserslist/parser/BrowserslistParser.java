@@ -89,7 +89,7 @@ public class BrowserslistParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (statsQuery | lastQuery | timeQuery | unreleasedQuery | DEAD ) EOL
+  // (statsQuery | lastQuery | timeQuery | unreleasedQuery | supportsQuery | DEAD) EOL
   static boolean query_(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "query_")) return false;
     boolean result_;
@@ -100,7 +100,7 @@ public class BrowserslistParser implements PsiParser, LightPsiParser {
     return result_;
   }
 
-  // statsQuery | lastQuery | timeQuery | unreleasedQuery | DEAD
+  // statsQuery | lastQuery | timeQuery | unreleasedQuery | supportsQuery | DEAD
   private static boolean query__0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "query__0")) return false;
     boolean result_;
@@ -108,6 +108,7 @@ public class BrowserslistParser implements PsiParser, LightPsiParser {
     if (!result_) result_ = lastQuery(builder_, level_ + 1);
     if (!result_) result_ = timeQuery(builder_, level_ + 1);
     if (!result_) result_ = unreleasedQuery(builder_, level_ + 1);
+    if (!result_) result_ = supportsQuery(builder_, level_ + 1);
     if (!result_) result_ = consumeToken(builder_, DEAD);
     return result_;
   }
@@ -149,6 +150,18 @@ public class BrowserslistParser implements PsiParser, LightPsiParser {
     Marker marker_ = enter_section_(builder_);
     result_ = consumeTokens(builder_, 0, IN, STATS);
     exit_section_(builder_, marker_, null, result_);
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // SUPPORTS FEATURE
+  public static boolean supportsQuery(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "supportsQuery")) return false;
+    if (!nextTokenIs(builder_, SUPPORTS)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeTokens(builder_, 0, SUPPORTS, FEATURE);
+    exit_section_(builder_, marker_, SUPPORTS_QUERY, result_);
     return result_;
   }
 

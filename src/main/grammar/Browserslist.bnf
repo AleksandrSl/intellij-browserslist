@@ -33,10 +33,11 @@ browserslistFile ::= item_*
 
 private item_ ::= (DEFAULTS|query_|COMMENT|EOL)
 
-private query_ ::= (statsQuery | lastQuery | timeQuery | unreleasedQuery | DEAD ) EOL
+private query_ ::= (statsQuery | lastQuery | timeQuery | unreleasedQuery | supportsQuery | DEAD) EOL
 //section ::= LBRACKET IDENTIFIER (WHITESPACE IDENTIFIER)* RBRACKET CRLF query*
 // TODO: Cover in custom stats like `cover 5% in browserslist-config-mycompany stats` should be supported?
 statsQuery ::= (COMPARE|COVER) PERCENT (IN STATS)?
 lastQuery ::= LAST INTEGER TARGET? MAJOR? VERSIONS
 unreleasedQuery ::= UNRELEASED TARGET? VERSIONS
 timeQuery ::= (LAST (FLOAT|INTEGER) YEARS) | (SINCE TIME|INTEGER)
+supportsQuery ::= SUPPORTS FEATURE

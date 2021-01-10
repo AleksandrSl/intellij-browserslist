@@ -10,6 +10,7 @@ public interface BrowserslistTypes {
 
   IElementType LAST_QUERY = new BrowserslistElementType("LAST_QUERY");
   IElementType STATS_QUERY = new BrowserslistElementType("STATS_QUERY");
+  IElementType SUPPORTS_QUERY = new BrowserslistElementType("SUPPORTS_QUERY");
   IElementType TIME_QUERY = new BrowserslistElementType("TIME_QUERY");
   IElementType UNRELEASED_QUERY = new BrowserslistElementType("UNRELEASED_QUERY");
 
@@ -19,6 +20,7 @@ public interface BrowserslistTypes {
   IElementType DEAD = new BrowserslistTokenType("DEAD");
   IElementType DEFAULTS = new BrowserslistTokenType("defaults");
   IElementType EOL = new BrowserslistTokenType("EOL");
+  IElementType FEATURE = new BrowserslistTokenType("FEATURE");
   IElementType FLOAT = new BrowserslistTokenType("FLOAT");
   IElementType IN = new BrowserslistTokenType("in");
   IElementType INTEGER = new BrowserslistTokenType("INTEGER");
@@ -29,6 +31,7 @@ public interface BrowserslistTypes {
   IElementType RBRACKET = new BrowserslistTokenType("]");
   IElementType SINCE = new BrowserslistTokenType("SINCE");
   IElementType STATS = new BrowserslistTokenType("STATS");
+  IElementType SUPPORTS = new BrowserslistTokenType("SUPPORTS");
   IElementType TARGET = new BrowserslistTokenType("TARGET");
   IElementType TIME = new BrowserslistTokenType("TIME");
   IElementType UNRELEASED = new BrowserslistTokenType("UNRELEASED");
@@ -43,6 +46,9 @@ public interface BrowserslistTypes {
       }
       else if (type == STATS_QUERY) {
         return new BrowserslistStatsQueryImpl(node);
+      }
+      else if (type == SUPPORTS_QUERY) {
+        return new BrowserslistSupportsQueryImpl(node);
       }
       else if (type == TIME_QUERY) {
         return new BrowserslistTimeQueryImpl(node);
