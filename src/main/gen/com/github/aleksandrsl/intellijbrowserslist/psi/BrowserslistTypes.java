@@ -8,6 +8,7 @@ import com.github.aleksandrsl.intellijbrowserslist.psi.impl.*;
 
 public interface BrowserslistTypes {
 
+  IElementType EXTENDS_QUERY = new BrowserslistElementType("EXTENDS_QUERY");
   IElementType LAST_QUERY = new BrowserslistElementType("LAST_QUERY");
   IElementType STATS_QUERY = new BrowserslistElementType("STATS_QUERY");
   IElementType SUPPORTS_QUERY = new BrowserslistElementType("SUPPORTS_QUERY");
@@ -22,8 +23,10 @@ public interface BrowserslistTypes {
   IElementType DEAD = new BrowserslistTokenType("DEAD");
   IElementType DEFAULTS = new BrowserslistTokenType("defaults");
   IElementType EOL = new BrowserslistTokenType("EOL");
+  IElementType EXTENDS = new BrowserslistTokenType("EXTENDS");
   IElementType FEATURE = new BrowserslistTokenType("FEATURE");
   IElementType FLOAT = new BrowserslistTokenType("FLOAT");
+  IElementType IDENTIFIER = new BrowserslistTokenType("IDENTIFIER");
   IElementType IN = new BrowserslistTokenType("in");
   IElementType INTEGER = new BrowserslistTokenType("INTEGER");
   IElementType LAST = new BrowserslistTokenType("last");
@@ -46,7 +49,10 @@ public interface BrowserslistTypes {
   class Factory {
     public static PsiElement createElement(ASTNode node) {
       IElementType type = node.getElementType();
-      if (type == LAST_QUERY) {
+      if (type == EXTENDS_QUERY) {
+        return new BrowserslistExtendsQueryImpl(node);
+      }
+      else if (type == LAST_QUERY) {
         return new BrowserslistLastQueryImpl(node);
       }
       else if (type == STATS_QUERY) {

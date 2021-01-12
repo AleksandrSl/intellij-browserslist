@@ -48,6 +48,18 @@ public class BrowserslistParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // EXTENDS IDENTIFIER
+  public static boolean extendsQuery(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "extendsQuery")) return false;
+    if (!nextTokenIs(builder_, EXTENDS)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeTokens(builder_, 0, EXTENDS, IDENTIFIER);
+    exit_section_(builder_, marker_, EXTENDS_QUERY, result_);
+    return result_;
+  }
+
+  /* ********************************************************** */
   // DEFAULTS|query_|COMMENT|EOL
   static boolean item_(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "item_")) return false;
@@ -89,7 +101,7 @@ public class BrowserslistParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (statsQuery | lastQuery | timeQuery | unreleasedQuery | supportsQuery | targetQuery | DEAD) EOL
+  // (statsQuery | lastQuery | timeQuery | unreleasedQuery | supportsQuery | targetQuery | extendsQuery | DEAD) EOL
   static boolean query_(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "query_")) return false;
     boolean result_;
@@ -100,7 +112,7 @@ public class BrowserslistParser implements PsiParser, LightPsiParser {
     return result_;
   }
 
-  // statsQuery | lastQuery | timeQuery | unreleasedQuery | supportsQuery | targetQuery | DEAD
+  // statsQuery | lastQuery | timeQuery | unreleasedQuery | supportsQuery | targetQuery | extendsQuery | DEAD
   private static boolean query__0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "query__0")) return false;
     boolean result_;
@@ -110,6 +122,7 @@ public class BrowserslistParser implements PsiParser, LightPsiParser {
     if (!result_) result_ = unreleasedQuery(builder_, level_ + 1);
     if (!result_) result_ = supportsQuery(builder_, level_ + 1);
     if (!result_) result_ = targetQuery(builder_, level_ + 1);
+    if (!result_) result_ = extendsQuery(builder_, level_ + 1);
     if (!result_) result_ = consumeToken(builder_, DEAD);
     return result_;
   }

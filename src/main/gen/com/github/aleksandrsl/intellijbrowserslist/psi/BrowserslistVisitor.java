@@ -7,6 +7,10 @@ import com.intellij.psi.PsiElement;
 
 public class BrowserslistVisitor extends PsiElementVisitor {
 
+  public void visitExtendsQuery(@NotNull BrowserslistExtendsQuery o) {
+    visitPsiElement(o);
+  }
+
   public void visitLastQuery(@NotNull BrowserslistLastQuery o) {
     visitPsiElement(o);
   }

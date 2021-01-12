@@ -25,14 +25,12 @@ RBRACKET="]"
 WHITE_SPACE=[\ \n\t\f]
 IDENTIFIER=\S+
 END_OF_LINE_COMMENT=("#")[^\r\n]*
-SEPARATOR=[:=]
-KEY_CHARACTER=[^:=\ \n\t\f\\] | "\\ "
 COMPARE=>=?|<=?
 // Maybe it's not for lexer and parser to discern integer from float
 INTEGER=\d+
 FLOAT=\d*\.?\d+
 PERCENT={FLOAT}%
-STATS=(my\s+stats)|(\S+\s+stats)|((alt-)?\w\w)
+STATS=(my\s+stats)|({IDENTIFIER}\s+stats)|((alt-)?\w\w)
 FIREFOX=Firefox|fx|ff|FirefoxAndroid|and_ff
 SAFARI=Safari|iOS|ios_saf
 EXPLORER=Explorer|ie|ExplorerMobile|ie_mob
@@ -76,6 +74,7 @@ TARGET_VERSIONS_RANGE={TARGET_VERSION}\s*-\s*{TARGET_VERSION}
 
 
 %state TARGET
+%state SUPPORTS
 
 %%
 
@@ -88,12 +87,13 @@ TARGET_VERSIONS_RANGE={TARGET_VERSION}\s*-\s*{TARGET_VERSION}
     "dead"                          { return BrowserslistTypes.DEAD; }
     "years"                          { return BrowserslistTypes.YEARS; }
     "since"                          { return BrowserslistTypes.SINCE; }
-    "supports"                          { return BrowserslistTypes.SUPPORTS; }
+    "supports"                          { yybegin(SUPPORTS); return BrowserslistTypes.SUPPORTS; }
     "cover"                          { return BrowserslistTypes.COVER; }
     "defaults"                          { return BrowserslistTypes.DEFAULTS; }
     "maintained"                        { return BrowserslistTypes.MAINTAINED_NODE_VERSIONS; }
     "current"                           { return BrowserslistTypes.CURRENT_NODE_VERSION; }
-    {TARGET}                           { yybegin(TARGET); return BrowserslistTypes.TARGET; }
+    "extends"                           { return BrowserslistTypes.EXTENDS; }
+    {TARGET}                            { yybegin(TARGET); return BrowserslistTypes.TARGET; }
     {END_OF_LINE_COMMENT}                           { return BrowserslistTypes.COMMENT; }
     {COMPARE}                           { return BrowserslistTypes.COMPARE; }
     {TIME}                              { return BrowserslistTypes.TIME; }
@@ -101,8 +101,7 @@ TARGET_VERSIONS_RANGE={TARGET_VERSION}\s*-\s*{TARGET_VERSION}
     {FLOAT}                             { return BrowserslistTypes.FLOAT; }
     {PERCENT}                           { return BrowserslistTypes.PERCENT; }
     {STATS}                           { return BrowserslistTypes.STATS; }
-    // Maybe abstract identifier should be used and meaning added after parsing level, or different states used
-    {FEATURE}                         { return BrowserslistTypes.FEATURE; }
+    {IDENTIFIER}                      { return BrowserslistTypes.IDENTIFIER; }
 
 
     {EOL}                       { return BrowserslistTypes.EOL; }
@@ -119,6 +118,14 @@ TARGET_VERSIONS_RANGE={TARGET_VERSION}\s*-\s*{TARGET_VERSION}
     {TARGET_VERSION}                  { return BrowserslistTypes.TARGET_VERSION; }
     {END_OF_LINE_COMMENT}                           { return BrowserslistTypes.COMMENT; }
     {EOL}                       { yybegin(YYINITIAL); return BrowserslistTypes.EOL; }
+    {WHITE_SPACE}+                                     { return TokenType.WHITE_SPACE; }
+}
+
+<SUPPORTS> {
+    // Maybe abstract identifier should be used and meaning added after parsing level, or different states used
+    {FEATURE}                         { yybegin(YYINITIAL); return BrowserslistTypes.FEATURE; }
+    {END_OF_LINE_COMMENT}                           { yybegin(YYINITIAL); return BrowserslistTypes.COMMENT; }
+    {EOL}                             { yybegin(YYINITIAL); return BrowserslistTypes.EOL; }
     {WHITE_SPACE}+                                     { return TokenType.WHITE_SPACE; }
 }
 
