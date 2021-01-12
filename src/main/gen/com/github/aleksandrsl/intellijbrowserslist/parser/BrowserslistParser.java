@@ -89,7 +89,7 @@ public class BrowserslistParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (statsQuery | lastQuery | timeQuery | unreleasedQuery | supportsQuery | DEAD) EOL
+  // (statsQuery | lastQuery | timeQuery | unreleasedQuery | supportsQuery | targetQuery | DEAD) EOL
   static boolean query_(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "query_")) return false;
     boolean result_;
@@ -100,7 +100,7 @@ public class BrowserslistParser implements PsiParser, LightPsiParser {
     return result_;
   }
 
-  // statsQuery | lastQuery | timeQuery | unreleasedQuery | supportsQuery | DEAD
+  // statsQuery | lastQuery | timeQuery | unreleasedQuery | supportsQuery | targetQuery | DEAD
   private static boolean query__0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "query__0")) return false;
     boolean result_;
@@ -109,6 +109,7 @@ public class BrowserslistParser implements PsiParser, LightPsiParser {
     if (!result_) result_ = timeQuery(builder_, level_ + 1);
     if (!result_) result_ = unreleasedQuery(builder_, level_ + 1);
     if (!result_) result_ = supportsQuery(builder_, level_ + 1);
+    if (!result_) result_ = targetQuery(builder_, level_ + 1);
     if (!result_) result_ = consumeToken(builder_, DEAD);
     return result_;
   }
@@ -163,6 +164,59 @@ public class BrowserslistParser implements PsiParser, LightPsiParser {
     result_ = consumeTokens(builder_, 0, SUPPORTS, FEATURE);
     exit_section_(builder_, marker_, SUPPORTS_QUERY, result_);
     return result_;
+  }
+
+  /* ********************************************************** */
+  // TARGET (COMPARE? TARGET_VERSION | TARGET_VERSIONS_RANGE) | CURRENT_NODE_VERSION TARGET | MAINTAINED_NODE_VERSIONS TARGET VERSIONS
+  public static boolean targetQuery(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "targetQuery")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, TARGET_QUERY, "<target query>");
+    result_ = targetQuery_0(builder_, level_ + 1);
+    if (!result_) result_ = parseTokens(builder_, 0, CURRENT_NODE_VERSION, TARGET);
+    if (!result_) result_ = parseTokens(builder_, 0, MAINTAINED_NODE_VERSIONS, TARGET, VERSIONS);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
+  }
+
+  // TARGET (COMPARE? TARGET_VERSION | TARGET_VERSIONS_RANGE)
+  private static boolean targetQuery_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "targetQuery_0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, TARGET);
+    result_ = result_ && targetQuery_0_1(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
+  }
+
+  // COMPARE? TARGET_VERSION | TARGET_VERSIONS_RANGE
+  private static boolean targetQuery_0_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "targetQuery_0_1")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = targetQuery_0_1_0(builder_, level_ + 1);
+    if (!result_) result_ = consumeToken(builder_, TARGET_VERSIONS_RANGE);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
+  }
+
+  // COMPARE? TARGET_VERSION
+  private static boolean targetQuery_0_1_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "targetQuery_0_1_0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = targetQuery_0_1_0_0(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, TARGET_VERSION);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
+  }
+
+  // COMPARE?
+  private static boolean targetQuery_0_1_0_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "targetQuery_0_1_0_0")) return false;
+    consumeToken(builder_, COMPARE);
+    return true;
   }
 
   /* ********************************************************** */

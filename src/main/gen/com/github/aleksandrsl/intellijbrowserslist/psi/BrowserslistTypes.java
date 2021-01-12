@@ -11,12 +11,14 @@ public interface BrowserslistTypes {
   IElementType LAST_QUERY = new BrowserslistElementType("LAST_QUERY");
   IElementType STATS_QUERY = new BrowserslistElementType("STATS_QUERY");
   IElementType SUPPORTS_QUERY = new BrowserslistElementType("SUPPORTS_QUERY");
+  IElementType TARGET_QUERY = new BrowserslistElementType("TARGET_QUERY");
   IElementType TIME_QUERY = new BrowserslistElementType("TIME_QUERY");
   IElementType UNRELEASED_QUERY = new BrowserslistElementType("UNRELEASED_QUERY");
 
   IElementType COMMENT = new BrowserslistTokenType("COMMENT");
   IElementType COMPARE = new BrowserslistTokenType("COMPARE");
   IElementType COVER = new BrowserslistTokenType("COVER");
+  IElementType CURRENT_NODE_VERSION = new BrowserslistTokenType("CURRENT_NODE_VERSION");
   IElementType DEAD = new BrowserslistTokenType("DEAD");
   IElementType DEFAULTS = new BrowserslistTokenType("defaults");
   IElementType EOL = new BrowserslistTokenType("EOL");
@@ -26,6 +28,7 @@ public interface BrowserslistTypes {
   IElementType INTEGER = new BrowserslistTokenType("INTEGER");
   IElementType LAST = new BrowserslistTokenType("last");
   IElementType LBRACKET = new BrowserslistTokenType("[");
+  IElementType MAINTAINED_NODE_VERSIONS = new BrowserslistTokenType("MAINTAINED_NODE_VERSIONS");
   IElementType MAJOR = new BrowserslistTokenType("MAJOR");
   IElementType PERCENT = new BrowserslistTokenType("PERCENT");
   IElementType RBRACKET = new BrowserslistTokenType("]");
@@ -33,6 +36,8 @@ public interface BrowserslistTypes {
   IElementType STATS = new BrowserslistTokenType("STATS");
   IElementType SUPPORTS = new BrowserslistTokenType("SUPPORTS");
   IElementType TARGET = new BrowserslistTokenType("TARGET");
+  IElementType TARGET_VERSION = new BrowserslistTokenType("TARGET_VERSION");
+  IElementType TARGET_VERSIONS_RANGE = new BrowserslistTokenType("TARGET_VERSIONS_RANGE");
   IElementType TIME = new BrowserslistTokenType("TIME");
   IElementType UNRELEASED = new BrowserslistTokenType("UNRELEASED");
   IElementType VERSIONS = new BrowserslistTokenType("VERSIONS");
@@ -49,6 +54,9 @@ public interface BrowserslistTypes {
       }
       else if (type == SUPPORTS_QUERY) {
         return new BrowserslistSupportsQueryImpl(node);
+      }
+      else if (type == TARGET_QUERY) {
+        return new BrowserslistTargetQueryImpl(node);
       }
       else if (type == TIME_QUERY) {
         return new BrowserslistTimeQueryImpl(node);

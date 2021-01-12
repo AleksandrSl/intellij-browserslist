@@ -19,6 +19,10 @@ public class BrowserslistVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitTargetQuery(@NotNull BrowserslistTargetQuery o) {
+    visitPsiElement(o);
+  }
+
   public void visitTimeQuery(@NotNull BrowserslistTimeQuery o) {
     visitPsiElement(o);
   }

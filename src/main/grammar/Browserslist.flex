@@ -40,9 +40,42 @@ BLACKBERRY=BlackBerry|bb
 OPERA=Opere|OperaMini|op_mini|OperaMobile|op_mob
 CHROME=Chrome|ChromeAndroid|and_chr
 BROWSER={FIREFOX}|{CHROME}|{SAFARI}|{EXPLORER}|{BLACKBERRY}|{OPERA}|Android|Baidu|Edge|Samsung|UCAndroid|and_uc|QQandroid|and_qq|UCAndroid|and_uc|kaios
-TARGET={BROWSER}|electron|Node
+TARGET={BROWSER}|electron|[Nn]ode|[Pp]hantom[jJ][sS]
 TIME=\d+(-\d+){1,2}
 FEATURE=[-\w]+
+
+/*
+electron\s+([\d.]+)\s*-\s*([\d.]+)
+electron\s*(>=?|<=?)\s*([\d.]+)
+electron\s+([\d.]+)
+
+node\s+([\d.]+)\s*-\s*([\d.]+)
+node\s*(>=?|<=?)\s*([\d.]+)
+node\s+(\d+(\.\d+)?(\.\d+)?)
+maintained\s+node\s+versions
+current\s+node
+
+(firefox|ff|fx)\s+esr
+
+(operamini|op_mini)\s+all
+
+phantomjs\s+1.9 phantomjs\s+2.1
+
+(\w+)\s+([\d.]+)\s*-\s*([\d.]+)
+(\w+)\s*(>=?|<=?)\s*([\d.]+)
+(\w+)\s+(tp|[\d.]+)
+*/
+
+// Why not node current? This will be consistent
+// Does phantomjs allowed in other queries? I think not
+// What is TP?
+
+// It will be generic for now. Find a way to show errors
+TARGET_VERSION=(tp|[\d.]+|all|esr|ESR)
+TARGET_VERSIONS_RANGE={TARGET_VERSION}\s*-\s*{TARGET_VERSION}
+
+
+%state TARGET
 
 %%
 
@@ -58,7 +91,9 @@ FEATURE=[-\w]+
     "supports"                          { return BrowserslistTypes.SUPPORTS; }
     "cover"                          { return BrowserslistTypes.COVER; }
     "defaults"                          { return BrowserslistTypes.DEFAULTS; }
-    {TARGET}                           { return BrowserslistTypes.TARGET; }
+    "maintained"                        { return BrowserslistTypes.MAINTAINED_NODE_VERSIONS; }
+    "current"                           { return BrowserslistTypes.CURRENT_NODE_VERSION; }
+    {TARGET}                           { yybegin(TARGET); return BrowserslistTypes.TARGET; }
     {END_OF_LINE_COMMENT}                           { return BrowserslistTypes.COMMENT; }
     {COMPARE}                           { return BrowserslistTypes.COMPARE; }
     {TIME}                              { return BrowserslistTypes.TIME; }
@@ -71,6 +106,19 @@ FEATURE=[-\w]+
 
 
     {EOL}                       { return BrowserslistTypes.EOL; }
+    {WHITE_SPACE}+                                     { return TokenType.WHITE_SPACE; }
+}
+
+<TARGET> {
+    "major"                           { yybegin(YYINITIAL); return BrowserslistTypes.MAJOR; }
+    versions?                           { yybegin(YYINITIAL); return BrowserslistTypes.VERSIONS; }
+    {COMPARE}                           { return BrowserslistTypes.COMPARE; }
+    {TARGET_VERSIONS_RANGE}                  { return BrowserslistTypes.TARGET_VERSIONS_RANGE; }
+    // `all` and `esr` will not be parsed as feature
+    // How am i supposed to discern integer from version?
+    {TARGET_VERSION}                  { return BrowserslistTypes.TARGET_VERSION; }
+    {END_OF_LINE_COMMENT}                           { return BrowserslistTypes.COMMENT; }
+    {EOL}                       { yybegin(YYINITIAL); return BrowserslistTypes.EOL; }
     {WHITE_SPACE}+                                     { return TokenType.WHITE_SPACE; }
 }
 
