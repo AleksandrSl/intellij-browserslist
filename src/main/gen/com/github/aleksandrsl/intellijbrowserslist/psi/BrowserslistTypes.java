@@ -16,6 +16,7 @@ public interface BrowserslistTypes {
   IElementType TIME_QUERY = new BrowserslistElementType("TIME_QUERY");
   IElementType UNRELEASED_QUERY = new BrowserslistElementType("UNRELEASED_QUERY");
 
+  IElementType AND = new BrowserslistTokenType("AND");
   IElementType COMMENT = new BrowserslistTokenType("COMMENT");
   IElementType COMPARE = new BrowserslistTokenType("COMPARE");
   IElementType COVER = new BrowserslistTokenType("COVER");
@@ -33,6 +34,8 @@ public interface BrowserslistTypes {
   IElementType LBRACKET = new BrowserslistTokenType("[");
   IElementType MAINTAINED_NODE_VERSIONS = new BrowserslistTokenType("MAINTAINED_NODE_VERSIONS");
   IElementType MAJOR = new BrowserslistTokenType("MAJOR");
+  IElementType NOT = new BrowserslistTokenType("NOT");
+  IElementType OR = new BrowserslistTokenType("OR");
   IElementType PERCENT = new BrowserslistTokenType("PERCENT");
   IElementType RBRACKET = new BrowserslistTokenType("]");
   IElementType SINCE = new BrowserslistTokenType("SINCE");

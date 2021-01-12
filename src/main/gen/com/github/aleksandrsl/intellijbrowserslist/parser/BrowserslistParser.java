@@ -60,14 +60,27 @@ public class BrowserslistParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // DEFAULTS|query_|COMMENT|EOL
+  // DEFAULTS|queryExpression_ EOL|COMMENT|EOL
   static boolean item_(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "item_")) return false;
     boolean result_;
+    Marker marker_ = enter_section_(builder_);
     result_ = consumeToken(builder_, DEFAULTS);
-    if (!result_) result_ = query_(builder_, level_ + 1);
+    if (!result_) result_ = item__1(builder_, level_ + 1);
     if (!result_) result_ = consumeToken(builder_, COMMENT);
     if (!result_) result_ = consumeToken(builder_, EOL);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
+  }
+
+  // queryExpression_ EOL
+  private static boolean item__1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "item__1")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = queryExpression_(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, EOL);
+    exit_section_(builder_, marker_, null, result_);
     return result_;
   }
 
@@ -101,20 +114,68 @@ public class BrowserslistParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (statsQuery | lastQuery | timeQuery | unreleasedQuery | supportsQuery | targetQuery | extendsQuery | DEAD) EOL
-  static boolean query_(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "query_")) return false;
+  // NOT? query_ ((AND|OR) NOT?query_)*
+  static boolean queryExpression_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "queryExpression_")) return false;
     boolean result_;
     Marker marker_ = enter_section_(builder_);
-    result_ = query__0(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, EOL);
+    result_ = queryExpression__0(builder_, level_ + 1);
+    result_ = result_ && query_(builder_, level_ + 1);
+    result_ = result_ && queryExpression__2(builder_, level_ + 1);
     exit_section_(builder_, marker_, null, result_);
     return result_;
   }
 
+  // NOT?
+  private static boolean queryExpression__0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "queryExpression__0")) return false;
+    consumeToken(builder_, NOT);
+    return true;
+  }
+
+  // ((AND|OR) NOT?query_)*
+  private static boolean queryExpression__2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "queryExpression__2")) return false;
+    while (true) {
+      int pos_ = current_position_(builder_);
+      if (!queryExpression__2_0(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "queryExpression__2", pos_)) break;
+    }
+    return true;
+  }
+
+  // (AND|OR) NOT?query_
+  private static boolean queryExpression__2_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "queryExpression__2_0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = queryExpression__2_0_0(builder_, level_ + 1);
+    result_ = result_ && queryExpression__2_0_1(builder_, level_ + 1);
+    result_ = result_ && query_(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
+  }
+
+  // AND|OR
+  private static boolean queryExpression__2_0_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "queryExpression__2_0_0")) return false;
+    boolean result_;
+    result_ = consumeToken(builder_, AND);
+    if (!result_) result_ = consumeToken(builder_, OR);
+    return result_;
+  }
+
+  // NOT?
+  private static boolean queryExpression__2_0_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "queryExpression__2_0_1")) return false;
+    consumeToken(builder_, NOT);
+    return true;
+  }
+
+  /* ********************************************************** */
   // statsQuery | lastQuery | timeQuery | unreleasedQuery | supportsQuery | targetQuery | extendsQuery | DEAD
-  private static boolean query__0(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "query__0")) return false;
+  static boolean query_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "query_")) return false;
     boolean result_;
     result_ = statsQuery(builder_, level_ + 1);
     if (!result_) result_ = lastQuery(builder_, level_ + 1);

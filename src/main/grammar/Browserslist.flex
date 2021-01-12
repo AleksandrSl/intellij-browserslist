@@ -22,8 +22,8 @@ import com.intellij.psi.TokenType;
 EOL=\R
 LBRACKET="["
 RBRACKET="]"
-WHITE_SPACE=[\ \n\t\f]
-IDENTIFIER=\S+
+WHITE_SPACE=[\ \t\f]
+IDENTIFIER=[\S--,]+
 END_OF_LINE_COMMENT=("#")[^\r\n]*
 COMPARE=>=?|<=?
 // Maybe it's not for lexer and parser to discern integer from float
@@ -93,6 +93,9 @@ TARGET_VERSIONS_RANGE={TARGET_VERSION}\s*-\s*{TARGET_VERSION}
     "maintained"                        { return BrowserslistTypes.MAINTAINED_NODE_VERSIONS; }
     "current"                           { return BrowserslistTypes.CURRENT_NODE_VERSION; }
     "extends"                           { return BrowserslistTypes.EXTENDS; }
+    or|","                                { return BrowserslistTypes.OR; }
+    "and"                                { return BrowserslistTypes.AND; }
+    "not"                                { return BrowserslistTypes.NOT; }
     {TARGET}                            { yybegin(TARGET); return BrowserslistTypes.TARGET; }
     {END_OF_LINE_COMMENT}                           { return BrowserslistTypes.COMMENT; }
     {COMPARE}                           { return BrowserslistTypes.COMPARE; }
@@ -111,12 +114,15 @@ TARGET_VERSIONS_RANGE={TARGET_VERSION}\s*-\s*{TARGET_VERSION}
 <TARGET> {
     "major"                           { yybegin(YYINITIAL); return BrowserslistTypes.MAJOR; }
     versions?                           { yybegin(YYINITIAL); return BrowserslistTypes.VERSIONS; }
+    or|,                                { yybegin(YYINITIAL); return BrowserslistTypes.OR; }
+    "and"                                { yybegin(YYINITIAL); return BrowserslistTypes.AND; }
+    "not"                                { yybegin(YYINITIAL); return BrowserslistTypes.NOT; }
     {COMPARE}                           { return BrowserslistTypes.COMPARE; }
-    {TARGET_VERSIONS_RANGE}                  { return BrowserslistTypes.TARGET_VERSIONS_RANGE; }
+    {TARGET_VERSIONS_RANGE}                  { yybegin(YYINITIAL); return BrowserslistTypes.TARGET_VERSIONS_RANGE; }
     // `all` and `esr` will not be parsed as feature
     // How am i supposed to discern integer from version?
-    {TARGET_VERSION}                  { return BrowserslistTypes.TARGET_VERSION; }
-    {END_OF_LINE_COMMENT}                           { return BrowserslistTypes.COMMENT; }
+    {TARGET_VERSION}                  { yybegin(YYINITIAL); return BrowserslistTypes.TARGET_VERSION; }
+    {END_OF_LINE_COMMENT}                           { yybegin(YYINITIAL); return BrowserslistTypes.COMMENT; }
     {EOL}                       { yybegin(YYINITIAL); return BrowserslistTypes.EOL; }
     {WHITE_SPACE}+                                     { return TokenType.WHITE_SPACE; }
 }
