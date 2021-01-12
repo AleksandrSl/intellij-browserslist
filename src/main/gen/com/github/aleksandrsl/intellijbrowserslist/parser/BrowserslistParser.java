@@ -36,15 +36,24 @@ public class BrowserslistParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // item_*
+  // (section | item_)*
   static boolean browserslistFile(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "browserslistFile")) return false;
     while (true) {
       int pos_ = current_position_(builder_);
-      if (!item_(builder_, level_ + 1)) break;
+      if (!browserslistFile_0(builder_, level_ + 1)) break;
       if (!empty_element_parsed_guard_(builder_, "browserslistFile", pos_)) break;
     }
     return true;
+  }
+
+  // section | item_
+  private static boolean browserslistFile_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "browserslistFile_0")) return false;
+    boolean result_;
+    result_ = section(builder_, level_ + 1);
+    if (!result_) result_ = item_(builder_, level_ + 1);
+    return result_;
   }
 
   /* ********************************************************** */
@@ -186,6 +195,43 @@ public class BrowserslistParser implements PsiParser, LightPsiParser {
     if (!result_) result_ = extendsQuery(builder_, level_ + 1);
     if (!result_) result_ = consumeToken(builder_, DEAD);
     return result_;
+  }
+
+  /* ********************************************************** */
+  // LBRACKET IDENTIFIER (IDENTIFIER)* RBRACKET EOL item_*
+  public static boolean section(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "section")) return false;
+    if (!nextTokenIs(builder_, LBRACKET)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeTokens(builder_, 0, LBRACKET, IDENTIFIER);
+    result_ = result_ && section_2(builder_, level_ + 1);
+    result_ = result_ && consumeTokens(builder_, 0, RBRACKET, EOL);
+    result_ = result_ && section_5(builder_, level_ + 1);
+    exit_section_(builder_, marker_, SECTION, result_);
+    return result_;
+  }
+
+  // (IDENTIFIER)*
+  private static boolean section_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "section_2")) return false;
+    while (true) {
+      int pos_ = current_position_(builder_);
+      if (!consumeToken(builder_, IDENTIFIER)) break;
+      if (!empty_element_parsed_guard_(builder_, "section_2", pos_)) break;
+    }
+    return true;
+  }
+
+  // item_*
+  private static boolean section_5(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "section_5")) return false;
+    while (true) {
+      int pos_ = current_position_(builder_);
+      if (!item_(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "section_5", pos_)) break;
+    }
+    return true;
   }
 
   /* ********************************************************** */

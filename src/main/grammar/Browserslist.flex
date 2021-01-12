@@ -23,7 +23,7 @@ EOL=\R
 LBRACKET="["
 RBRACKET="]"
 WHITE_SPACE=[\ \t\f]
-IDENTIFIER=[\S--,]+
+IDENTIFIER=[\S--,\]\[]+
 END_OF_LINE_COMMENT=("#")[^\r\n]*
 COMPARE=>=?|<=?
 // Maybe it's not for lexer and parser to discern integer from float
@@ -79,6 +79,8 @@ TARGET_VERSIONS_RANGE={TARGET_VERSION}\s*-\s*{TARGET_VERSION}
 %%
 
 <YYINITIAL> {
+    "["                           { return BrowserslistTypes.LBRACKET; }
+    "]"                           { return BrowserslistTypes.RBRACKET; }
     "in"                           { return BrowserslistTypes.IN; }
     "last"                           { return BrowserslistTypes.LAST; }
     "major"                           { return BrowserslistTypes.MAJOR; }

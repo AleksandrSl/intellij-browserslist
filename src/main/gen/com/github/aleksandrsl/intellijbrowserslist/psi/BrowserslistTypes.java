@@ -10,6 +10,7 @@ public interface BrowserslistTypes {
 
   IElementType EXTENDS_QUERY = new BrowserslistElementType("EXTENDS_QUERY");
   IElementType LAST_QUERY = new BrowserslistElementType("LAST_QUERY");
+  IElementType SECTION = new BrowserslistElementType("SECTION");
   IElementType STATS_QUERY = new BrowserslistElementType("STATS_QUERY");
   IElementType SUPPORTS_QUERY = new BrowserslistElementType("SUPPORTS_QUERY");
   IElementType TARGET_QUERY = new BrowserslistElementType("TARGET_QUERY");
@@ -57,6 +58,9 @@ public interface BrowserslistTypes {
       }
       else if (type == LAST_QUERY) {
         return new BrowserslistLastQueryImpl(node);
+      }
+      else if (type == SECTION) {
+        return new BrowserslistSectionImpl(node);
       }
       else if (type == STATS_QUERY) {
         return new BrowserslistStatsQueryImpl(node);
