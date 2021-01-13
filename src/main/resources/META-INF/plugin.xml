@@ -13,7 +13,11 @@
         <projectService serviceImplementation="com.github.aleksandrsl.intellijbrowserslist.services.MyProjectService"/>
         <fileType name="Browserslist File"
                   implementationClass="com.github.aleksandrsl.intellijbrowserslist.BrowserslistFileType"
-                  fieldName="INSTANCE" language="browserslist" extensions="browserslistrc"/>
+                  fieldName="INSTANCE"
+                  language="browserslist"
+                  extensions="browserslistrc"
+                  fileNames="browserslist"
+        />
         <lang.parserDefinition language="browserslist"
                                implementationClass="com.github.aleksandrsl.intellijbrowserslist.BrowserslistParserDefinition"/>
     </extensions>
