@@ -8,6 +8,7 @@ import com.github.aleksandrsl.intellijbrowserslist.psi.impl.*;
 
 public interface BrowserslistTypes {
 
+  IElementType EOL_SEPARATED_ITEMS = new BrowserslistElementType("EOL_SEPARATED_ITEMS");
   IElementType EXTENDS_QUERY = new BrowserslistElementType("EXTENDS_QUERY");
   IElementType LAST_QUERY = new BrowserslistElementType("LAST_QUERY");
   IElementType SECTION = new BrowserslistElementType("SECTION");
@@ -53,7 +54,10 @@ public interface BrowserslistTypes {
   class Factory {
     public static PsiElement createElement(ASTNode node) {
       IElementType type = node.getElementType();
-      if (type == EXTENDS_QUERY) {
+      if (type == EOL_SEPARATED_ITEMS) {
+        return new BrowserslistEolSeparatedItemsImpl(node);
+      }
+      else if (type == EXTENDS_QUERY) {
         return new BrowserslistExtendsQueryImpl(node);
       }
       else if (type == LAST_QUERY) {

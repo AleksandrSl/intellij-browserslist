@@ -28,20 +28,35 @@
     FLOAT="regexp:\d*\.?\d+"
   ]
 }
+browserslistFile ::= (EOL|COMMENT)* (queries_ (EOL sections_)?|sections_)
 
-browserslistFile ::= (section | item_)*
 
-section ::= LBRACKET IDENTIFIER (IDENTIFIER)* RBRACKET EOL item_*
+meta eol_separated_items ::= <<item>> (EOL <<item>>|COMMENT|EOL !'[')*
 
-private item_ ::= (DEFAULTS|queryExpression_ EOL|COMMENT|EOL)
+private sections_ ::= <<eol_separated_items section>>
+section ::= '[' IDENTIFIER+ ']' COMMENT? (EOL queries_)?
 
-private queryExpression_ ::= NOT? query_ ((AND|OR) NOT?query_)*
-private query_ ::= (statsQuery | lastQuery | timeQuery | unreleasedQuery | supportsQuery | targetQuery | extendsQuery | DEAD)
+private queries_ ::= <<eol_separated_items queryExpression_>>
+private queryExpression_ ::= NOT? query_ ((AND|OR) NOT? query_)*
+private query_ ::=
+    statsQuery
+    | lastQuery
+    | timeQuery
+    | unreleasedQuery
+    | supportsQuery
+    | targetQuery
+    | extendsQuery
+    | DEAD
+    | DEFAULTS
+
 // TODO: Cover in custom stats like `cover 5% in browserslist-config-mycompany stats` should be supported?
 statsQuery ::= (COMPARE|COVER) PERCENT (IN STATS)?
 lastQuery ::= LAST INTEGER TARGET? MAJOR? VERSIONS
 unreleasedQuery ::= UNRELEASED TARGET? VERSIONS
 timeQuery ::= (LAST (FLOAT|INTEGER) YEARS) | (SINCE TIME|INTEGER)
 supportsQuery ::= SUPPORTS FEATURE
-targetQuery ::= TARGET (COMPARE? TARGET_VERSION | TARGET_VERSIONS_RANGE) | CURRENT_NODE_VERSION TARGET | MAINTAINED_NODE_VERSIONS TARGET VERSIONS
+targetQuery ::=
+    TARGET (COMPARE? TARGET_VERSION | TARGET_VERSIONS_RANGE)
+    | CURRENT_NODE_VERSION TARGET
+    | MAINTAINED_NODE_VERSIONS TARGET VERSIONS
 extendsQuery ::= EXTENDS IDENTIFIER
