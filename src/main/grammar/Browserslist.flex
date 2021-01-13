@@ -20,8 +20,6 @@ import com.intellij.psi.TokenType;
 %type IElementType
 
 EOL=\R
-LBRACKET="["
-RBRACKET="]"
 WHITE_SPACE=[\ \t\f]
 IDENTIFIER=[\S--,\]\[]+
 END_OF_LINE_COMMENT=("#")[^\r\n]*
@@ -78,63 +76,55 @@ TARGET_VERSIONS_RANGE={TARGET_VERSION}\s*-\s*{TARGET_VERSION}
 
 %%
 
+or|,                                 { yybegin(YYINITIAL); return BrowserslistTypes.OR; }
+"and"                                { yybegin(YYINITIAL); return BrowserslistTypes.AND; }
+"not"                                { yybegin(YYINITIAL); return BrowserslistTypes.NOT; }
+
 <YYINITIAL> {
-    "["                           { return BrowserslistTypes.LBRACKET; }
-    "]"                           { return BrowserslistTypes.RBRACKET; }
-    "in"                           { return BrowserslistTypes.IN; }
+    "["                              { return BrowserslistTypes.LBRACKET; }
+    "]"                              { return BrowserslistTypes.RBRACKET; }
+    "in"                             { return BrowserslistTypes.IN; }
     "last"                           { return BrowserslistTypes.LAST; }
-    "major"                           { return BrowserslistTypes.MAJOR; }
-    versions?                           { return BrowserslistTypes.VERSIONS; }
-    "unreleased"                          { return BrowserslistTypes.UNRELEASED; }
-    "dead"                          { return BrowserslistTypes.DEAD; }
+    "major"                          { return BrowserslistTypes.MAJOR; }
+    versions?                        { return BrowserslistTypes.VERSIONS; }
+    "unreleased"                     { return BrowserslistTypes.UNRELEASED; }
+    "dead"                           { return BrowserslistTypes.DEAD; }
     "years"                          { return BrowserslistTypes.YEARS; }
     "since"                          { return BrowserslistTypes.SINCE; }
-    "supports"                          { yybegin(SUPPORTS); return BrowserslistTypes.SUPPORTS; }
+    "supports"                       { yybegin(SUPPORTS); return BrowserslistTypes.SUPPORTS; }
     "cover"                          { return BrowserslistTypes.COVER; }
-    "defaults"                          { return BrowserslistTypes.DEFAULTS; }
-    "maintained"                        { return BrowserslistTypes.MAINTAINED_NODE_VERSIONS; }
-    "current"                           { return BrowserslistTypes.CURRENT_NODE_VERSION; }
-    "extends"                           { return BrowserslistTypes.EXTENDS; }
-    or|","                                { return BrowserslistTypes.OR; }
-    "and"                                { return BrowserslistTypes.AND; }
-    "not"                                { return BrowserslistTypes.NOT; }
-    {TARGET}                            { yybegin(TARGET); return BrowserslistTypes.TARGET; }
-    {END_OF_LINE_COMMENT}                           { return BrowserslistTypes.COMMENT; }
-    {COMPARE}                           { return BrowserslistTypes.COMPARE; }
-    {TIME}                              { return BrowserslistTypes.TIME; }
-    {INTEGER}                           { return BrowserslistTypes.INTEGER; }
-    {FLOAT}                             { return BrowserslistTypes.FLOAT; }
-    {PERCENT}                           { return BrowserslistTypes.PERCENT; }
-    {STATS}                           { return BrowserslistTypes.STATS; }
-    {IDENTIFIER}                      { return BrowserslistTypes.IDENTIFIER; }
-
-
-    {EOL}                       { return BrowserslistTypes.EOL; }
-    {WHITE_SPACE}+                                     { return TokenType.WHITE_SPACE; }
+    "defaults"                       { return BrowserslistTypes.DEFAULTS; }
+    "maintained"                     { return BrowserslistTypes.MAINTAINED_NODE_VERSIONS; }
+    "current"                        { return BrowserslistTypes.CURRENT_NODE_VERSION; }
+    "extends"                        { return BrowserslistTypes.EXTENDS; }
+    {TARGET}                         { yybegin(TARGET); return BrowserslistTypes.TARGET; }
+    {END_OF_LINE_COMMENT}            { return BrowserslistTypes.COMMENT; }
+    {COMPARE}                        { return BrowserslistTypes.COMPARE; }
+    {TIME}                           { return BrowserslistTypes.TIME; }
+    {INTEGER}                        { return BrowserslistTypes.INTEGER; }
+    {FLOAT}                          { return BrowserslistTypes.FLOAT; }
+    {PERCENT}                        { return BrowserslistTypes.PERCENT; }
+    {STATS}                          { return BrowserslistTypes.STATS; }
+    {IDENTIFIER}                     { return BrowserslistTypes.IDENTIFIER; }
 }
 
 <TARGET> {
-    "major"                           { yybegin(YYINITIAL); return BrowserslistTypes.MAJOR; }
-    versions?                           { yybegin(YYINITIAL); return BrowserslistTypes.VERSIONS; }
-    or|,                                { yybegin(YYINITIAL); return BrowserslistTypes.OR; }
-    "and"                                { yybegin(YYINITIAL); return BrowserslistTypes.AND; }
-    "not"                                { yybegin(YYINITIAL); return BrowserslistTypes.NOT; }
-    {COMPARE}                           { return BrowserslistTypes.COMPARE; }
-    {TARGET_VERSIONS_RANGE}                  { yybegin(YYINITIAL); return BrowserslistTypes.TARGET_VERSIONS_RANGE; }
+    "major"                          { yybegin(YYINITIAL); return BrowserslistTypes.MAJOR; }
+    versions?                        { yybegin(YYINITIAL); return BrowserslistTypes.VERSIONS; }
+    {COMPARE}                        { return BrowserslistTypes.COMPARE; }
+    {TARGET_VERSIONS_RANGE}          { yybegin(YYINITIAL); return BrowserslistTypes.TARGET_VERSIONS_RANGE; }
     // `all` and `esr` will not be parsed as feature
     // How am i supposed to discern integer from version?
-    {TARGET_VERSION}                  { yybegin(YYINITIAL); return BrowserslistTypes.TARGET_VERSION; }
-    {END_OF_LINE_COMMENT}                           { yybegin(YYINITIAL); return BrowserslistTypes.COMMENT; }
-    {EOL}                       { yybegin(YYINITIAL); return BrowserslistTypes.EOL; }
-    {WHITE_SPACE}+                                     { return TokenType.WHITE_SPACE; }
+    {TARGET_VERSION}                 { yybegin(YYINITIAL); return BrowserslistTypes.TARGET_VERSION; }
 }
 
 <SUPPORTS> {
     // Maybe abstract identifier should be used and meaning added after parsing level, or different states used
-    {FEATURE}                         { yybegin(YYINITIAL); return BrowserslistTypes.FEATURE; }
-    {END_OF_LINE_COMMENT}                           { yybegin(YYINITIAL); return BrowserslistTypes.COMMENT; }
-    {EOL}                             { yybegin(YYINITIAL); return BrowserslistTypes.EOL; }
-    {WHITE_SPACE}+                                     { return TokenType.WHITE_SPACE; }
+    {FEATURE}                        { yybegin(YYINITIAL); return BrowserslistTypes.FEATURE; }
 }
 
-[^]                                                         { return TokenType.BAD_CHARACTER; }
+{END_OF_LINE_COMMENT}                { yybegin(YYINITIAL); return BrowserslistTypes.COMMENT; }
+{EOL}                                { yybegin(YYINITIAL); return BrowserslistTypes.EOL; }
+{WHITE_SPACE}+                       { return TokenType.WHITE_SPACE; }
+
+[^]                                  { return TokenType.BAD_CHARACTER; }
