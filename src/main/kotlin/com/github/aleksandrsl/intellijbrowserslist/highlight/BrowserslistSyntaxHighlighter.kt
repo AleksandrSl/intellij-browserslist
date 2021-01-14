@@ -19,8 +19,6 @@ class BrowserslistSyntaxHighlighter : SyntaxHighlighterBase() {
         return BrowserslistLexerAdapter()
     }
 
-
-
     override fun getTokenHighlights(tokenType: IElementType): Array<TextAttributesKey> {
         print(tokenType)
         return when (tokenType) {
@@ -47,9 +45,12 @@ class BrowserslistSyntaxHighlighter : SyntaxHighlighterBase() {
     companion object {
         val OPERATOR: TextAttributesKey =
             createTextAttributesKey("BROWSERSLIST_OPERATOR", DefaultLanguageHighlighterColors.KEYWORD)
-        val IDENTIFIER: TextAttributesKey = createTextAttributesKey("BROWSERSLIST_IDENTIFIER", DefaultLanguageHighlighterColors.IDENTIFIER)
+        val IDENTIFIER: TextAttributesKey =
+            createTextAttributesKey("BROWSERSLIST_IDENTIFIER", DefaultLanguageHighlighterColors.IDENTIFIER)
         val COMMENT: TextAttributesKey =
             createTextAttributesKey("BROWSERSLIST_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT)
+        val SECTION_HEADER: TextAttributesKey =
+            createTextAttributesKey("BROWSERSLIST_SECTION_HEADER", DefaultLanguageHighlighterColors.METADATA)
         val BAD_CHARACTER: TextAttributesKey =
             createTextAttributesKey("BROWSERSLIST_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER)
         private val BAD_CHAR_KEYS = arrayOf(BAD_CHARACTER)

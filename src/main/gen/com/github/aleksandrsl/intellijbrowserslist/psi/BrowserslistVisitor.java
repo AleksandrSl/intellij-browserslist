@@ -23,6 +23,10 @@ public class BrowserslistVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitSectionHeader(@NotNull BrowserslistSectionHeader o) {
+    visitPsiElement(o);
+  }
+
   public void visitStatsQuery(@NotNull BrowserslistStatsQuery o) {
     visitPsiElement(o);
   }

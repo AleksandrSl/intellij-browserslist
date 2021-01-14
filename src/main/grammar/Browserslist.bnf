@@ -34,7 +34,8 @@ browserslistFile ::= (EOL|COMMENT)* (queries_ (EOL sections_)?|sections_)
 meta eol_separated_items ::= <<item>> (EOL <<item>>|COMMENT|EOL !'[')*
 
 private sections_ ::= <<eol_separated_items section>>
-section ::= '[' IDENTIFIER+ ']' COMMENT? (EOL queries_)?
+section ::= sectionHeader COMMENT? (EOL queries_)?
+sectionHeader ::= '[' IDENTIFIER+ ']'
 
 private queries_ ::= <<eol_separated_items queryExpression_>>
 private queryExpression_ ::= NOT? query_ ((AND|OR) NOT? query_)*
