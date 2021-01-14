@@ -19,8 +19,10 @@
                   extensions="browserslistrc"
                   fileNames="browserslist"
         />
-        <lang.parserDefinition language="browserslist"
-                               implementationClass="com.github.aleksandrsl.intellijbrowserslist.BrowserslistParserDefinition"/>
+        <lang.parserDefinition
+                language="browserslist"
+                implementationClass="com.github.aleksandrsl.intellijbrowserslist.BrowserslistParserDefinition"
+        />
         <lang.syntaxHighlighterFactory
                 language="browserslist"
                 implementationClass="com.github.aleksandrsl.intellijbrowserslist.highlight.BrowserslistHighlighterFactory"
@@ -28,7 +30,14 @@
         <colorSettingsPage
                 implementation="com.github.aleksandrsl.intellijbrowserslist.highlight.BrowserslistColorSettingsPage"
         />
-        <annotator language="browserslist" implementationClass="com.github.aleksandrsl.intellijbrowserslist.highlight.HighlightAnnotator"/>
+        <annotator
+                language="browserslist"
+                implementationClass="com.github.aleksandrsl.intellijbrowserslist.highlight.HighlightAnnotator"
+        />
+        <lang.foldingBuilder
+                language="browserslist"
+                implementationClass="com.github.aleksandrsl.intellijbrowserslist.BrowserslistFoldingBuilder"
+        />
     </extensions>
 
     <applicationListeners>
