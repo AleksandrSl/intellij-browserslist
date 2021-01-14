@@ -20,6 +20,13 @@
         />
         <lang.parserDefinition language="browserslist"
                                implementationClass="com.github.aleksandrsl.intellijbrowserslist.BrowserslistParserDefinition"/>
+        <lang.syntaxHighlighterFactory
+                language="browserslist"
+                implementationClass="com.github.aleksandrsl.intellijbrowserslist.highlight.BrowserslistHighlighterFactory"
+        />
+        <colorSettingsPage
+                implementation="com.github.aleksandrsl.intellijbrowserslist.highlight.BrowserslistColorSettingsPage"
+        />
     </extensions>
 
     <applicationListeners>
