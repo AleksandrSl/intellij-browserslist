@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface BrowserslistUnreleasedQuery extends PsiElement {
 
-  @NotNull
+  @Nullable
   PsiElement getVersions();
 
 }

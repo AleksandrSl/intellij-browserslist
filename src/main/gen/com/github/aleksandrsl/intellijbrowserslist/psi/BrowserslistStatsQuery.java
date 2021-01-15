@@ -10,7 +10,7 @@ public interface BrowserslistStatsQuery extends PsiElement {
   @Nullable
   PsiElement getCompare();
 
-  @NotNull
+  @Nullable
   PsiElement getPercent();
 
 }

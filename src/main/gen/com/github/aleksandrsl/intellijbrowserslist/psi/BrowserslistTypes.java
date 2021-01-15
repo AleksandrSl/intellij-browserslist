@@ -8,6 +8,8 @@ import com.github.aleksandrsl.intellijbrowserslist.psi.impl.*;
 
 public interface BrowserslistTypes {
 
+  IElementType DEAD_QUERY = new BrowserslistElementType("DEAD_QUERY");
+  IElementType DEFAULTS_QUERY = new BrowserslistElementType("DEFAULTS_QUERY");
   IElementType EOL_SEPARATED_ITEMS = new BrowserslistElementType("EOL_SEPARATED_ITEMS");
   IElementType EXTENDS_QUERY = new BrowserslistElementType("EXTENDS_QUERY");
   IElementType LAST_QUERY = new BrowserslistElementType("LAST_QUERY");
@@ -55,7 +57,13 @@ public interface BrowserslistTypes {
   class Factory {
     public static PsiElement createElement(ASTNode node) {
       IElementType type = node.getElementType();
-      if (type == EOL_SEPARATED_ITEMS) {
+      if (type == DEAD_QUERY) {
+        return new BrowserslistDeadQueryImpl(node);
+      }
+      else if (type == DEFAULTS_QUERY) {
+        return new BrowserslistDefaultsQueryImpl(node);
+      }
+      else if (type == EOL_SEPARATED_ITEMS) {
         return new BrowserslistEolSeparatedItemsImpl(node);
       }
       else if (type == EXTENDS_QUERY) {

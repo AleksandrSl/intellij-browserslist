@@ -34,9 +34,9 @@ public class BrowserslistStatsQueryImpl extends ASTWrapperPsiElement implements 
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getPercent() {
-    return findNotNullChildByType(PERCENT);
+    return findChildByType(PERCENT);
   }
 
 }

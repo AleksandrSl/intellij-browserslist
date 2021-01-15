@@ -30,15 +30,17 @@
 }
 browserslistFile ::= (EOL|COMMENT)* (queries_ (EOL sections_)?|sections_)
 
+meta eolSeparatedItems ::= (EOL|COMMENT)* <<item>> (EOL <<item>>|COMMENT|EOL !'[')* {recoverWhile="eolSeparatedItems_recover"}
+private eolSeparatedItems_recover ::= !(EOL '[')
 
-meta eol_separated_items ::= <<item>> (EOL <<item>>|COMMENT|EOL !'[')*
+private sections_ ::= <<eolSeparatedItems section>>
+section ::= sectionHeader COMMENT? (EOL queries_)? {pin=1}
+sectionHeader ::= '[' IDENTIFIER+ ']' {pin=1 recoverWhile="sectionHeader_recover"}
+private sectionHeader_recover ::= !(COMMENT | EOL)
 
-private sections_ ::= <<eol_separated_items section>>
-section ::= sectionHeader COMMENT? (EOL queries_)?
-sectionHeader ::= '[' IDENTIFIER+ ']'
-
-private queries_ ::= <<eol_separated_items queryExpression_>>
-private queryExpression_ ::= NOT? query_ ((AND|OR) NOT? query_)*
+private queries_ ::= <<eolSeparatedItems queryExpression_>>
+private queryExpression_ ::= NOT? query_ ((AND|OR) NOT? query_)* {recoverWhile="queryExpression_recover"}
+private queryExpression_recover ::= !(EOL|COMMENT)
 private query_ ::=
     statsQuery
     | lastQuery
@@ -47,17 +49,35 @@ private query_ ::=
     | supportsQuery
     | targetQuery
     | extendsQuery
-    | DEAD
-    | DEFAULTS
+    | deadQuery
+    | defaultsQuery
+    {recoverWhile="query_recover"}
+private query_recover ::= !(EOL|COMMENT|OR|AND)
 
 // TODO: Cover in custom stats like `cover 5% in browserslist-config-mycompany stats` should be supported?
-statsQuery ::= (COMPARE|COVER) PERCENT (IN STATS)?
-lastQuery ::= LAST INTEGER TARGET? MAJOR? VERSIONS
-unreleasedQuery ::= UNRELEASED TARGET? VERSIONS
-timeQuery ::= (LAST (FLOAT|INTEGER) YEARS) | (SINCE TIME|INTEGER)
-supportsQuery ::= SUPPORTS FEATURE
+statsQuery ::= (COMPARE|COVER) PERCENT (IN STATS)? {pin=1}
+lastQuery ::= LAST INTEGER TARGET? MAJOR? VERSIONS {pin='VERSIONS'}
+unreleasedQuery ::= UNRELEASED TARGET? VERSIONS {pin=1}
+timeQuery ::= timeQueryLast_ | timeQuerySince_
+private timeQueryLast_ ::= (LAST (FLOAT|INTEGER) YEARS) {pin=3}
+private timeQuerySince_ ::= SINCE (TIME|INTEGER) {pin=1}
+supportsQuery ::= SUPPORTS FEATURE {pin=1}
 targetQuery ::=
     TARGET (COMPARE? TARGET_VERSION | TARGET_VERSIONS_RANGE)
     | CURRENT_NODE_VERSION TARGET
     | MAINTAINED_NODE_VERSIONS TARGET VERSIONS
-extendsQuery ::= EXTENDS IDENTIFIER
+    {pin=1}
+extendsQuery ::= EXTENDS IDENTIFIER {pin=1}
+deadQuery ::= DEAD {pin=1}
+defaultsQuery ::= DEFAULTS {pin=1}
+
+/*
+wrong query - not recognized as query at all, i.e. pinned element is not reached)
+
+Recover pitfalls
+* wrong first query in the section or queries, breaks parsing of all downstream elements. Current section/queries is not recognised as such
+  and recover doesn't work, nothing to pin
+* wrong not first query breaks parsing till the end of section
+* didn't managed to pin queries that start with last keyword, cause
+  there are two different queries with first required different element in the end. Maybe I should just unify them, although they are different.
+*/
