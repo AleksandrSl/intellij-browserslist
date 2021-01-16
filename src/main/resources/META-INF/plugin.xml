@@ -42,6 +42,10 @@
                 language="browserslist"
                 implementationClass="com.github.aleksandrsl.intellijbrowserslist.BrowserslistCommenter"
         />
+        <completion.contributor
+                language="browserslist"
+                implementationClass="com.github.aleksandrsl.intellijbrowserslist.completion.BrowserslistKeywordCompletionContributor"
+        />
     </extensions>
 
     <applicationListeners>

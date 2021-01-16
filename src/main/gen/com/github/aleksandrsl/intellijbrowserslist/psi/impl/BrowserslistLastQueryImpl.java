@@ -8,15 +8,15 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static com.github.aleksandrsl.intellijbrowserslist.psi.BrowserslistTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.aleksandrsl.intellijbrowserslist.psi.*;
 
-public class BrowserslistLastQueryImpl extends ASTWrapperPsiElement implements BrowserslistLastQuery {
+public class BrowserslistLastQueryImpl extends BrowserslistQueryImpl implements BrowserslistLastQuery {
 
   public BrowserslistLastQueryImpl(ASTNode node) {
     super(node);
   }
 
+  @Override
   public void accept(@NotNull BrowserslistVisitor visitor) {
     visitor.visitLastQuery(this);
   }

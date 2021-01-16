@@ -21,7 +21,7 @@ public class BrowserslistParser implements PsiParser, LightPsiParser {
 
   public void parseLight(IElementType root_, PsiBuilder builder_) {
     boolean result_;
-    builder_ = adapt_builder_(root_, builder_, this, null);
+    builder_ = adapt_builder_(root_, builder_, this, EXTENDS_SETS_);
     Marker marker_ = enter_section_(builder_, 0, _COLLAPSE_, null);
     result_ = parse_root_(root_, builder_);
     exit_section_(builder_, 0, marker_, root_, result_, true, TRUE_CONDITION);
@@ -34,6 +34,12 @@ public class BrowserslistParser implements PsiParser, LightPsiParser {
   static boolean parse_root_(IElementType root_, PsiBuilder builder_, int level_) {
     return browserslistFile(builder_, level_ + 1);
   }
+
+  public static final TokenSet[] EXTENDS_SETS_ = new TokenSet[] {
+    create_token_set_(DEAD_QUERY, DEFAULTS_QUERY, EXTENDS_QUERY, LAST_QUERY,
+      QUERY, STATS_QUERY, SUPPORTS_QUERY, TARGET_QUERY,
+      TIME_QUERY, UNRELEASED_QUERY),
+  };
 
   /* ********************************************************** */
   // (EOL|COMMENT)* (queries_ (EOL sections_)?|sections_)
@@ -289,13 +295,40 @@ public class BrowserslistParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // NOT? query_ ((AND|OR) NOT? query_)*
+  // statsQuery
+  //     | lastQuery
+  //     | timeQuery
+  //     | unreleasedQuery
+  //     | supportsQuery
+  //     | targetQuery
+  //     | extendsQuery
+  //     | deadQuery
+  //     | defaultsQuery
+  public static boolean query(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "query")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _COLLAPSE_, QUERY, "<query>");
+    result_ = statsQuery(builder_, level_ + 1);
+    if (!result_) result_ = lastQuery(builder_, level_ + 1);
+    if (!result_) result_ = timeQuery(builder_, level_ + 1);
+    if (!result_) result_ = unreleasedQuery(builder_, level_ + 1);
+    if (!result_) result_ = supportsQuery(builder_, level_ + 1);
+    if (!result_) result_ = targetQuery(builder_, level_ + 1);
+    if (!result_) result_ = extendsQuery(builder_, level_ + 1);
+    if (!result_) result_ = deadQuery(builder_, level_ + 1);
+    if (!result_) result_ = defaultsQuery(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, false, BrowserslistParser::query_recover);
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // NOT? query ((AND|OR) NOT? query)*
   static boolean queryExpression_(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "queryExpression_")) return false;
     boolean result_;
     Marker marker_ = enter_section_(builder_, level_, _NONE_);
     result_ = queryExpression__0(builder_, level_ + 1);
-    result_ = result_ && query_(builder_, level_ + 1);
+    result_ = result_ && query(builder_, level_ + 1);
     result_ = result_ && queryExpression__2(builder_, level_ + 1);
     exit_section_(builder_, level_, marker_, result_, false, BrowserslistParser::queryExpression_recover);
     return result_;
@@ -308,7 +341,7 @@ public class BrowserslistParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // ((AND|OR) NOT? query_)*
+  // ((AND|OR) NOT? query)*
   private static boolean queryExpression__2(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "queryExpression__2")) return false;
     while (true) {
@@ -319,14 +352,14 @@ public class BrowserslistParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // (AND|OR) NOT? query_
+  // (AND|OR) NOT? query
   private static boolean queryExpression__2_0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "queryExpression__2_0")) return false;
     boolean result_;
     Marker marker_ = enter_section_(builder_);
     result_ = queryExpression__2_0_0(builder_, level_ + 1);
     result_ = result_ && queryExpression__2_0_1(builder_, level_ + 1);
-    result_ = result_ && query_(builder_, level_ + 1);
+    result_ = result_ && query(builder_, level_ + 1);
     exit_section_(builder_, marker_, null, result_);
     return result_;
   }
@@ -364,33 +397,6 @@ public class BrowserslistParser implements PsiParser, LightPsiParser {
     boolean result_;
     result_ = consumeToken(builder_, EOL);
     if (!result_) result_ = consumeToken(builder_, COMMENT);
-    return result_;
-  }
-
-  /* ********************************************************** */
-  // statsQuery
-  //     | lastQuery
-  //     | timeQuery
-  //     | unreleasedQuery
-  //     | supportsQuery
-  //     | targetQuery
-  //     | extendsQuery
-  //     | deadQuery
-  //     | defaultsQuery
-  static boolean query_(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "query_")) return false;
-    boolean result_;
-    Marker marker_ = enter_section_(builder_, level_, _NONE_);
-    result_ = statsQuery(builder_, level_ + 1);
-    if (!result_) result_ = lastQuery(builder_, level_ + 1);
-    if (!result_) result_ = timeQuery(builder_, level_ + 1);
-    if (!result_) result_ = unreleasedQuery(builder_, level_ + 1);
-    if (!result_) result_ = supportsQuery(builder_, level_ + 1);
-    if (!result_) result_ = targetQuery(builder_, level_ + 1);
-    if (!result_) result_ = extendsQuery(builder_, level_ + 1);
-    if (!result_) result_ = deadQuery(builder_, level_ + 1);
-    if (!result_) result_ = defaultsQuery(builder_, level_ + 1);
-    exit_section_(builder_, level_, marker_, result_, false, BrowserslistParser::query_recover);
     return result_;
   }
 

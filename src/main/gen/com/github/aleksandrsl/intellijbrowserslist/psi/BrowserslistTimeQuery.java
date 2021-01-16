@@ -5,9 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface BrowserslistUnreleasedQuery extends BrowserslistQuery {
+public interface BrowserslistTimeQuery extends BrowserslistQuery {
 
   @Nullable
-  PsiElement getVersions();
+  PsiElement getFloat();
+
+  @Nullable
+  PsiElement getInteger();
 
 }

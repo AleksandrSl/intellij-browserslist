@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface BrowserslistStatsQuery extends PsiElement {
+public interface BrowserslistStatsQuery extends BrowserslistQuery {
 
   @Nullable
   PsiElement getCompare();

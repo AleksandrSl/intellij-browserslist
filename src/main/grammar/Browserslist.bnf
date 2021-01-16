@@ -27,6 +27,8 @@
     YEARS="years"
     FLOAT="regexp:\d*\.?\d+"
   ]
+
+   extends("(.+Query)") = query
 }
 browserslistFile ::= (EOL|COMMENT)* (queries_ (EOL sections_)?|sections_)
 
@@ -39,9 +41,9 @@ sectionHeader ::= '[' IDENTIFIER+ ']' {pin=1 recoverWhile="sectionHeader_recover
 private sectionHeader_recover ::= !(COMMENT | EOL)
 
 private queries_ ::= <<eolSeparatedItems queryExpression_>>
-private queryExpression_ ::= NOT? query_ ((AND|OR) NOT? query_)* {recoverWhile="queryExpression_recover"}
+private queryExpression_ ::= NOT? query ((AND|OR) NOT? query)* {recoverWhile="queryExpression_recover"}
 private queryExpression_recover ::= !(EOL|COMMENT)
-private query_ ::=
+query ::=
     statsQuery
     | lastQuery
     | timeQuery

@@ -10,21 +10,27 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.github.aleksandrsl.intellijbrowserslist.psi.BrowserslistTypes.*;
 import com.github.aleksandrsl.intellijbrowserslist.psi.*;
 
-public class BrowserslistUnreleasedQueryImpl extends BrowserslistQueryImpl implements BrowserslistUnreleasedQuery {
+public class BrowserslistTargetQueryImpl extends BrowserslistQueryImpl implements BrowserslistTargetQuery {
 
-  public BrowserslistUnreleasedQueryImpl(ASTNode node) {
+  public BrowserslistTargetQueryImpl(ASTNode node) {
     super(node);
   }
 
   @Override
   public void accept(@NotNull BrowserslistVisitor visitor) {
-    visitor.visitUnreleasedQuery(this);
+    visitor.visitTargetQuery(this);
   }
 
   @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof BrowserslistVisitor) accept((BrowserslistVisitor)visitor);
     else super.accept(visitor);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getCompare() {
+    return findChildByType(COMPARE);
   }
 
   @Override

@@ -8,17 +8,17 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static com.github.aleksandrsl.intellijbrowserslist.psi.BrowserslistTypes.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.aleksandrsl.intellijbrowserslist.psi.*;
 
-public class BrowserslistUnreleasedQueryImpl extends BrowserslistQueryImpl implements BrowserslistUnreleasedQuery {
+public class BrowserslistSectionImpl extends ASTWrapperPsiElement implements BrowserslistSection {
 
-  public BrowserslistUnreleasedQueryImpl(ASTNode node) {
+  public BrowserslistSectionImpl(ASTNode node) {
     super(node);
   }
 
-  @Override
   public void accept(@NotNull BrowserslistVisitor visitor) {
-    visitor.visitUnreleasedQuery(this);
+    visitor.visitSection(this);
   }
 
   @Override
@@ -29,8 +29,20 @@ public class BrowserslistUnreleasedQueryImpl extends BrowserslistQueryImpl imple
 
   @Override
   @Nullable
-  public PsiElement getVersions() {
-    return findChildByType(VERSIONS);
+  public BrowserslistEolSeparatedItems getEolSeparatedItems() {
+    return findChildByClass(BrowserslistEolSeparatedItems.class);
+  }
+
+  @Override
+  @NotNull
+  public BrowserslistSectionHeader getSectionHeader() {
+    return findNotNullChildByClass(BrowserslistSectionHeader.class);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getEol() {
+    return findChildByType(EOL);
   }
 
 }

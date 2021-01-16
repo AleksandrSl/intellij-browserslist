@@ -13,6 +13,7 @@ public interface BrowserslistTypes {
   IElementType EOL_SEPARATED_ITEMS = new BrowserslistElementType("EOL_SEPARATED_ITEMS");
   IElementType EXTENDS_QUERY = new BrowserslistElementType("EXTENDS_QUERY");
   IElementType LAST_QUERY = new BrowserslistElementType("LAST_QUERY");
+  IElementType QUERY = new BrowserslistElementType("QUERY");
   IElementType SECTION = new BrowserslistElementType("SECTION");
   IElementType SECTION_HEADER = new BrowserslistElementType("SECTION_HEADER");
   IElementType STATS_QUERY = new BrowserslistElementType("STATS_QUERY");
@@ -71,6 +72,9 @@ public interface BrowserslistTypes {
       }
       else if (type == LAST_QUERY) {
         return new BrowserslistLastQueryImpl(node);
+      }
+      else if (type == QUERY) {
+        return new BrowserslistQueryImpl(node);
       }
       else if (type == SECTION) {
         return new BrowserslistSectionImpl(node);

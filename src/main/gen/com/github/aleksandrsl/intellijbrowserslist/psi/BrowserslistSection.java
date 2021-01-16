@@ -5,9 +5,15 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface BrowserslistUnreleasedQuery extends BrowserslistQuery {
+public interface BrowserslistSection extends PsiElement {
 
   @Nullable
-  PsiElement getVersions();
+  BrowserslistEolSeparatedItems getEolSeparatedItems();
+
+  @NotNull
+  BrowserslistSectionHeader getSectionHeader();
+
+  @Nullable
+  PsiElement getEol();
 
 }

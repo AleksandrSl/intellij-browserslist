@@ -8,11 +8,11 @@ import com.intellij.psi.PsiElement;
 public class BrowserslistVisitor extends PsiElementVisitor {
 
   public void visitDeadQuery(@NotNull BrowserslistDeadQuery o) {
-    visitPsiElement(o);
+    visitQuery(o);
   }
 
   public void visitDefaultsQuery(@NotNull BrowserslistDefaultsQuery o) {
-    visitPsiElement(o);
+    visitQuery(o);
   }
 
   public void visitEolSeparatedItems(@NotNull BrowserslistEolSeparatedItems o) {
@@ -20,10 +20,14 @@ public class BrowserslistVisitor extends PsiElementVisitor {
   }
 
   public void visitExtendsQuery(@NotNull BrowserslistExtendsQuery o) {
-    visitPsiElement(o);
+    visitQuery(o);
   }
 
   public void visitLastQuery(@NotNull BrowserslistLastQuery o) {
+    visitQuery(o);
+  }
+
+  public void visitQuery(@NotNull BrowserslistQuery o) {
     visitPsiElement(o);
   }
 
@@ -36,23 +40,23 @@ public class BrowserslistVisitor extends PsiElementVisitor {
   }
 
   public void visitStatsQuery(@NotNull BrowserslistStatsQuery o) {
-    visitPsiElement(o);
+    visitQuery(o);
   }
 
   public void visitSupportsQuery(@NotNull BrowserslistSupportsQuery o) {
-    visitPsiElement(o);
+    visitQuery(o);
   }
 
   public void visitTargetQuery(@NotNull BrowserslistTargetQuery o) {
-    visitPsiElement(o);
+    visitQuery(o);
   }
 
   public void visitTimeQuery(@NotNull BrowserslistTimeQuery o) {
-    visitPsiElement(o);
+    visitQuery(o);
   }
 
   public void visitUnreleasedQuery(@NotNull BrowserslistUnreleasedQuery o) {
-    visitPsiElement(o);
+    visitQuery(o);
   }
 
   public void visitPsiElement(@NotNull PsiElement o) {
