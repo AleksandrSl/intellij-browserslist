@@ -38,6 +38,10 @@
                 language="browserslist"
                 implementationClass="com.github.aleksandrsl.intellijbrowserslist.BrowserslistFoldingBuilder"
         />
+        <lang.commenter
+                language="browserslist"
+                implementationClass="com.github.aleksandrsl.intellijbrowserslist.BrowserslistCommenter"
+        />
     </extensions>
 
     <applicationListeners>
