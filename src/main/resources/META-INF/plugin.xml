@@ -46,6 +46,10 @@
                 language="browserslist"
                 implementationClass="com.github.aleksandrsl.intellijbrowserslist.completion.BrowserslistKeywordCompletionContributor"
         />
+        <lang.braceMatcher
+                language="browserslist"
+                implementationClass="com.github.aleksandrsl.intellijbrowserslist.BrowserslistBraceMatcher"
+        />
     </extensions>
 
     <applicationListeners>
