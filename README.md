@@ -40,10 +40,39 @@ Plugin based on the [IntelliJ Platform Plugin Template][template].
 [template]: https://github.com/JetBrains/intellij-platform-plugin-template
 
 # TODO
+- [ ] Recommendations to install plugin
+- [ ] Check can-i-use db actuality
+- [ ] Check for multiple files in project
+- [ ] Check that configuration could be replaced to "defaults"
+- [ ] List of supported browsers facet? or via documentation
+- [ ] Support for templates/completion in package.json
 
-Recommendations to install plugin
 
 ## Notes
 
 Gradle must use 11 java or higher due to grammar-kit-plugin. See [issue](https://github.com/JetBrains/gradle-grammar-kit-plugin/issues/32).
 Don't use version of grammarKit from plugin README it doesn't work for obscure reasons, maybe IDEA compatibility.
+
+### Questions to browserslist
+
+Why 
+> Obviously you can not start with a not combiner, since there is no left-hand side query to combine it with. The left-hand is always resolved as and combiner even if or is used (this is an API implementation specificity).
+
+We can add not to every query as it's said further. First query IS every.
+
+----
+
+Why these to
+```
+> .5% and not last 2 versions
+> .5% or not last 2 versions
+```
+give the same result
+
+
+---
+
+Why precedence differ from usual logic, and has not greater precedence?
+```
+last 1 version or chrome > 75 and > 1% will select (browser last version or Chrome since 76) and more than 1% marketshare.
+```
