@@ -6,7 +6,7 @@
     <!-- Product and plugin compatibility requirements -->
     <!-- https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
-    <depends>com.intellij.modules.java</depends>
+    <depends>JavaScript</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <applicationService
@@ -58,4 +58,13 @@
         <listener class="com.github.aleksandrsl.intellijbrowserslist.listeners.MyProjectManagerListener"
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>
     </applicationListeners>
+    <actions>
+        <action
+                id="com.github.aleksandrsl.intellijbrowserslist.actions.UpdateDbAction"
+                class="com.github.aleksandrsl.intellijbrowserslist.actions.UpdateDbAction"
+                text="Update Db"
+        >
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+    </actions>
 </idea-plugin>
