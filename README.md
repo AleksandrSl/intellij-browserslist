@@ -66,17 +66,16 @@ We can add not to every query as it's said further. First query IS every.
 
 ----
 
-Why these to
+Why these two
 ```
 > .5% and not last 2 versions
 > .5% or not last 2 versions
 ```
 give the same result
 
-
 ---
 
-Why precedence differ from usual logic, and has not greater precedence?
+Why does the operators' precedence differ from usual logic, `and` usually has greater precedence?
 ```
 last 1 version or chrome > 75 and > 1% will select (browser last version or Chrome since 76) and more than 1% marketshare.
 ```
