@@ -12,7 +12,6 @@ import com.intellij.openapi.fileTypes.SyntaxHighlighterBase
 import com.intellij.psi.TokenType
 import com.intellij.psi.tree.IElementType
 
-
 class BrowserslistSyntaxHighlighter : SyntaxHighlighterBase() {
 
     override fun getHighlightingLexer(): Lexer {

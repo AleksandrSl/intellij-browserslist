@@ -1,8 +1,9 @@
 import io.gitlab.arturbosch.detekt.Detekt
 import org.jetbrains.changelog.closure
 import org.jetbrains.changelog.markdownToHTML
+import org.jetbrains.grammarkit.tasks.GenerateLexer
+import org.jetbrains.grammarkit.tasks.GenerateParser
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.jetbrains.grammarkit.tasks.*
 
 plugins {
     // Java support
@@ -20,7 +21,6 @@ plugins {
 
     id("org.jetbrains.grammarkit") version "2020.3.2"
 }
-
 
 // Import variables from gradle.properties file
 val pluginGroup: String by project

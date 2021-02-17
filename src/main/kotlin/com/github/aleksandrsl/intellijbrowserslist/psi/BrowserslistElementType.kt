@@ -4,5 +4,4 @@ import com.github.aleksandrsl.intellijbrowserslist.BrowserslistLanguage
 import com.intellij.psi.tree.IElementType
 
 class BrowserslistElementType(debugName: String) :
-    IElementType(debugName, BrowserslistLanguage.INSTANCE) {
-}
+    IElementType(debugName, BrowserslistLanguage.INSTANCE)

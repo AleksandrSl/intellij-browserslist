@@ -11,7 +11,6 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.containers.map2Array
 
-
 class BrowserslistFoldingBuilder : FoldingBuilderEx(), DumbAware {
 
     override fun buildFoldRegions(

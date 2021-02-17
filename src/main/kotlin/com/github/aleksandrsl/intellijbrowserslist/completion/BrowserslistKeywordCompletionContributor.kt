@@ -1,7 +1,11 @@
 package com.github.aleksandrsl.intellijbrowserslist.completion
 
 import com.github.aleksandrsl.intellijbrowserslist.psi.BrowserslistTypes
-import com.intellij.codeInsight.completion.*
+import com.intellij.codeInsight.completion.CompletionContributor
+import com.intellij.codeInsight.completion.CompletionParameters
+import com.intellij.codeInsight.completion.CompletionProvider
+import com.intellij.codeInsight.completion.CompletionResultSet
+import com.intellij.codeInsight.completion.CompletionType
 import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.openapi.project.DumbAware
 import com.intellij.patterns.PlatformPatterns.psiElement
@@ -26,7 +30,8 @@ class BrowserslistKeywordCompletionContributor : CompletionContributor(), DumbAw
                 ) {
                     result.addAllElements(TARGET_LOOKUP_ELEMENTS)
                 }
-            })
+            }
+        )
     }
 }
 

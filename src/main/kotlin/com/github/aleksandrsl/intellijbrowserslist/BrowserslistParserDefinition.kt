@@ -17,7 +17,6 @@ import com.intellij.psi.TokenType
 import com.intellij.psi.tree.IFileElementType
 import com.intellij.psi.tree.TokenSet
 
-
 class BrowserslistParserDefinition : ParserDefinition {
 
     val WHITE_SPACES = TokenSet.create(TokenType.WHITE_SPACE)

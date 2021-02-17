@@ -2,7 +2,6 @@ package com.github.aleksandrsl.intellijbrowserslist
 
 import com.intellij.lang.Commenter
 
-
 class BrowserslistCommenter : Commenter {
     override fun getLineCommentPrefix(): String {
         return "#"

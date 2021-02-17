@@ -8,7 +8,6 @@ import com.intellij.openapi.options.colors.ColorDescriptor
 import com.intellij.openapi.options.colors.ColorSettingsPage
 import javax.swing.Icon
 
-
 class BrowserslistColorSettingsPage : ColorSettingsPage {
     override fun getIcon(): Icon {
         return BrowserslistIcons.FILE
@@ -17,7 +16,6 @@ class BrowserslistColorSettingsPage : ColorSettingsPage {
     override fun getHighlighter(): SyntaxHighlighter {
         return BrowserslistSyntaxHighlighter()
     }
-
 
     override fun getDemoText(): String {
         return """
