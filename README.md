@@ -45,10 +45,11 @@ Plugin based on the [IntelliJ Platform Plugin Template][template].
 # TODO
 - [ ] Recommendations to install plugin
 - [ ] Check can-i-use db actuality
-- [ ] Check for multiple files in project
+- [ ] Check for multiple configs in project
 - [ ] Check that configuration could be replaced to "defaults"
 - [ ] List of supported browsers facet? or via documentation
 - [ ] Support for templates/completion in package.json
+- [ ] Migration to Java 11 https://blog.jetbrains.com/platform/2020/09/intellij-project-migrates-to-java-11/
 
 
 ## Notes
