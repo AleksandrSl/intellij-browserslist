@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.github.aleksandrsl.intellijbrowserslist</id>
-    <name>IntelliJ-Browserslist</name>
-    <vendor>aleksandrsl</vendor>
+    <name>Browserslist</name>
+    <vendor url="https://github.com/AleksandrSl" email="sl.aleksandr28@gmail.com">aleksandrsl</vendor>
 
     <!-- Product and plugin compatibility requirements -->
     <!-- https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html -->
