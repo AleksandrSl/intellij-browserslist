@@ -9,9 +9,6 @@
     <depends>com.intellij.modules.java</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService
-                serviceImplementation="com.github.aleksandrsl.intellijbrowserslist.services.MyApplicationService"/>
-        <projectService serviceImplementation="com.github.aleksandrsl.intellijbrowserslist.services.MyProjectService"/>
         <fileType name="Browserslist File"
                   implementationClass="com.github.aleksandrsl.intellijbrowserslist.BrowserslistFileType"
                   fieldName="INSTANCE"
@@ -53,9 +50,4 @@
         <defaultLiveTemplates file="/liveTemplates/Browserslist.xml" />
         <liveTemplateContext implementation="com.github.aleksandrsl.intellijbrowserslist.BrowserslistContext" />
     </extensions>
-
-    <applicationListeners>
-        <listener class="com.github.aleksandrsl.intellijbrowserslist.listeners.MyProjectManagerListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    </applicationListeners>
 </idea-plugin>
