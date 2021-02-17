@@ -20,7 +20,6 @@ class BrowserslistSyntaxHighlighter : SyntaxHighlighterBase() {
     }
 
     override fun getTokenHighlights(tokenType: IElementType): Array<TextAttributesKey> {
-        print(tokenType)
         return when (tokenType) {
             BrowserslistTypes.AND,
             BrowserslistTypes.OR -> {
