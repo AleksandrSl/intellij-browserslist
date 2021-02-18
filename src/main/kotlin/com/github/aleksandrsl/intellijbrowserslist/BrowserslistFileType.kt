@@ -4,6 +4,7 @@ import com.intellij.openapi.fileTypes.LanguageFileType
 import javax.swing.Icon
 
 class BrowserslistFileType private constructor() : LanguageFileType(BrowserslistLanguage.INSTANCE) {
+    @Suppress("ForbiddenComment")
     // TODO: 30.12.2020 Where name and description are used? Used in plugin.xml, but why?
     override fun getName(): String {
         return "Browserslist File"
