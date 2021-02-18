@@ -1,0 +1,21 @@
+<templateSet group="Browserslist">
+  <template name="last N versions" value="last $N$ versions$END$" toReformat="false" toShortenFQNames="true">
+    <variable name="N" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="browserslist" value="true"/>
+    </context>
+  </template>
+  <template name="last N major versions" value="last $N$ major versions$END$" toReformat="false" toShortenFQNames="true">
+    <variable name="N" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="browserslist" value="true"/>
+    </context>
+  </template>
+  <template name="last N TARGET versions" value="last $N$ $TARGET$ versions$END$" toReformat="false" toShortenFQNames="true">
+    <variable name="N" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="TARGET" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="browserslist" value="true"/>
+    </context>
+  </template>
+</templateSet>

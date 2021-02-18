@@ -1,13 +1,15 @@
 import io.gitlab.arturbosch.detekt.Detekt
 import org.jetbrains.changelog.closure
 import org.jetbrains.changelog.markdownToHTML
+import org.jetbrains.grammarkit.tasks.GenerateLexer
+import org.jetbrains.grammarkit.tasks.GenerateParser
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     // Java support
     id("java")
     // Kotlin support
-    id("org.jetbrains.kotlin.jvm") version "1.4.21"
+    kotlin("jvm") version "1.4.21"
     // gradle-intellij-plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
     id("org.jetbrains.intellij") version "0.6.5"
     // gradle-changelog-plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
@@ -16,6 +18,8 @@ plugins {
     id("io.gitlab.arturbosch.detekt") version "1.15.0"
     // ktlint linter - read more: https://github.com/JLLeitschuh/ktlint-gradle
     id("org.jlleitschuh.gradle.ktlint") version "9.4.1"
+
+    id("org.jetbrains.grammarkit") version "2020.3.2"
 }
 
 // Import variables from gradle.properties file
@@ -71,13 +75,37 @@ detekt {
     }
 }
 
+grammarKit {
+    grammarKitRelease = "2020.3.1"
+}
+
+sourceSets["main"].java.srcDirs("src/main/gen")
+
 tasks {
+
+    val generateLexer = task<GenerateLexer>("generateLexer") {
+        source = "src/main/grammar/Browserslist.flex"
+        targetDir = "src/main/gen/com/github/aleksandrsl/intellijbrowserslist/lexer"
+        targetClass = "BrowserslistLexer"
+        purgeOldFiles = true
+    }
+
+    val generateParser = task<GenerateParser>("generateParser") {
+        source = "src/main/grammar/Browserslist.bnf"
+        targetRoot = "src/main/gen"
+        pathToParser = "/com/github/aleksandrsl/intellijbrowserslist/parser/BrowserslistParserGenerated.java"
+        pathToPsiRoot = "/com/github/aleksandrsl/intellijbrowserslist/psi"
+        purgeOldFiles = true
+    }
+
     // Set the compatibility versions to 1.8
     withType<JavaCompile> {
         sourceCompatibility = "1.8"
         targetCompatibility = "1.8"
     }
+
     withType<KotlinCompile> {
+        dependsOn(generateParser, generateLexer)
         kotlinOptions.jvmTarget = "1.8"
     }
 
