@@ -12,7 +12,7 @@ import com.github.aleksandrsl.intellijbrowserslist.psi.*;
 
 public class BrowserslistLastQueryImpl extends BrowserslistQueryImpl implements BrowserslistLastQuery {
 
-  public BrowserslistLastQueryImpl(ASTNode node) {
+  public BrowserslistLastQueryImpl(@NotNull ASTNode node) {
     super(node);
   }
 

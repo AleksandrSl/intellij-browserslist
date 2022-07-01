@@ -12,7 +12,7 @@ import com.github.aleksandrsl.intellijbrowserslist.psi.*;
 
 public class BrowserslistUnreleasedQueryImpl extends BrowserslistQueryImpl implements BrowserslistUnreleasedQuery {
 
-  public BrowserslistUnreleasedQueryImpl(ASTNode node) {
+  public BrowserslistUnreleasedQueryImpl(@NotNull ASTNode node) {
     super(node);
   }
 

@@ -12,7 +12,7 @@ import com.github.aleksandrsl.intellijbrowserslist.psi.*;
 
 public class BrowserslistDefaultsQueryImpl extends BrowserslistQueryImpl implements BrowserslistDefaultsQuery {
 
-  public BrowserslistDefaultsQueryImpl(ASTNode node) {
+  public BrowserslistDefaultsQueryImpl(@NotNull ASTNode node) {
     super(node);
   }
 

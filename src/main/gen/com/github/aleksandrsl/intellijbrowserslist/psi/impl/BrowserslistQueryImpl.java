@@ -13,7 +13,7 @@ import com.github.aleksandrsl.intellijbrowserslist.psi.*;
 
 public class BrowserslistQueryImpl extends ASTWrapperPsiElement implements BrowserslistQuery {
 
-  public BrowserslistQueryImpl(ASTNode node) {
+  public BrowserslistQueryImpl(@NotNull ASTNode node) {
     super(node);
   }
 

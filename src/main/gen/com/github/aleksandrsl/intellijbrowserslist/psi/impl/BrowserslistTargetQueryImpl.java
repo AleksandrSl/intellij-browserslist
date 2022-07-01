@@ -12,7 +12,7 @@ import com.github.aleksandrsl.intellijbrowserslist.psi.*;
 
 public class BrowserslistTargetQueryImpl extends BrowserslistQueryImpl implements BrowserslistTargetQuery {
 
-  public BrowserslistTargetQueryImpl(ASTNode node) {
+  public BrowserslistTargetQueryImpl(@NotNull ASTNode node) {
     super(node);
   }
 

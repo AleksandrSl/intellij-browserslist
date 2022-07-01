@@ -12,7 +12,7 @@ import com.github.aleksandrsl.intellijbrowserslist.psi.*;
 
 public class BrowserslistDeadQueryImpl extends BrowserslistQueryImpl implements BrowserslistDeadQuery {
 
-  public BrowserslistDeadQueryImpl(ASTNode node) {
+  public BrowserslistDeadQueryImpl(@NotNull ASTNode node) {
     super(node);
   }
 

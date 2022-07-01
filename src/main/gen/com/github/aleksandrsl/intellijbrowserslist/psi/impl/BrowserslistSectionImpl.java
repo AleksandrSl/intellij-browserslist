@@ -13,7 +13,7 @@ import com.github.aleksandrsl.intellijbrowserslist.psi.*;
 
 public class BrowserslistSectionImpl extends ASTWrapperPsiElement implements BrowserslistSection {
 
-  public BrowserslistSectionImpl(ASTNode node) {
+  public BrowserslistSectionImpl(@NotNull ASTNode node) {
     super(node);
   }
 

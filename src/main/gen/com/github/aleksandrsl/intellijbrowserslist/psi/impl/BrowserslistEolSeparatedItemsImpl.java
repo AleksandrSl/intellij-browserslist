@@ -13,7 +13,7 @@ import com.github.aleksandrsl.intellijbrowserslist.psi.*;
 
 public class BrowserslistEolSeparatedItemsImpl extends ASTWrapperPsiElement implements BrowserslistEolSeparatedItems {
 
-  public BrowserslistEolSeparatedItemsImpl(ASTNode node) {
+  public BrowserslistEolSeparatedItemsImpl(@NotNull ASTNode node) {
     super(node);
   }
 

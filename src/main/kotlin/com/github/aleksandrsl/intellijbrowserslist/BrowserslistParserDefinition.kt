@@ -49,11 +49,11 @@ class BrowserslistParserDefinition : ParserDefinition {
         return FILE
     }
 
-    override fun createFile(viewProvider: FileViewProvider?): PsiFile? {
-        return viewProvider?.let { BrowserslistFile(it) }
+    override fun createFile(viewProvider: FileViewProvider): PsiFile {
+        return BrowserslistFile(viewProvider)
     }
 
-    override fun spaceExistenceTypeBetweenTokens(left: ASTNode?, right: ASTNode?): SpaceRequirements? {
+    override fun spaceExistenceTypeBetweenTokens(left: ASTNode?, right: ASTNode?): SpaceRequirements {
         return SpaceRequirements.MAY
     }
 

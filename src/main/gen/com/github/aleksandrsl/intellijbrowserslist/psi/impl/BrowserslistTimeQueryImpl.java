@@ -12,7 +12,7 @@ import com.github.aleksandrsl.intellijbrowserslist.psi.*;
 
 public class BrowserslistTimeQueryImpl extends BrowserslistQueryImpl implements BrowserslistTimeQuery {
 
-  public BrowserslistTimeQueryImpl(ASTNode node) {
+  public BrowserslistTimeQueryImpl(@NotNull ASTNode node) {
     super(node);
   }
 
