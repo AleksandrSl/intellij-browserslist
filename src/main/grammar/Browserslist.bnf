@@ -1,0 +1,85 @@
+{
+  generate=[java="8"]
+  parserClass="com.github.aleksandrsl.intellijbrowserslist.parser.BrowserslistParser"
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="Browserslist"
+  psiImplClassSuffix="Impl"
+  psiPackage="com.github.aleksandrsl.intellijbrowserslist.psi"
+  psiImplPackage="com.github.aleksandrsl.intellijbrowserslist.psi.impl"
+
+  elementTypeHolderClass="com.github.aleksandrsl.intellijbrowserslist.psi.BrowserslistTypes"
+  elementTypeClass="com.github.aleksandrsl.intellijbrowserslist.psi.BrowserslistElementType"
+  tokenTypeClass="com.github.aleksandrsl.intellijbrowserslist.psi.BrowserslistTokenType"
+
+  tokens=[
+    EOL="regexp:\R"
+    LBRACKET="["
+    RBRACKET="]"
+    IN="in"
+    PERCENT="regexp:\d*\.?\d+%"
+    DEFAULTS="defaults"
+    COMPARE="regexp:>=?|<=?"
+    space="regexp:\s+"
+    LAST="last"
+    INTEGER="regexp:\d+"
+    VERSIONS="regexp:versions?"
+    YEARS="years"
+    FLOAT="regexp:\d*\.?\d+"
+  ]
+
+   extends("(.+Query)") = query
+}
+browserslistFile ::= (EOL|COMMENT|queries_|section)*
+
+section ::= sectionHeader COMMENT? (EOL sectionQueries)? {pin=1}
+sectionHeader ::= '[' IDENTIFIER+ ']' {pin=1 recoverWhile="sectionHeader_recover"}
+private sectionHeader_recover ::= !(COMMENT | EOL)
+sectionQueries ::= (EOL|COMMENT)* queries_
+
+// Could I not include COMMENT or EOL if there are no queries after it?
+private queries_ ::= queryExpression (EOL queryExpression|COMMENT|EOL !'[')*
+// Didn't come up with the better name
+private singleQuery_ ::= NOT? query
+queryExpression ::= singleQuery_ ((AND|OR) singleQuery_)* {recoverWhile="queryExpression_recover"}
+private queryExpression_recover ::= !(EOL|COMMENT)
+query ::=
+    statsQuery
+    | lastQuery
+    | timeQuery
+    | unreleasedQuery
+    | supportsQuery
+    | targetQuery
+    | extendsQuery
+    | deadQuery
+    | defaultsQuery
+    {recoverWhile="query_recover"}
+private query_recover ::= !(EOL|COMMENT|OR|AND)
+
+// TODO: Cover in custom stats like `cover 5% in browserslist-config-mycompany stats` should be supported?
+statsQuery ::= (COMPARE|COVER) PERCENT (IN STATS)? {pin=1}
+lastQuery ::= LAST INTEGER TARGET? MAJOR? VERSIONS {pin='VERSIONS'}
+unreleasedQuery ::= UNRELEASED TARGET? VERSIONS {pin=1}
+timeQuery ::= timeQueryLast_ | timeQuerySince_
+private timeQueryLast_ ::= (LAST (FLOAT|INTEGER) YEARS) {pin=3}
+private timeQuerySince_ ::= SINCE (TIME|INTEGER) {pin=1}
+supportsQuery ::= SUPPORTS FEATURE {pin=1}
+targetQuery ::=
+    TARGET (COMPARE? TARGET_VERSION | TARGET_VERSIONS_RANGE)
+    | CURRENT_NODE_VERSION TARGET
+    | MAINTAINED_NODE_VERSIONS TARGET VERSIONS
+    {pin=1}
+extendsQuery ::= EXTENDS IDENTIFIER {pin=1}
+deadQuery ::= DEAD {pin=1}
+defaultsQuery ::= DEFAULTS {pin=1}
+
+/*
+wrong query - not recognized as query at all, i.e. pinned element is not reached)
+
+Recover pitfalls
+* wrong first query in the section or queries, breaks parsing of all downstream elements. Current section/queries is not recognised as such
+  and recover doesn't work, nothing to pin
+* wrong not first query breaks parsing till the end of section
+* didn't managed to pin queries that start with last keyword, cause
+  there are two different queries with first required different element in the end. Maybe I should just unify them, although they are different.
+*/

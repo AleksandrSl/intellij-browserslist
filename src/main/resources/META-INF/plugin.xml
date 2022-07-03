@@ -1,19 +1,52 @@
 <idea-plugin>
     <id>com.github.aleksandrsl.intellijbrowserslist</id>
-    <name>intellij-browserslist</name>
-    <vendor>aleksandrsl</vendor>
+    <name>Browserslist</name>
+    <vendor url="https://github.com/AleksandrSl" email="sl.aleksandr28@gmail.com">aleksandrsl</vendor>
 
     <!-- Product and plugin compatibility requirements -->
     <!-- https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.github.aleksandrsl.intellijbrowserslist.services.MyApplicationService"/>
-        <projectService serviceImplementation="com.github.aleksandrsl.intellijbrowserslist.services.MyProjectService"/>
+        <fileType name="Browserslist File"
+                  implementationClass="com.github.aleksandrsl.intellijbrowserslist.BrowserslistFileType"
+                  fieldName="INSTANCE"
+                  language="browserslist"
+                  extensions="browserslistrc"
+                  fileNames="browserslist"
+        />
+        <lang.parserDefinition
+                language="browserslist"
+                implementationClass="com.github.aleksandrsl.intellijbrowserslist.BrowserslistParserDefinition"
+        />
+        <lang.syntaxHighlighterFactory
+                language="browserslist"
+                implementationClass="com.github.aleksandrsl.intellijbrowserslist.highlight.BrowserslistHighlighterFactory"
+        />
+        <colorSettingsPage
+                implementation="com.github.aleksandrsl.intellijbrowserslist.highlight.BrowserslistColorSettingsPage"
+        />
+        <annotator
+                language="browserslist"
+                implementationClass="com.github.aleksandrsl.intellijbrowserslist.highlight.HighlightAnnotator"
+        />
+        <lang.foldingBuilder
+                language="browserslist"
+                implementationClass="com.github.aleksandrsl.intellijbrowserslist.BrowserslistFoldingBuilder"
+        />
+        <lang.commenter
+                language="browserslist"
+                implementationClass="com.github.aleksandrsl.intellijbrowserslist.BrowserslistCommenter"
+        />
+        <completion.contributor
+                language="browserslist"
+                implementationClass="com.github.aleksandrsl.intellijbrowserslist.completion.BrowserslistKeywordCompletionContributor"
+        />
+        <lang.braceMatcher
+                language="browserslist"
+                implementationClass="com.github.aleksandrsl.intellijbrowserslist.BrowserslistBraceMatcher"
+        />
+        <defaultLiveTemplates file="/liveTemplates/Browserslist.xml" />
+        <liveTemplateContext implementation="com.github.aleksandrsl.intellijbrowserslist.BrowserslistContext" />
     </extensions>
-
-    <applicationListeners>
-        <listener class="com.github.aleksandrsl.intellijbrowserslist.listeners.MyProjectManagerListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    </applicationListeners>
 </idea-plugin>
