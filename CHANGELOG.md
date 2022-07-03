@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+## [1.0.0-eap-2]
+### Fixed
+- Fix supported ides' version range
+
 ## [1.0.0-eap-1]
 ### Fixed
 - Fixed parsing of compare queries, when there are directly followed by numbers
