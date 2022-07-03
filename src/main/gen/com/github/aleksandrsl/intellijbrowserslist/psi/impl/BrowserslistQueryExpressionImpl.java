@@ -11,14 +11,14 @@ import static com.github.aleksandrsl.intellijbrowserslist.psi.BrowserslistTypes.
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.aleksandrsl.intellijbrowserslist.psi.*;
 
-public class BrowserslistSectionImpl extends ASTWrapperPsiElement implements BrowserslistSection {
+public class BrowserslistQueryExpressionImpl extends ASTWrapperPsiElement implements BrowserslistQueryExpression {
 
-  public BrowserslistSectionImpl(@NotNull ASTNode node) {
+  public BrowserslistQueryExpressionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull BrowserslistVisitor visitor) {
-    visitor.visitSection(this);
+    visitor.visitQueryExpression(this);
   }
 
   @Override
@@ -29,20 +29,8 @@ public class BrowserslistSectionImpl extends ASTWrapperPsiElement implements Bro
 
   @Override
   @NotNull
-  public BrowserslistSectionHeader getSectionHeader() {
-    return findNotNullChildByClass(BrowserslistSectionHeader.class);
-  }
-
-  @Override
-  @Nullable
-  public BrowserslistSectionQueries getSectionQueries() {
-    return findChildByClass(BrowserslistSectionQueries.class);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getEol() {
-    return findChildByType(EOL);
+  public List<BrowserslistQuery> getQueryList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, BrowserslistQuery.class);
   }
 
 }

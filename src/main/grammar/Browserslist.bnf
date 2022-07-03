@@ -30,18 +30,18 @@
 
    extends("(.+Query)") = query
 }
-browserslistFile ::= (EOL|COMMENT)* (queries_ (EOL sections_)?|sections_)
+browserslistFile ::= (EOL|COMMENT|queries_|section)*
 
-meta eolSeparatedItems ::= (EOL|COMMENT)* <<item>> (EOL <<item>>|COMMENT|EOL !'[')* {recoverWhile="eolSeparatedItems_recover"}
-private eolSeparatedItems_recover ::= !(EOL '[')
-
-private sections_ ::= <<eolSeparatedItems section>>
-section ::= sectionHeader COMMENT? (EOL queries_)? {pin=1}
+section ::= sectionHeader COMMENT? (EOL sectionQueries)? {pin=1}
 sectionHeader ::= '[' IDENTIFIER+ ']' {pin=1 recoverWhile="sectionHeader_recover"}
 private sectionHeader_recover ::= !(COMMENT | EOL)
+sectionQueries ::= (EOL|COMMENT)* queries_
 
-private queries_ ::= <<eolSeparatedItems queryExpression_>>
-private queryExpression_ ::= NOT? query ((AND|OR) NOT? query)* {recoverWhile="queryExpression_recover"}
+// Could I not include COMMENT or EOL if there are no queries after it?
+private queries_ ::= queryExpression (EOL queryExpression|COMMENT|EOL !'[')*
+// Didn't come up with the better name
+private singleQuery_ ::= NOT? query
+queryExpression ::= singleQuery_ ((AND|OR) singleQuery_)* {recoverWhile="queryExpression_recover"}
 private queryExpression_recover ::= !(EOL|COMMENT)
 query ::=
     statsQuery

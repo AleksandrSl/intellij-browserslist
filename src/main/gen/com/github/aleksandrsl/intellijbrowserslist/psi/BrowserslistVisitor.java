@@ -15,10 +15,6 @@ public class BrowserslistVisitor extends PsiElementVisitor {
     visitQuery(o);
   }
 
-  public void visitEolSeparatedItems(@NotNull BrowserslistEolSeparatedItems o) {
-    visitPsiElement(o);
-  }
-
   public void visitExtendsQuery(@NotNull BrowserslistExtendsQuery o) {
     visitQuery(o);
   }
@@ -31,11 +27,19 @@ public class BrowserslistVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitQueryExpression(@NotNull BrowserslistQueryExpression o) {
+    visitPsiElement(o);
+  }
+
   public void visitSection(@NotNull BrowserslistSection o) {
     visitPsiElement(o);
   }
 
   public void visitSectionHeader(@NotNull BrowserslistSectionHeader o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSectionQueries(@NotNull BrowserslistSectionQueries o) {
     visitPsiElement(o);
   }
 

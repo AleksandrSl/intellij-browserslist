@@ -1,5 +1,6 @@
 package com.github.aleksandrsl.intellijbrowserslist
 
+import com.github.aleksandrsl.intellijbrowserslist.psi.BrowserslistQuery
 import com.github.aleksandrsl.intellijbrowserslist.psi.impl.BrowserslistSectionImpl
 import com.intellij.lang.ASTNode
 import com.intellij.lang.folding.FoldingBuilderEx
@@ -9,6 +10,7 @@ import com.intellij.openapi.editor.FoldingGroup
 import com.intellij.openapi.project.DumbAware
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.psi.util.descendantsOfType
 import com.intellij.util.containers.map2Array
 
 class BrowserslistFoldingBuilder : FoldingBuilderEx(), DumbAware {
@@ -19,13 +21,13 @@ class BrowserslistFoldingBuilder : FoldingBuilderEx(), DumbAware {
         quick: Boolean
     ): Array<FoldingDescriptor> {
         val sections = PsiTreeUtil.findChildrenOfType(root, BrowserslistSectionImpl::class.java).filter {
-            it.eolSeparatedItems !== null
+            it.sectionQueries !== null
         }
 
         return sections.map2Array {
             FoldingDescriptor(
                 it.node,
-                it.eolSeparatedItems!!.textRange,
+                it.sectionQueries!!.textRange.grown(-1),
                 FoldingGroup.newGroup(it.sectionHeader.text)
             )
         }

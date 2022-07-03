@@ -10,12 +10,13 @@ public interface BrowserslistTypes {
 
   IElementType DEAD_QUERY = new BrowserslistElementType("DEAD_QUERY");
   IElementType DEFAULTS_QUERY = new BrowserslistElementType("DEFAULTS_QUERY");
-  IElementType EOL_SEPARATED_ITEMS = new BrowserslistElementType("EOL_SEPARATED_ITEMS");
   IElementType EXTENDS_QUERY = new BrowserslistElementType("EXTENDS_QUERY");
   IElementType LAST_QUERY = new BrowserslistElementType("LAST_QUERY");
   IElementType QUERY = new BrowserslistElementType("QUERY");
+  IElementType QUERY_EXPRESSION = new BrowserslistElementType("QUERY_EXPRESSION");
   IElementType SECTION = new BrowserslistElementType("SECTION");
   IElementType SECTION_HEADER = new BrowserslistElementType("SECTION_HEADER");
+  IElementType SECTION_QUERIES = new BrowserslistElementType("SECTION_QUERIES");
   IElementType STATS_QUERY = new BrowserslistElementType("STATS_QUERY");
   IElementType SUPPORTS_QUERY = new BrowserslistElementType("SUPPORTS_QUERY");
   IElementType TARGET_QUERY = new BrowserslistElementType("TARGET_QUERY");
@@ -64,9 +65,6 @@ public interface BrowserslistTypes {
       else if (type == DEFAULTS_QUERY) {
         return new BrowserslistDefaultsQueryImpl(node);
       }
-      else if (type == EOL_SEPARATED_ITEMS) {
-        return new BrowserslistEolSeparatedItemsImpl(node);
-      }
       else if (type == EXTENDS_QUERY) {
         return new BrowserslistExtendsQueryImpl(node);
       }
@@ -76,11 +74,17 @@ public interface BrowserslistTypes {
       else if (type == QUERY) {
         return new BrowserslistQueryImpl(node);
       }
+      else if (type == QUERY_EXPRESSION) {
+        return new BrowserslistQueryExpressionImpl(node);
+      }
       else if (type == SECTION) {
         return new BrowserslistSectionImpl(node);
       }
       else if (type == SECTION_HEADER) {
         return new BrowserslistSectionHeaderImpl(node);
+      }
+      else if (type == SECTION_QUERIES) {
+        return new BrowserslistSectionQueriesImpl(node);
       }
       else if (type == STATS_QUERY) {
         return new BrowserslistStatsQueryImpl(node);
