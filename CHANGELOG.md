@@ -11,6 +11,13 @@
 ### Fixed
 - Fix supported ides' version range
 
+## [1.0.0-eap-2]
+### Added
+- Lowercase browser names in completion
+
+### Fixed
+- Fix supported ides' version range
+
 ## [1.0.0-eap-1]
 ### Fixed
 - Fixed parsing of compare queries, when there are directly followed by numbers
