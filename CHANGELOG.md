@@ -4,7 +4,11 @@
 
 ## [Unreleased]
 
-## [0.0.1]
+## [1.0.0-eap-1]
+### Fixed
+- Fixed parsing of compare queries, when there are directly followed by numbers
+
+## [1.0.0-eap]
 ### Added
 - Syntax highlighting
 - Autocompletion for browsers
