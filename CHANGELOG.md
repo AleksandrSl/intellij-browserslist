@@ -5,6 +5,9 @@
 ## [Unreleased]
 
 ## [1.0.0-eap-2]
+### Added
+- Lowercase browser names in completion
+
 ### Fixed
 - Fix supported ides' version range
 
