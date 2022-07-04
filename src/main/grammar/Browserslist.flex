@@ -16,6 +16,7 @@ import com.intellij.psi.TokenType;
 %class BrowserslistLexer
 %implements FlexLexer
 %unicode
+%caseless
 %function advance
 %type IElementType
 
@@ -29,14 +30,14 @@ INTEGER=\d+
 FLOAT=\d*\.?\d+
 PERCENT={FLOAT}%
 STATS=(my\s+stats)|({IDENTIFIER}\s+stats)|((alt-)?\w\w)
-FIREFOX=[Ff]irefox|fx|ff|FirefoxAndroid|firefoxandroid|and_ff
-SAFARI=[Ss]afari|iOS|ios|ios_saf
-EXPLORER=[Ee]xplorer|ie|ExplorerMobile|explorermobile|ie_mob
-BLACKBERRY=BlackBerry|blackberry|bb
-OPERA=[Oo]pera|OperaMini|operamini|op_mini|OperaMobile|operamobile|op_mob
-CHROME=[Cc]hrome|ChromeAndroid|chromeandroid|and_chr
-BROWSER={FIREFOX}|{CHROME}|{SAFARI}|{EXPLORER}|{BLACKBERRY}|{OPERA}|[Aa]ndroid|[Bb]aidu|[Ee]dge|[Ss]amsung|UCAndroid|ucandroid|and_uc|QQAndroid|qqandroid|kaios
-TARGET={BROWSER}|electron|[Nn]ode|[Pp]hantom[jJ][sS]
+FIREFOX=firefox|fx|ff|FirefoxAndroid|and_ff
+SAFARI=safari|iOS|ios_saf
+EXPLORER=explorer|ie|ExplorerMobile|ie_mob
+BLACKBERRY=BlackBerry|bb
+OPERA=opera|OperaMini|op_mini|OperaMobile|op_mob
+CHROME=chrome|ChromeAndroid|and_chr
+BROWSER={FIREFOX}|{CHROME}|{SAFARI}|{EXPLORER}|{BLACKBERRY}|{OPERA}|android|baidu|edge|samsung|UCAndroid|and_uc|QQAndroid|kaios
+TARGET={BROWSER}|electron|node|phantomjs
 TIME=\d+(-\d+){1,2}
 FEATURE=[-\w]+
 
