@@ -1,22 +1,19 @@
 # intellij-browserslist
 
 ![Build](https://github.com/AleksandrSl/intellij-browserslist/workflows/Build/badge.svg)
-[![Version](https://img.shields.io/jetbrains/plugin/v/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/PLUGIN_ID)
-[![Downloads](https://img.shields.io/jetbrains/plugin/d/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/PLUGIN_ID)
-
-## Template ToDo list
-- [ ] [Publish a plugin manually](https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/publishing_plugin.html) for the first time.
-- [ ] Set the Plugin ID in the above README badges.
-- [ ] Set the [Deployment Token](https://plugins.jetbrains.com/docs/marketplace/plugin-upload.html).
-- [ ] Click the <kbd>Watch</kbd> button on the top of the [IntelliJ Platform Plugin Template][template] to be notified about releases containing new features and fixes.
+[![Version](https://img.shields.io/jetbrains/plugin/v/16139-browserslist.svg)](https://plugins.jetbrains.com/plugin/16139-browserslist)
+[![Downloads](https://img.shields.io/jetbrains/plugin/d/16139-browserslist.svg)](https://plugins.jetbrains.com/plugin/16139-browserslist)
 
 <!-- Plugin description -->
 Adds support for [browserslist](https://github.com/browserslist/browserslist) config
 
 Features:
-- Syntax highlighting
+- Pretty browserslist icon for settings file
+- Check for queries correctness 
 - Autocompletion for browsers
 - Section folding
+- Syntax highlighting (Actually, only logic operators and section headers are 
+highlighted. I could make everything more colorful, but should I?)
 - Live templates for some queries
  
 <!-- Plugin description end -->
@@ -46,8 +43,6 @@ Plugin based on the [IntelliJ Platform Plugin Template][template].
 - [ ] Check that configuration could be replaced to "defaults"
 - [ ] List of supported browsers facet? or via documentation
 - [ ] Support for templates/completion in package.json
-- [ ] Migration to Java 11 https://blog.jetbrains.com/platform/2020/09/intellij-project-migrates-to-java-11/
-
 
 ## Notes
 
