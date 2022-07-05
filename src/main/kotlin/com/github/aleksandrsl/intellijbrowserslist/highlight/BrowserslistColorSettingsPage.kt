@@ -50,7 +50,7 @@ BlackBerry or bb
         private val DESCRIPTORS = arrayOf(
             AttributesDescriptor("Identifier", BrowserslistSyntaxHighlighter.IDENTIFIER),
             AttributesDescriptor("Operator", BrowserslistSyntaxHighlighter.OPERATOR),
-            AttributesDescriptor("Bad Value", BrowserslistSyntaxHighlighter.BAD_CHARACTER)
+            AttributesDescriptor("Bad value", BrowserslistSyntaxHighlighter.BAD_CHARACTER)
         )
     }
 }
