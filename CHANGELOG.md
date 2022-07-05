@@ -3,6 +3,8 @@
 # Browserslist Changelog
 
 ## [Unreleased]
+
+## [1.0.0-eap-3]
 ### Changed
 - All tokens are case-insensitive now. `LaSt 8 ChRoMe vERsions` for the world
 
