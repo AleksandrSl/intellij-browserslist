@@ -9,7 +9,7 @@ plugins {
     // Kotlin support
     id("org.jetbrains.kotlin.jvm") version "1.6.10"
     // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij") version "1.6.0"
+    id("org.jetbrains.intellij") version "1.7.0"
     // Gradle Changelog Plugin
     id("org.jetbrains.changelog") version "1.3.1"
     // Gradle Qodana Plugin
@@ -56,7 +56,7 @@ grammarKit {
 //    intellijRelease.set("203.7717.81")
 }
 
-sourceSets["main"].java.srcDirs("src/main/gen")
+sourceSets["main"].java.srcDirs("src/main/gen", "gen")
 
 tasks {
 
@@ -157,5 +157,15 @@ tasks {
 
     buildSearchableOptions {
         enabled = false
+    }
+
+    prepareSandbox {
+        doLast {
+            val libraries = "${destinationDir}/intellij-browserslist/"
+            copy {
+                from("${project.projectDir}/src/main/gen/js")
+                into(libraries)
+            }
+        }
     }
 }

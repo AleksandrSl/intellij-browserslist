@@ -1,0 +1,11 @@
+{
+  "name": "browserslist-intellij",
+  "version": "0.0.1",
+  "devDependencies": {
+    "@types/node": "^18.0.3",
+    "browserslist": "^4.21.1"
+  },
+  "dependencies": {
+    "typescript": "^4.7.4"
+  }
+}

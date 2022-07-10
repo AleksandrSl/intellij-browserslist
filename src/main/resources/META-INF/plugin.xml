@@ -47,7 +47,16 @@
                 language="browserslist"
                 implementationClass="com.github.aleksandrsl.intellijbrowserslist.BrowserslistBraceMatcher"
         />
-        <defaultLiveTemplates file="/liveTemplates/Browserslist.xml" />
-        <liveTemplateContext implementation="com.github.aleksandrsl.intellijbrowserslist.BrowserslistContext" />
+        <defaultLiveTemplates file="/liveTemplates/Browserslist.xml"/>
+        <liveTemplateContext implementation="com.github.aleksandrsl.intellijbrowserslist.BrowserslistContext"/>
+        <projectService serviceInterface="com.github.aleksandrsl.intellijbrowserslist.BrowserslistLanguageService"
+                        serviceImplementation="com.github.aleksandrsl.intellijbrowserslist.BrowserslistLanguageServiceImpl"/>
     </extensions>
+    <actions>
+        <action id="com.github.aleksandrsl.intellijbrowserslist.TestAction"
+                class="com.github.aleksandrsl.intellijbrowserslist.TestAction" text="Test Action"
+                description="Test description">
+            <add-to-group group-id="ToolsMenu" anchor="first"/>
+        </action>
+    </actions>
 </idea-plugin>
