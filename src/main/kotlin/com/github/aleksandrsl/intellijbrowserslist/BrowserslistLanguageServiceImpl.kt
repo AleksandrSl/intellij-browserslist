@@ -1,22 +1,14 @@
 package com.github.aleksandrsl.intellijbrowserslist
 
 //import com.intellij.javascript.nodejs.execution.NodeTargetRun
-import com.intellij.execution.configurations.GeneralCommandLine
-import com.intellij.javascript.nodejs.interpreter.NodeCommandLineConfigurator
 import com.intellij.javascript.nodejs.library.yarn.YarnPnpNodePackage
 import com.intellij.javascript.nodejs.util.NodePackage
 import com.intellij.lang.javascript.service.*
 import com.intellij.lang.javascript.service.protocol.*
-import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.project.guessProjectDir
-import com.intellij.openapi.util.Pair
-import com.intellij.openapi.util.io.FileUtil
 import com.intellij.util.Consumer
 import com.intellij.util.EmptyConsumer
-import com.intellij.util.PathUtil
-import com.intellij.util.concurrency.FutureResult
 import com.jetbrains.rd.util.string.printToString
 import java.io.File
 import java.util.concurrent.CompletableFuture
@@ -49,34 +41,29 @@ class BrowserslistLanguageServiceImpl(project: Project) : JSLanguageServiceBase(
     ): Future<BrowserslistLanguageService.CoverageResult>? {
         var filePath = filePath
         val process = process
-        LOG.warn("Insie coverage ${process?.isValid.toString()}")
+        LOG.warn("Inside coverage ${process?.isValid.toString()}")
         if (process == null || !process.isValid) {
             return CompletableFuture.completedFuture(
                 BrowserslistLanguageService.CoverageResult.error(BrowserslistBundle.message("progress.title"))
             )
         }
         LOG.warn("Before command execution")
-        val command = CoverageCommand(myProject, filePath, browserslistPackage, queries = arrayOf())
-//        return FutureResult(BrowserslistLanguageService.CoverageResult.result(10.0f))
+        val command = CoverageCommand(myProject, filePath, browserslistPackage, queries = arrayOf("> 5%"))
         return sendCommand(command) { jsLanguageServiceObject, jsLanguageServiceAnswer ->
-            LOG.warn("KEKE")
             LOG.warn(jsLanguageServiceAnswer.element.printToString())
             BrowserslistLanguageService.CoverageResult.result(10.0f)
         }
-//        return process.execute(command,
-//            JSLanguageServiceCommandProcessor { jsLanguageServiceObject, jsLanguageServiceAnswer ->
-//                LOG.warn("KEKE")
-//                LOG.warn(jsLanguageServiceAnswer.element.printToString())
-//
-//                BrowserslistLanguageService.CoverageResult.result(10.0f)
-//            })
     }
 
 
     override fun createLanguageServiceQueue(): JSLanguageServiceQueue {
         return JSLanguageServiceQueueImpl(
             myProject,
-            Protocol(myProject, EmptyConsumer.getInstance<Any>()),
+            Protocol(
+                myProject,
+                EmptyConsumer.getInstance<Any>(),
+                NodePackage("${myProject.basePath}/node_modules/browserslist")
+            ),
             myProcessConnector,
             myDefaultReporter,
             JSLanguageServiceDefaultCacheData()
@@ -87,7 +74,11 @@ class BrowserslistLanguageServiceImpl(project: Project) : JSLanguageServiceBase(
         return false
     }
 
-    private class Protocol constructor(project: Project, readyConsumer: Consumer<*>) :
+    private class Protocol constructor(
+        val project: Project,
+        readyConsumer: Consumer<*>,
+        val browserslistPackage: NodePackage
+    ) :
         JSLanguageServiceNodeStdProtocolBase("browserslist", project, readyConsumer) {
         private val LOG: Logger = Logger.getInstance(Protocol::class.java)
 //        override fun addNodeProcessAdditionalArguments(commandLine: GeneralCommandLine) {
@@ -117,7 +108,7 @@ class BrowserslistLanguageServiceImpl(project: Project) : JSLanguageServiceBase(
 //        }
 
         override fun createState(): JSLanguageServiceInitialState {
-            val state = JSLanguageServiceInitialState()
+            val state = InitialState()
             val service = File(
                 JSLanguageServiceUtil.getPluginDirectory(this.javaClass, "browserslistLanguageService"),
                 "browserslist-plugin-provider.js"
@@ -125,6 +116,16 @@ class BrowserslistLanguageServiceImpl(project: Project) : JSLanguageServiceBase(
             if (!service.exists()) {
                 JSLanguageServiceQueue.LOGGER.error("browserslist language service plugin not found")
             }
+//            val yarnPnpPkg = YarnPnpNodePackage.create(project, packageJson, dependencyName, true, false)
+//            if (browserslistPackage is YarnPnpNodePackage) {
+//                state.packagePath = LocalFilePath.create(browserslistPackage.getName())
+//            } else {
+//                state.packagePath = LocalFilePath.create(browserslistPackage.systemDependentPath)
+//            }
+            state.packagePath = LocalFilePath.create("browserslist")
+            state.packageJsonPath = LocalFilePath.create("${project.basePath}/package.json")
+            LOG.warn("packagePath = ${state.packagePath}")
+            LOG.warn("packageJsonPath = ${state.packageJsonPath}")
             state.pluginName = "browserslist-intellij"
             state.pluginPath = LocalFilePath.create(service.absolutePath)
             return state
@@ -137,11 +138,12 @@ class BrowserslistLanguageServiceImpl(project: Project) : JSLanguageServiceBase(
     }
 
     private class CoverageCommand constructor(
-        project: Project, filePath: String, browserslistPackage: NodePackage, queries: Array<String>
+        project: Project, filePath: String, browserslistPackage: NodePackage, val queries: Array<String>
     ) : JSLanguageServiceObject, JSLanguageServiceSimpleCommand {
         override fun toSerializableObject(): JSLanguageServiceObject {
             return this
         }
+
         override fun getCommand() = "GetCoverage"
 
         override fun getPresentableText(project: Project): String {
@@ -215,4 +217,9 @@ class BrowserslistLanguageServiceImpl(project: Project) : JSLanguageServiceBase(
 //            }
 //        }
 //    }
+}
+
+class InitialState() : JSLanguageServiceInitialState() {
+    var packagePath: LocalFilePath? = null
+    var packageJsonPath: LocalFilePath? = null
 }

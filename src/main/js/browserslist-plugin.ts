@@ -1,7 +1,5 @@
 import {getVersion, Version} from './utils'
 
-const browserslist = require('browserslist')
-
 // Your CSS/JS build tool code
 // function process(source, opts) {
 //     const browsers = browserslist(opts.overrideBrowserslist, {
@@ -38,7 +36,7 @@ export class BrowserslistPlugin implements LanguagePlugin {
     private readonly additionalRulesDirectory?: string
 
     constructor(state: PluginState) {
-        // this.browserslistApi = resolveBrowserslist(state.pluginPath)
+        this.browserslistApi = resolveBrowserslist(state.packagePath, state.packageJsonPath)
         // this.additionalRulesDirectory = state.additionalRootDirectory
     }
 
@@ -61,10 +59,8 @@ export class BrowserslistPlugin implements LanguagePlugin {
         const request: ServiceRequest<any> = JSON.parse(p)
         // here we use object -> JSON.stringify, because we need to escape possible error's text symbols
         // and we do not want to duplicate this code
-        writer.write(JSON.stringify({ output: "test" }))
-
         let response: Response = new Response()
-        response.version = // this.browserslistApi.version.raw
+        response.version = "1" // this.browserslistApi.version.raw
         response.command = request.command
         response.request_seq = request.seq
 
@@ -73,6 +69,8 @@ export class BrowserslistPlugin implements LanguagePlugin {
             result = this.process(request)
         } catch (e) {
             response.error = e.toString() + '\n\n' + e.stack
+            response.a = 43
+            response.b = this.browserslistApi.browserslist
             writer.write(JSON.stringify(response))
             return
         }
@@ -87,9 +85,9 @@ export class BrowserslistPlugin implements LanguagePlugin {
         // return this.processLinting(toProcess, this.getOptions(false))
     }
 
-    private getCoverage(toProcess: string[]): { output: number } {
-        const percent = this.browserslistApi.browserslist.coverage(toProcess)
-        return { output: percent }
+    private getCoverage(toProcess: any): { output: number } {
+        const percent = this.browserslistApi.browserslist.coverage(this.browserslistApi.browserslist(toProcess.queries))
+        return { output: {percent, queries: toProcess.queries } }
     }
 
     private getOptions(fix: boolean) {
@@ -128,8 +126,33 @@ export class BrowserslistPlugin implements LanguagePlugin {
     // }
 }
 
-function resolveBrowserslist(packagePath: string): BrowserslistApi {
-    const browserslist: any = require(packagePath)
-    const version = getVersion(browserslist)
+function resolveBrowserslist(packagePath: string, packageJsonPath: string): BrowserslistApi {
+    const browserslist: any = requireInContext(packagePath, packageJsonPath);
+    const version = 1 // getVersion(browserslist)
     return { browserslist, version }
+}
+
+function requireInContext(modulePathToRequire: string, contextPath?: string): any {
+  const contextRequire = getContextRequire(contextPath);
+  return contextRequire(modulePathToRequire);
+}
+
+function getContextRequire(contextPath?: string): NodeRequire {
+  if (contextPath != null) {
+    const module = require('module')
+    if (typeof module.createRequire === 'function') {
+      // https://nodejs.org/api/module.html#module_module_createrequire_filename
+      // Implemented in Yarn PnP: https://next.yarnpkg.com/advanced/pnpapi/#requiremodule
+      return module.createRequire(contextPath);
+    }
+    // noinspection JSDeprecatedSymbols
+    if (typeof module.createRequireFromPath === 'function') {
+      // Use createRequireFromPath (a deprecated version of createRequire) to support Node.js 10.x
+      // noinspection JSDeprecatedSymbols
+      return module.createRequireFromPath(contextPath);
+    }
+    throw Error('Function module.createRequire is unavailable in Node.js ' + process.version +
+      ', Node.js >= 12.2.0 is required')
+  }
+  return require;
 }
