@@ -7,4 +7,7 @@ object BrowserslistIcons {
 
     @JvmField
     val FILE: Icon = IconLoader.getIcon("/icons/browserslist.svg", javaClass)
+
+    @JvmField
+    val WINDOW: Icon = IconLoader.getIcon("/icons/browserslistWindow.svg", javaClass)
 }

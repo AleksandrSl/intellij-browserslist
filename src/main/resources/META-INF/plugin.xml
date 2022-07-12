@@ -51,8 +51,9 @@
         <liveTemplateContext implementation="com.github.aleksandrsl.intellijbrowserslist.BrowserslistContext"/>
         <projectService serviceInterface="com.github.aleksandrsl.intellijbrowserslist.BrowserslistLanguageService"
                         serviceImplementation="com.github.aleksandrsl.intellijbrowserslist.BrowserslistLanguageServiceImpl"/>
-<!--        <editor.linePainter implementation="com.github.aleksandrsl.intellijbrowserslist.BrowserslistLinePainter"/>-->
-        <toolWindow id="Browserslist" secondary="true" icon="AllIcons.General.Modified" anchor="right"
+        <!--        <editor.linePainter implementation="com.github.aleksandrsl.intellijbrowserslist.BrowserslistLinePainter"/>-->
+        <toolWindow id="Browserslist" secondary="true"
+                    icon="com.github.aleksandrsl.intellijbrowserslist.BrowserslistIcons.WINDOW" anchor="right"
                     factoryClass="com.github.aleksandrsl.intellijbrowserslist.window.BrowserslistWindowFactory"/>
     </extensions>
     <actions>
