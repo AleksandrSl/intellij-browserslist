@@ -37,7 +37,7 @@ class BrowserslistLanguageServiceImpl(project: Project) : JSLanguageServiceBase(
 
     override fun coverage(
         filePath: String,
-        browserslistPackage: NodePackage,
+        queries: Array<String>
     ): Future<BrowserslistLanguageService.CoverageResult>? {
         var filePath = filePath
         val process = process
@@ -48,10 +48,14 @@ class BrowserslistLanguageServiceImpl(project: Project) : JSLanguageServiceBase(
             )
         }
         LOG.warn("Before command execution")
-        val command = CoverageCommand(myProject, filePath, browserslistPackage, queries = arrayOf("> 5%"))
+        val command = CoverageCommand(myProject, queries = queries)
         return sendCommand(command) { jsLanguageServiceObject, jsLanguageServiceAnswer ->
             LOG.warn(jsLanguageServiceAnswer.element.printToString())
-            BrowserslistLanguageService.CoverageResult.result(10.0f)
+            BrowserslistLanguageService.CoverageResult.result(
+                jsLanguageServiceAnswer.element.get("body").asJsonObject.get(
+                    "percent"
+                ).asFloat
+            )
         }
     }
 
@@ -138,7 +142,7 @@ class BrowserslistLanguageServiceImpl(project: Project) : JSLanguageServiceBase(
     }
 
     private class CoverageCommand constructor(
-        project: Project, filePath: String, browserslistPackage: NodePackage, val queries: Array<String>
+        project: Project, val queries: Array<String>
     ) : JSLanguageServiceObject, JSLanguageServiceSimpleCommand {
         override fun toSerializableObject(): JSLanguageServiceObject {
             return this

@@ -11,7 +11,7 @@ import java.util.concurrent.Future
 interface BrowserslistLanguageService {
     fun coverage(
         filePath: String,
-        browserslistPackage: NodePackage,
+        queries: Array<String>
     ): Future<CoverageResult>?
 
     class CoverageResult private constructor(val result: Float?, val error: String?) {

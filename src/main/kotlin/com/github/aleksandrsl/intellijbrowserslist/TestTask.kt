@@ -22,7 +22,7 @@ class TestTask private constructor(
     override fun run(indicator: ProgressIndicator) {
         LOG.warn(ideaProject.basePath)
         val browserslistPackage = NodePackage("node_modules/browserslist")
-        val res = BrowserslistLanguageService.getInstance(ideaProject).coverage("", browserslistPackage)?.get()
+        val res = BrowserslistLanguageService.getInstance(ideaProject).coverage("", arrayOf())?.get()
 //        val res = JSLanguageServiceUtil.awaitFuture(
 //            BrowserslistLanguageService.getInstance(ideaProject).coverage("", browserslistPackage)
 //        )
