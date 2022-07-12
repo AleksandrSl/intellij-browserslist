@@ -3,6 +3,8 @@
 # Browserslist Changelog
 
 ## [Unreleased]
+
+## [1.0.0]
 ### Changed
 - Compatible IDEs are changed. I'll need JavaScript plugin later, so only paid IDEs that has it are targeted
 - All tokens are case-insensitive now. `LaSt 8 ChRoMe vERsions` for the world
