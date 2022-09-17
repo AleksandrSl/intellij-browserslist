@@ -35,12 +35,12 @@ class BrowserslistWindow(toolWindow: ToolWindow, private val project: Project) {
         if (!files.isEmpty()) {
             val psiManager: PsiManager = PsiManager.getInstance(project)
             val psiFile = psiManager.findFile(files.toList()[0])
-            val queryExpressions = PsiTreeUtil.findChildrenOfType(psiFile, BrowserslistQueryExpressionImpl::class.java).toList()
-            val queryExpressions2 = PsiTreeUtil.findChildrenOfType(psiFile, BrowserslistQueryExpressionImpl::class.java).toList()
-            val coverage = BrowserslistLanguageService.getInstance(project).coverage("", queryExpressions.map { it.text }.toTypedArray())?.get()?.result
-            LOG.warn("Coverage: $coverage")
-            LOG.warn(queryExpressions.map { it.text }.joinToString(","))
-            LOG.warn(queryExpressions2.map { it.text }.joinToString(","))
+            val queryExpressions =
+                PsiTreeUtil.findChildrenOfType(psiFile, BrowserslistQueryExpression::class.java).toList()
+            val coverage = BrowserslistLanguageService.getInstance(project)
+                .coverage("", queryExpressions.map { it.text }.toTypedArray())?.get()?.result
+            LOG.info("Coverage: $coverage")
+            LOG.info(queryExpressions.map { it.text }.joinToString(","))
             content = panel {
                 row {
                     label("Coverage: $coverage%")
