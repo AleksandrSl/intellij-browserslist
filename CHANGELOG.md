@@ -3,6 +3,9 @@
 # Browserslist Changelog
 
 ## [Unreleased]
+### Fixed
+- Fix browsers lexer. Add forgotten and_qq
+
 
 ## [1.0.0]
 ### Changed
