@@ -3,6 +3,8 @@
 # Browserslist Changelog
 
 ## [Unreleased]
+### Fixed
+- Remove upper IDE version bound
 
 ## [1.0.1]
 ### Fixed
