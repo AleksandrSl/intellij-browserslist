@@ -28,7 +28,7 @@
     FLOAT="regexp:\d*\.?\d+"
   ]
 
-   extends("(.+Query)") = query
+  extends("(.+Query)") = query
 }
 browserslistFile ::= (EOL|COMMENT|queries_|section)*
 
@@ -44,7 +44,8 @@ private singleQuery_ ::= NOT? query
 queryExpression ::= singleQuery_ ((AND|OR) singleQuery_)* {recoverWhile="queryExpression_recover"}
 private queryExpression_recover ::= !(EOL|COMMENT)
 query ::=
-    statsQuery
+    baselineQuery
+    | statsQuery
     | lastQuery
     | timeQuery
     | unreleasedQuery
@@ -63,7 +64,7 @@ unreleasedQuery ::= UNRELEASED TARGET? VERSIONS {pin=1}
 timeQuery ::= timeQueryLast_ | timeQuerySince_
 private timeQueryLast_ ::= (LAST (FLOAT|INTEGER) YEARS) {pin=3}
 private timeQuerySince_ ::= SINCE (TIME|INTEGER) {pin=1}
-supportsQuery ::= SUPPORTS FEATURE {pin=1}
+supportsQuery ::= (PARTIALLY | FULLY)? SUPPORTS FEATURE {pin=2}
 targetQuery ::=
     TARGET (COMPARE? TARGET_VERSION | TARGET_VERSIONS_RANGE)
     | CURRENT_NODE_VERSION TARGET
@@ -72,7 +73,8 @@ targetQuery ::=
 extendsQuery ::= EXTENDS IDENTIFIER {pin=1}
 deadQuery ::= DEAD {pin=1}
 defaultsQuery ::= DEFAULTS {pin=1}
-
+// Newly available should not be supported, what about widely?
+baselineQuery ::= BASELINE (INTEGER | NEWLY AVAILABLE | WIDELY AVAILABLE (ON TIME)?) WITH_DOWNSTREAM? INCLUDING_KAIOS? {pin=1}
 /*
 wrong query - not recognized as query at all, i.e. pinned element is not reached)
 

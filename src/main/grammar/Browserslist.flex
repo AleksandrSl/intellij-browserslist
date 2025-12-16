@@ -65,12 +65,14 @@ phantomjs\s+1.9 phantomjs\s+2.1
 
 // Why not node current? This will be consistent
 // Does phantomjs allowed in other queries? I think not
-// What is TP?
+// What is TP? - technical preview
 
 // It will be generic for now. Find a way to show errors
 TARGET_VERSION=(tp|[\d.]+|all|esr|ESR)
 TARGET_VERSIONS_RANGE={TARGET_VERSION}\s*-\s*{TARGET_VERSION}
 
+WITH_DOWNSTREAM=with\s+downstream
+INCLUDING_KAIOS=including\s+kaios
 
 %state TARGET
 %state SUPPORTS
@@ -92,6 +94,15 @@ or|,                                 { yybegin(YYINITIAL); return BrowserslistTy
     "dead"                           { return BrowserslistTypes.DEAD; }
     "years"                          { return BrowserslistTypes.YEARS; }
     "since"                          { return BrowserslistTypes.SINCE; }
+    "baseline"                       { return BrowserslistTypes.BASELINE; }
+    "available"                      { return BrowserslistTypes.AVAILABLE; }
+    "on"                             { return BrowserslistTypes.ON; }
+    "newly"                          { return BrowserslistTypes.NEWLY; }
+    "widely"                         { return BrowserslistTypes.WIDELY; }
+    {WITH_DOWNSTREAM}                { return BrowserslistTypes.WITH_DOWNSTREAM; }
+    {INCLUDING_KAIOS}                { return BrowserslistTypes.INCLUDING_KAIOS; }
+    "partially"                      { return BrowserslistTypes.PARTIALLY; }
+    "fully"                          { return BrowserslistTypes.FULLY; }
     "supports"                       { yybegin(SUPPORTS); return BrowserslistTypes.SUPPORTS; }
     "cover"                          { return BrowserslistTypes.COVER; }
     "defaults"                       { return BrowserslistTypes.DEFAULTS; }

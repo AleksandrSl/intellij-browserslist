@@ -8,6 +8,7 @@ import com.github.aleksandrsl.intellijbrowserslist.psi.impl.*;
 
 public interface BrowserslistTypes {
 
+  IElementType BASELINE_QUERY = new BrowserslistElementType("BASELINE_QUERY");
   IElementType DEAD_QUERY = new BrowserslistElementType("DEAD_QUERY");
   IElementType DEFAULTS_QUERY = new BrowserslistElementType("DEFAULTS_QUERY");
   IElementType EXTENDS_QUERY = new BrowserslistElementType("EXTENDS_QUERY");
@@ -24,6 +25,8 @@ public interface BrowserslistTypes {
   IElementType UNRELEASED_QUERY = new BrowserslistElementType("UNRELEASED_QUERY");
 
   IElementType AND = new BrowserslistTokenType("AND");
+  IElementType AVAILABLE = new BrowserslistTokenType("AVAILABLE");
+  IElementType BASELINE = new BrowserslistTokenType("BASELINE");
   IElementType COMMENT = new BrowserslistTokenType("COMMENT");
   IElementType COMPARE = new BrowserslistTokenType("COMPARE");
   IElementType COVER = new BrowserslistTokenType("COVER");
@@ -34,15 +37,20 @@ public interface BrowserslistTypes {
   IElementType EXTENDS = new BrowserslistTokenType("EXTENDS");
   IElementType FEATURE = new BrowserslistTokenType("FEATURE");
   IElementType FLOAT = new BrowserslistTokenType("FLOAT");
+  IElementType FULLY = new BrowserslistTokenType("FULLY");
   IElementType IDENTIFIER = new BrowserslistTokenType("IDENTIFIER");
   IElementType IN = new BrowserslistTokenType("in");
+  IElementType INCLUDING_KAIOS = new BrowserslistTokenType("INCLUDING_KAIOS");
   IElementType INTEGER = new BrowserslistTokenType("INTEGER");
   IElementType LAST = new BrowserslistTokenType("last");
   IElementType LBRACKET = new BrowserslistTokenType("[");
   IElementType MAINTAINED_NODE_VERSIONS = new BrowserslistTokenType("MAINTAINED_NODE_VERSIONS");
   IElementType MAJOR = new BrowserslistTokenType("MAJOR");
+  IElementType NEWLY = new BrowserslistTokenType("NEWLY");
   IElementType NOT = new BrowserslistTokenType("NOT");
+  IElementType ON = new BrowserslistTokenType("ON");
   IElementType OR = new BrowserslistTokenType("OR");
+  IElementType PARTIALLY = new BrowserslistTokenType("PARTIALLY");
   IElementType PERCENT = new BrowserslistTokenType("PERCENT");
   IElementType RBRACKET = new BrowserslistTokenType("]");
   IElementType SINCE = new BrowserslistTokenType("SINCE");
@@ -54,12 +62,17 @@ public interface BrowserslistTypes {
   IElementType TIME = new BrowserslistTokenType("TIME");
   IElementType UNRELEASED = new BrowserslistTokenType("UNRELEASED");
   IElementType VERSIONS = new BrowserslistTokenType("VERSIONS");
+  IElementType WIDELY = new BrowserslistTokenType("WIDELY");
+  IElementType WITH_DOWNSTREAM = new BrowserslistTokenType("WITH_DOWNSTREAM");
   IElementType YEARS = new BrowserslistTokenType("years");
 
   class Factory {
     public static PsiElement createElement(ASTNode node) {
       IElementType type = node.getElementType();
-      if (type == DEAD_QUERY) {
+      if (type == BASELINE_QUERY) {
+        return new BrowserslistBaselineQueryImpl(node);
+      }
+      else if (type == DEAD_QUERY) {
         return new BrowserslistDeadQueryImpl(node);
       }
       else if (type == DEFAULTS_QUERY) {

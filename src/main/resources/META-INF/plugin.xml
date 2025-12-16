@@ -48,6 +48,6 @@
                 implementationClass="com.github.aleksandrsl.intellijbrowserslist.BrowserslistBraceMatcher"
         />
         <defaultLiveTemplates file="/liveTemplates/Browserslist.xml" />
-        <liveTemplateContext implementation="com.github.aleksandrsl.intellijbrowserslist.BrowserslistContext" />
+        <liveTemplateContext contextId="Browserslist" implementation="com.github.aleksandrsl.intellijbrowserslist.BrowserslistContext" />
     </extensions>
 </idea-plugin>
