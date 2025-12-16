@@ -11,7 +11,7 @@ import static com.github.aleksandrsl.intellijbrowserslist.psi.BrowserslistTypes.
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.aleksandrsl.intellijbrowserslist.psi.*;
 
-public class BrowserslistQueryImpl extends ASTWrapperPsiElement implements BrowserslistQuery {
+public abstract class BrowserslistQueryImpl extends ASTWrapperPsiElement implements BrowserslistQuery {
 
   public BrowserslistQueryImpl(@NotNull ASTNode node) {
     super(node);
