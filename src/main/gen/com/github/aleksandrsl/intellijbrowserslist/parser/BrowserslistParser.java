@@ -36,10 +36,80 @@ public class BrowserslistParser implements PsiParser, LightPsiParser {
   }
 
   public static final TokenSet[] EXTENDS_SETS_ = new TokenSet[] {
-    create_token_set_(DEAD_QUERY, DEFAULTS_QUERY, EXTENDS_QUERY, LAST_QUERY,
-      QUERY, STATS_QUERY, SUPPORTS_QUERY, TARGET_QUERY,
-      TIME_QUERY, UNRELEASED_QUERY),
+    create_token_set_(BASELINE_QUERY, DEAD_QUERY, DEFAULTS_QUERY, EXTENDS_QUERY,
+      LAST_QUERY, QUERY, STATS_QUERY, SUPPORTS_QUERY,
+      TARGET_QUERY, TIME_QUERY, UNRELEASED_QUERY),
   };
+
+  /* ********************************************************** */
+  // BASELINE (INTEGER | NEWLY AVAILABLE | WIDELY AVAILABLE (ON TIME)?) WITH_DOWNSTREAM? INCLUDING_KAIOS?
+  public static boolean baselineQuery(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "baselineQuery")) return false;
+    if (!nextTokenIs(builder_, BASELINE)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, BASELINE_QUERY, null);
+    result_ = consumeToken(builder_, BASELINE);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && report_error_(builder_, baselineQuery_1(builder_, level_ + 1));
+    result_ = pinned_ && report_error_(builder_, baselineQuery_2(builder_, level_ + 1)) && result_;
+    result_ = pinned_ && baselineQuery_3(builder_, level_ + 1) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
+  }
+
+  // INTEGER | NEWLY AVAILABLE | WIDELY AVAILABLE (ON TIME)?
+  private static boolean baselineQuery_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "baselineQuery_1")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, INTEGER);
+    if (!result_) result_ = parseTokens(builder_, 0, NEWLY, AVAILABLE);
+    if (!result_) result_ = baselineQuery_1_2(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
+  }
+
+  // WIDELY AVAILABLE (ON TIME)?
+  private static boolean baselineQuery_1_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "baselineQuery_1_2")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeTokens(builder_, 0, WIDELY, AVAILABLE);
+    result_ = result_ && baselineQuery_1_2_2(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
+  }
+
+  // (ON TIME)?
+  private static boolean baselineQuery_1_2_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "baselineQuery_1_2_2")) return false;
+    baselineQuery_1_2_2_0(builder_, level_ + 1);
+    return true;
+  }
+
+  // ON TIME
+  private static boolean baselineQuery_1_2_2_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "baselineQuery_1_2_2_0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeTokens(builder_, 0, ON, TIME);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
+  }
+
+  // WITH_DOWNSTREAM?
+  private static boolean baselineQuery_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "baselineQuery_2")) return false;
+    consumeToken(builder_, WITH_DOWNSTREAM);
+    return true;
+  }
+
+  // INCLUDING_KAIOS?
+  private static boolean baselineQuery_3(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "baselineQuery_3")) return false;
+    consumeToken(builder_, INCLUDING_KAIOS);
+    return true;
+  }
 
   /* ********************************************************** */
   // (EOL|COMMENT|queries_|section)*
@@ -198,7 +268,8 @@ public class BrowserslistParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // statsQuery
+  // baselineQuery
+  //     | statsQuery
   //     | lastQuery
   //     | timeQuery
   //     | unreleasedQuery
@@ -211,7 +282,8 @@ public class BrowserslistParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(builder_, level_, "query")) return false;
     boolean result_;
     Marker marker_ = enter_section_(builder_, level_, _COLLAPSE_, QUERY, "<query>");
-    result_ = statsQuery(builder_, level_ + 1);
+    result_ = baselineQuery(builder_, level_ + 1);
+    if (!result_) result_ = statsQuery(builder_, level_ + 1);
     if (!result_) result_ = lastQuery(builder_, level_ + 1);
     if (!result_) result_ = timeQuery(builder_, level_ + 1);
     if (!result_) result_ = unreleasedQuery(builder_, level_ + 1);
@@ -491,16 +563,32 @@ public class BrowserslistParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // SUPPORTS FEATURE
+  // (PARTIALLY | FULLY)? SUPPORTS FEATURE
   public static boolean supportsQuery(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "supportsQuery")) return false;
-    if (!nextTokenIs(builder_, SUPPORTS)) return false;
     boolean result_, pinned_;
-    Marker marker_ = enter_section_(builder_, level_, _NONE_, SUPPORTS_QUERY, null);
-    result_ = consumeTokens(builder_, 1, SUPPORTS, FEATURE);
-    pinned_ = result_; // pin = 1
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, SUPPORTS_QUERY, "<supports query>");
+    result_ = supportsQuery_0(builder_, level_ + 1);
+    result_ = result_ && consumeTokens(builder_, 1, SUPPORTS, FEATURE);
+    pinned_ = result_; // pin = 2
     exit_section_(builder_, level_, marker_, result_, pinned_, null);
     return result_ || pinned_;
+  }
+
+  // (PARTIALLY | FULLY)?
+  private static boolean supportsQuery_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "supportsQuery_0")) return false;
+    supportsQuery_0_0(builder_, level_ + 1);
+    return true;
+  }
+
+  // PARTIALLY | FULLY
+  private static boolean supportsQuery_0_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "supportsQuery_0_0")) return false;
+    boolean result_;
+    result_ = consumeToken(builder_, PARTIALLY);
+    if (!result_) result_ = consumeToken(builder_, FULLY);
+    return result_;
   }
 
   /* ********************************************************** */

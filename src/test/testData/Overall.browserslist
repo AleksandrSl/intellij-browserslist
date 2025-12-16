@@ -66,3 +66,28 @@ since 2015-03-10
 unreleased versions or unreleased Chrome versions
 # exclude browsers selected by previous queries.
 not ie <= 8
+
+# 4.20.0
+last 2 node versions and last 2 node major versions
+
+# 4.22.0
+fully supports rtcpeerconnection
+partially supports rtcpeerconnection
+
+# 4.25.0
+cover 95% in browserslist-config-mycompany stats
+
+# 4.26.0
+baseline 2024
+baseline widely available
+baseline newly available
+baseline 2020 with downstream including kaios
+baseline widely available on 2024-06-06
+# This one is an error - baseline newly available on 2022-07-01
+
+# 4.48.0
+firefox >= esr
+
+# random queries I found in tests that I think I may have missed
+last 1 Baidu version and not <2% in AT
+electron 4.0.4
