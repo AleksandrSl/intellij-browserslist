@@ -84,9 +84,6 @@ public interface BrowserslistTypes {
       else if (type == LAST_QUERY) {
         return new BrowserslistLastQueryImpl(node);
       }
-      else if (type == QUERY) {
-        return new BrowserslistQueryImpl(node);
-      }
       else if (type == QUERY_EXPRESSION) {
         return new BrowserslistQueryExpressionImpl(node);
       }
