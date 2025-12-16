@@ -1,27 +1,8 @@
-import com.github.aleksandrsl.intellijbrowserslist.BrowserslistParserDefinition
-import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiElementVisitor
-import com.intellij.psi.PsiErrorElement
 import com.intellij.psi.PsiFile
-import com.intellij.testFramework.ParsingTestCase
 
-class BrowserslistParsingTest: ParsingTestCase("", "browserslist", BrowserslistParserDefinition()) {
+class BrowserslistParsingTest : BrowserslistParsingBaseTestCase() {
     fun testOverall() {
         doTest(true)
-    }
-
-    private fun hasErrors(file: PsiFile): Boolean {
-        var hasErrors = false
-        file.accept(object : PsiElementVisitor() {
-            override fun visitElement(element: PsiElement) {
-                if (element is PsiErrorElement) {
-                    hasErrors = true
-                    return
-                }
-                element.acceptChildren(this)
-            }
-        })
-        return hasErrors
     }
 
     override fun checkResult(targetDataName: String, file: PsiFile) {
@@ -33,20 +14,5 @@ class BrowserslistParsingTest: ParsingTestCase("", "browserslist", BrowserslistP
         check(!hasErrors(file)) {
             "Valid file was parsed with errors: ${file.name}"
         }
-    }
-
-    /**
-     * @return path to test data file directory relative to root of this module.
-     */
-    override fun getTestDataPath(): String {
-        return "src/test/testData"
-    }
-
-    override fun skipSpaces(): Boolean {
-        return false
-    }
-
-    override fun includeRanges(): Boolean {
-        return true
     }
 }
