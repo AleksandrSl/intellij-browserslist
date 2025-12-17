@@ -77,7 +77,6 @@ targetQuery ::=
 extendsQuery ::= EXTENDS IDENTIFIER {pin=1}
 deadQuery ::= DEAD {pin=1}
 defaultsQuery ::= DEFAULTS {pin=1}
-// Newly available should not be supported, what about widely?
 baselineQuery ::= BASELINE (INTEGER | NEWLY AVAILABLE | WIDELY AVAILABLE (ON TIME)?) WITH_DOWNSTREAM? INCLUDING_KAIOS? {pin=1}
 /*
 wrong query - not recognized as query at all, i.e. pinned element is not reached)
