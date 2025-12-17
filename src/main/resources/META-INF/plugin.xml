@@ -7,6 +7,7 @@
     <!-- https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
     <depends>JavaScript</depends>
+    <depends>org.intellij.intelliLang</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <fileType name="Browserslist File"
@@ -47,7 +48,12 @@
                 language="browserslist"
                 implementationClass="com.github.aleksandrsl.intellijbrowserslist.BrowserslistBraceMatcher"
         />
-        <defaultLiveTemplates file="/liveTemplates/Browserslist.xml" />
-        <liveTemplateContext contextId="Browserslist" implementation="com.github.aleksandrsl.intellijbrowserslist.BrowserslistContext" />
+        <defaultLiveTemplates file="/liveTemplates/Browserslist.xml"/>
+        <liveTemplateContext contextId="Browserslist"
+                             implementation="com.github.aleksandrsl.intellijbrowserslist.BrowserslistContext"/>
+        <languageInjectionContributor language="JSON"
+                                      implementationClass="com.github.aleksandrsl.intellijbrowserslist.BrowserslistInjector"/>
+        <languageInjectionPerformer language="JSON"
+                                    implementationClass="com.github.aleksandrsl.intellijbrowserslist.BrowserslistInjectionPerformer"/>
     </extensions>
 </idea-plugin>
