@@ -1,6 +1,8 @@
-import com.github.aleksandrsl.intellijbrowserslist.psi.BrowserslistFile
+package parser
+
 import com.github.aleksandrsl.intellijbrowserslist.psi.BrowserslistQuery
 import com.github.aleksandrsl.intellijbrowserslist.psi.BrowserslistQueryExpression
+import com.github.aleksandrsl.intellijbrowserslist.psi.BrowserslistSimpleExpression
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.PsiErrorElement
@@ -10,8 +12,7 @@ import java.io.IOException
 
 class LuauParserRecoveryTest : BrowserslistParsingBaseTestCase("recovery") {
 
-    // This is a bit of a happy scenario, since here stats query can pin on the first element; otherwise the base we can recover is the expression
-    fun testQuery() = doTest(BrowserslistQuery::class.java)
+    fun testQuery() = doTest(BrowserslistSimpleExpression::class.java)
     fun testQueryExpression() = doTest(BrowserslistQueryExpression::class.java)
 
     private fun doTest(target: Class<out PsiElement>) {

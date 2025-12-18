@@ -5,12 +5,15 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface BrowserslistSection extends PsiElement {
+public interface BrowserslistBinaryExpression extends BrowserslistQueryExpression {
 
   @NotNull
   List<BrowserslistQueryExpression> getQueryExpressionList();
 
+  @NotNull
+  BrowserslistQueryExpression getLeft();
+
   @Nullable
-  BrowserslistSectionHeader getSectionHeader();
+  BrowserslistQueryExpression getRight();
 
 }

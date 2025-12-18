@@ -9,6 +9,8 @@
     <depends>JavaScript</depends>
     <depends>org.intellij.intelliLang</depends>
 
+    <resource-bundle>messages.Browserslist</resource-bundle>
+
     <extensions defaultExtensionNs="com.intellij">
         <fileType name="Browserslist File"
                   implementationClass="com.github.aleksandrsl.intellijbrowserslist.BrowserslistFileType"
@@ -55,5 +57,12 @@
                                       implementationClass="com.github.aleksandrsl.intellijbrowserslist.BrowserslistInjector"/>
         <languageInjectionPerformer language="JSON"
                                     implementationClass="com.github.aleksandrsl.intellijbrowserslist.BrowserslistInjectionPerformer"/>
+        <localInspection language="browserslist"
+                         level="WARNING"
+                         key="browserslist.inspection.missed.not.dead.problem.descriptor"
+                         enabledByDefault="true"
+                         groupKey="browserslist.files.inspection.group.display.name"
+                         bundle="messages.Browserslist"
+                         implementationClass="com.github.aleksandrsl.intellijbrowserslist.inspections.BrowserslistMissingNotDeadInspection"/>
     </extensions>
 </idea-plugin>

@@ -41,8 +41,8 @@ dependencies {
     // IntelliJ Platform Gradle Plugin Dependencies Extension - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-dependencies-extension.html
     intellijPlatform {
         // Comment this if you want to run webstorm. But at the same time webstorm fails to run tests.
-        intellijIdea(properties("platformVersion"))
-
+//        intellijIdea(properties("platformVersion"))
+        webstorm("2024.2")
         // Plugin Dependencies. Uses `platformBundledPlugins` property from the gradle.properties file for bundled IntelliJ Platform plugins.
         bundledPlugins(properties("platformBundledPlugins").map { it.split(',') })
 

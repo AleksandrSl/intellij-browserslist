@@ -7,8 +7,16 @@ import com.intellij.psi.PsiElement;
 
 public class BrowserslistVisitor extends PsiElementVisitor {
 
+  public void visitAndExpression(@NotNull BrowserslistAndExpression o) {
+    visitBinaryExpression(o);
+  }
+
   public void visitBaselineQuery(@NotNull BrowserslistBaselineQuery o) {
     visitQuery(o);
+  }
+
+  public void visitBinaryExpression(@NotNull BrowserslistBinaryExpression o) {
+    visitQueryExpression(o);
   }
 
   public void visitDeadQuery(@NotNull BrowserslistDeadQuery o) {
@@ -23,8 +31,24 @@ public class BrowserslistVisitor extends PsiElementVisitor {
     visitQuery(o);
   }
 
+  public void visitFullSection(@NotNull BrowserslistFullSection o) {
+    visitSection(o);
+  }
+
+  public void visitHeadlessSection(@NotNull BrowserslistHeadlessSection o) {
+    visitSection(o);
+  }
+
   public void visitLastQuery(@NotNull BrowserslistLastQuery o) {
     visitQuery(o);
+  }
+
+  public void visitNotExpression(@NotNull BrowserslistNotExpression o) {
+    visitQueryExpression(o);
+  }
+
+  public void visitOrExpression(@NotNull BrowserslistOrExpression o) {
+    visitBinaryExpression(o);
   }
 
   public void visitQuery(@NotNull BrowserslistQuery o) {
@@ -43,8 +67,8 @@ public class BrowserslistVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitSectionQueries(@NotNull BrowserslistSectionQueries o) {
-    visitPsiElement(o);
+  public void visitSimpleExpression(@NotNull BrowserslistSimpleExpression o) {
+    visitQueryExpression(o);
   }
 
   public void visitStatsQuery(@NotNull BrowserslistStatsQuery o) {

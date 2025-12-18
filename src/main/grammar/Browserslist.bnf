@@ -26,26 +26,43 @@
     VERSIONS="regexp:versions?"
     YEARS="years"
     FLOAT="regexp:\d*\.?\d+"
+    AND="and"
   ]
 
   extends("(.+Query)") = query
-    // Inspired by Rust. Recover statements with fast consume don't affect error messages anyway
-    // and expression with fast consume is a standard practice
-    consumeTokenMethod("((?!.*_with_recover).*_recover)")="consumeTokenFast"
+  // Inspired by Rust. Recover statements with fast consume don't affect error messages anyway
+  // and expression with fast consume is a standard practice
+  consumeTokenMethod("((?!.*_with_recover).*_recover)")="consumeTokenFast"
 }
-browserslistFile ::= (EOL|COMMENT|queries_|section)*
-
-section ::= sectionHeader COMMENT? (EOL sectionQueries)? {pin=1}
+browserslistFile ::= (EOL|COMMENT| fullSection | headlessSection)*
+fake section ::= sectionHeader? sectionQueries?
+fullSection ::= sectionHeader COMMENT? (EOL sectionQueries)? {pin=1 extends=section}
+headlessSection ::= sectionQueries {extends=section}
 sectionHeader ::= '[' IDENTIFIER+ ']' {pin=1 recoverWhile="sectionHeader_recover"}
 private sectionHeader_recover ::= !(COMMENT | EOL)
-sectionQueries ::= (EOL|COMMENT)* queries_
+private sectionQueries ::= (EOL|COMMENT)* queries_
 
 // Could I not include COMMENT or EOL if there are no queries after it?
 private queries_ ::= !(EOL | COMMENT | '[' | <<eof>>) queryExpression (EOL queryExpression|COMMENT|EOL !'[')* {pin = 1}
-// Didn't come up with the better name
-private singleQuery_ ::= NOT? query_with_recover
-queryExpression ::= singleQuery_ ((AND|OR) singleQuery_)* {recoverWhile="queryExpression_recover"}
-private queryExpression_recover ::= !(EOL|COMMENT)
+
+queryExpression ::=
+ orExpression
+ | andExpression
+ | notExpression
+ | simpleExpression
+
+fake binaryExpression ::= queryExpression (AND | OR) queryExpression {
+  methods=[
+    left="/queryExpression[0]" // will be @NotNull as far as we have operator in the expression
+    right="/queryExpression[1]" // "expr" is the name of the auto-calculated child property (singular or list)
+  ]
+  extends = queryExpression
+}
+
+orExpression ::= queryExpression OR queryExpression { extends=binaryExpression }
+andExpression ::= queryExpression AND queryExpression { extends=binaryExpression }
+notExpression ::= NOT simpleExpression { extends=queryExpression }
+simpleExpression ::= query_with_recover { extends=queryExpression }
 
 private query_with_recover ::= !(EOL | COMMENT | OR | AND | '[' | <<eof>>) query {pin=1 recoverWhile="query_recover"}
 query ::=

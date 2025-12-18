@@ -8,17 +8,17 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static com.github.aleksandrsl.intellijbrowserslist.psi.BrowserslistTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.aleksandrsl.intellijbrowserslist.psi.*;
 
-public class BrowserslistSectionImpl extends ASTWrapperPsiElement implements BrowserslistSection {
+public class BrowserslistBinaryExpressionImpl extends BrowserslistQueryExpressionImpl implements BrowserslistBinaryExpression {
 
-  public BrowserslistSectionImpl(@NotNull ASTNode node) {
+  public BrowserslistBinaryExpressionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  @Override
   public void accept(@NotNull BrowserslistVisitor visitor) {
-    visitor.visitSection(this);
+    visitor.visitBinaryExpression(this);
   }
 
   @Override
@@ -34,9 +34,17 @@ public class BrowserslistSectionImpl extends ASTWrapperPsiElement implements Bro
   }
 
   @Override
+  @NotNull
+  public BrowserslistQueryExpression getLeft() {
+    List<BrowserslistQueryExpression> p1 = getQueryExpressionList();
+    return p1.get(0);
+  }
+
+  @Override
   @Nullable
-  public BrowserslistSectionHeader getSectionHeader() {
-    return findChildByClass(BrowserslistSectionHeader.class);
+  public BrowserslistQueryExpression getRight() {
+    List<BrowserslistQueryExpression> p1 = getQueryExpressionList();
+    return p1.size() < 2 ? null : p1.get(1);
   }
 
 }

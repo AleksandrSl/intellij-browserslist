@@ -1,3 +1,5 @@
+package parser
+
 import com.intellij.psi.PsiFile
 
 class BrowserslistParsingTest : BrowserslistParsingBaseTestCase() {
