@@ -1,0 +1,7 @@
+[production]
+maintained node versions and node 14.0
+last 2 versions
+
+[modern]
+maintained node versions and node 14.0
+last <caret>2 versions
