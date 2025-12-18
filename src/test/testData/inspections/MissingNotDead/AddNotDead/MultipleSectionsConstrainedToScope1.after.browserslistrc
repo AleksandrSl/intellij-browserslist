@@ -1,0 +1,8 @@
+[production]
+maintained node versions and node 14.0
+last 2 versions
+not dead
+
+[modern]
+maintained node versions and node 16.0
+last 2 versions

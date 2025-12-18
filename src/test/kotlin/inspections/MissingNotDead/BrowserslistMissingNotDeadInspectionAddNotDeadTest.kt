@@ -15,4 +15,7 @@ class BrowserslistMissingNotDeadInspectionAddNotDeadTest : BaseInspectionQuickFi
     fun testSingleExpression() = doTest()
     fun testMultipleExpressions() = doTest()
     fun testMultipleNotDead() = doTest()
+    fun testMultipleSectionsConstrainedToScope1() = doTest()
+    fun testMultipleSectionsConstrainedToScope2() = doTest()
+    fun testMultipleSectionsConstrainedToScope3() = doTest()
 }

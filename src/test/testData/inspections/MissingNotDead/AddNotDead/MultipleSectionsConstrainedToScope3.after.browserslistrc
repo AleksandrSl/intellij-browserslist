@@ -1,0 +1,10 @@
+[production]
+maintained node versions and node 14.0
+# We still should have an error here, the second section does not affect the frist
+last 2 versions
+not dead
+
+[modern]
+maintained node versions and node 16.0
+last 2 versions
+not dead
