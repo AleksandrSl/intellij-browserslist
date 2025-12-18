@@ -8,17 +8,17 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static com.github.aleksandrsl.intellijbrowserslist.psi.BrowserslistTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.aleksandrsl.intellijbrowserslist.psi.*;
 
-public abstract class BrowserslistQueryExpressionImpl extends ASTWrapperPsiElement implements BrowserslistQueryExpression {
+public class BrowserslistOrExpressionImpl extends BrowserslistBinaryExpressionImpl implements BrowserslistOrExpression {
 
-  public BrowserslistQueryExpressionImpl(@NotNull ASTNode node) {
+  public BrowserslistOrExpressionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  @Override
   public void accept(@NotNull BrowserslistVisitor visitor) {
-    visitor.visitQueryExpression(this);
+    visitor.visitOrExpression(this);
   }
 
   @Override

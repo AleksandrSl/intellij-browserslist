@@ -23,7 +23,7 @@ import com.intellij.psi.TokenType;
 EOL=\R
 WHITE_SPACE=[\ \t\f]
 IDENTIFIER=[\S--,\]\[>=<]+
-END_OF_LINE_COMMENT=("#")[^\r\n]*
+END_OF_LINE_COMMENT=#[^\r\n]*
 COMPARE=>=?|<=?
 // Maybe it's not for lexer and parser to discern integer from float
 INTEGER=\d+

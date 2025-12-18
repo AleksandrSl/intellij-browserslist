@@ -5,9 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface BrowserslistSectionQueries extends PsiElement {
+public interface BrowserslistFullSection extends BrowserslistSection {
 
   @NotNull
-  List<BrowserslistQueryExpression> getQueryExpressionList();
+  BrowserslistSectionHeader getSectionHeader();
 
 }

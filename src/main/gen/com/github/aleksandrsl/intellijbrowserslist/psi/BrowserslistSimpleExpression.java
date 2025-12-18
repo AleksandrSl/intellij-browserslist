@@ -5,6 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface BrowserslistQueryExpression extends PsiElement {
+public interface BrowserslistSimpleExpression extends BrowserslistQueryExpression {
+
+  @Nullable
+  BrowserslistQuery getQuery();
 
 }

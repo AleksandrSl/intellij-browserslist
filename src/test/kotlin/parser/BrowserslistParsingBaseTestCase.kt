@@ -1,3 +1,5 @@
+package parser
+
 import com.github.aleksandrsl.intellijbrowserslist.BrowserslistParserDefinition
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiElementVisitor

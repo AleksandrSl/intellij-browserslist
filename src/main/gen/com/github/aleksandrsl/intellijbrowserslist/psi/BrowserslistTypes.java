@@ -8,23 +8,27 @@ import com.github.aleksandrsl.intellijbrowserslist.psi.impl.*;
 
 public interface BrowserslistTypes {
 
+  IElementType AND_EXPRESSION = new BrowserslistElementType("AND_EXPRESSION");
   IElementType BASELINE_QUERY = new BrowserslistElementType("BASELINE_QUERY");
   IElementType DEAD_QUERY = new BrowserslistElementType("DEAD_QUERY");
   IElementType DEFAULTS_QUERY = new BrowserslistElementType("DEFAULTS_QUERY");
   IElementType EXTENDS_QUERY = new BrowserslistElementType("EXTENDS_QUERY");
+  IElementType FULL_SECTION = new BrowserslistElementType("FULL_SECTION");
+  IElementType HEADLESS_SECTION = new BrowserslistElementType("HEADLESS_SECTION");
   IElementType LAST_QUERY = new BrowserslistElementType("LAST_QUERY");
+  IElementType NOT_EXPRESSION = new BrowserslistElementType("NOT_EXPRESSION");
+  IElementType OR_EXPRESSION = new BrowserslistElementType("OR_EXPRESSION");
   IElementType QUERY = new BrowserslistElementType("QUERY");
   IElementType QUERY_EXPRESSION = new BrowserslistElementType("QUERY_EXPRESSION");
-  IElementType SECTION = new BrowserslistElementType("SECTION");
   IElementType SECTION_HEADER = new BrowserslistElementType("SECTION_HEADER");
-  IElementType SECTION_QUERIES = new BrowserslistElementType("SECTION_QUERIES");
+  IElementType SIMPLE_EXPRESSION = new BrowserslistElementType("SIMPLE_EXPRESSION");
   IElementType STATS_QUERY = new BrowserslistElementType("STATS_QUERY");
   IElementType SUPPORTS_QUERY = new BrowserslistElementType("SUPPORTS_QUERY");
   IElementType TARGET_QUERY = new BrowserslistElementType("TARGET_QUERY");
   IElementType TIME_QUERY = new BrowserslistElementType("TIME_QUERY");
   IElementType UNRELEASED_QUERY = new BrowserslistElementType("UNRELEASED_QUERY");
 
-  IElementType AND = new BrowserslistTokenType("AND");
+  IElementType AND = new BrowserslistTokenType("and");
   IElementType AVAILABLE = new BrowserslistTokenType("AVAILABLE");
   IElementType BASELINE = new BrowserslistTokenType("BASELINE");
   IElementType COMMENT = new BrowserslistTokenType("COMMENT");
@@ -69,7 +73,10 @@ public interface BrowserslistTypes {
   class Factory {
     public static PsiElement createElement(ASTNode node) {
       IElementType type = node.getElementType();
-      if (type == BASELINE_QUERY) {
+      if (type == AND_EXPRESSION) {
+        return new BrowserslistAndExpressionImpl(node);
+      }
+      else if (type == BASELINE_QUERY) {
         return new BrowserslistBaselineQueryImpl(node);
       }
       else if (type == DEAD_QUERY) {
@@ -81,20 +88,26 @@ public interface BrowserslistTypes {
       else if (type == EXTENDS_QUERY) {
         return new BrowserslistExtendsQueryImpl(node);
       }
+      else if (type == FULL_SECTION) {
+        return new BrowserslistFullSectionImpl(node);
+      }
+      else if (type == HEADLESS_SECTION) {
+        return new BrowserslistHeadlessSectionImpl(node);
+      }
       else if (type == LAST_QUERY) {
         return new BrowserslistLastQueryImpl(node);
       }
-      else if (type == QUERY_EXPRESSION) {
-        return new BrowserslistQueryExpressionImpl(node);
+      else if (type == NOT_EXPRESSION) {
+        return new BrowserslistNotExpressionImpl(node);
       }
-      else if (type == SECTION) {
-        return new BrowserslistSectionImpl(node);
+      else if (type == OR_EXPRESSION) {
+        return new BrowserslistOrExpressionImpl(node);
       }
       else if (type == SECTION_HEADER) {
         return new BrowserslistSectionHeaderImpl(node);
       }
-      else if (type == SECTION_QUERIES) {
-        return new BrowserslistSectionQueriesImpl(node);
+      else if (type == SIMPLE_EXPRESSION) {
+        return new BrowserslistSimpleExpressionImpl(node);
       }
       else if (type == STATS_QUERY) {
         return new BrowserslistStatsQueryImpl(node);

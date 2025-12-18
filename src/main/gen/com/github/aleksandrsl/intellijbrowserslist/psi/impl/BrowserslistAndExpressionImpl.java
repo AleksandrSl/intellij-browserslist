@@ -8,29 +8,23 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static com.github.aleksandrsl.intellijbrowserslist.psi.BrowserslistTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.aleksandrsl.intellijbrowserslist.psi.*;
 
-public class BrowserslistSectionQueriesImpl extends ASTWrapperPsiElement implements BrowserslistSectionQueries {
+public class BrowserslistAndExpressionImpl extends BrowserslistBinaryExpressionImpl implements BrowserslistAndExpression {
 
-  public BrowserslistSectionQueriesImpl(@NotNull ASTNode node) {
+  public BrowserslistAndExpressionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  @Override
   public void accept(@NotNull BrowserslistVisitor visitor) {
-    visitor.visitSectionQueries(this);
+    visitor.visitAndExpression(this);
   }
 
   @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof BrowserslistVisitor) accept((BrowserslistVisitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  @NotNull
-  public List<BrowserslistQueryExpression> getQueryExpressionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, BrowserslistQueryExpression.class);
   }
 
 }
