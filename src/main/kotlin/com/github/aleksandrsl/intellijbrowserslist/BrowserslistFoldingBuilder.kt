@@ -11,8 +11,6 @@ import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
-import com.intellij.psi.util.endOffset
-import com.intellij.psi.util.startOffset
 
 
 class BrowserslistFoldingBuilder : FoldingBuilderEx(), DumbAware {
@@ -25,8 +23,8 @@ class BrowserslistFoldingBuilder : FoldingBuilderEx(), DumbAware {
         }
 
         return sections.mapNotNull { section ->
-            val startOffset = section.queryExpressionList.first().startOffset
-            val endOffset = section.queryExpressionList.last().endOffset
+            val startOffset = section.queryExpressionList.first().textRange.startOffset
+            val endOffset = section.queryExpressionList.last().textRange.endOffset
             if (endOffset > startOffset) {
                 FoldingDescriptor(
                     section.node,
