@@ -121,7 +121,7 @@ class BrowserslistService(private val project: Project, cs: CoroutineScope) {
             fileCache = ConcurrentHashMap()
             cache.putIfAbsent(file.path, fileCache)
         }
-        sections.filter { section ->
+        sections.distinctBy { it.name }.filter { section ->
             val cached = fileCache[section.name]
             cached == null || cached.queries != section.queries
         }
