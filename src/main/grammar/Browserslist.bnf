@@ -1,5 +1,4 @@
 {
-  generate=[java="8"]
   parserClass="com.github.aleksandrsl.intellijbrowserslist.parser.BrowserslistParser"
   extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
 
@@ -7,6 +6,7 @@
   psiImplClassSuffix="Impl"
   psiPackage="com.github.aleksandrsl.intellijbrowserslist.psi"
   psiImplPackage="com.github.aleksandrsl.intellijbrowserslist.psi.impl"
+  psiImplUtilClass="com.github.aleksandrsl.intellijbrowserslist.psi.BrowserslistPsiImplUtilKt"
 
   elementTypeHolderClass="com.github.aleksandrsl.intellijbrowserslist.psi.BrowserslistTypes"
   elementTypeClass="com.github.aleksandrsl.intellijbrowserslist.psi.BrowserslistElementType"
@@ -35,10 +35,11 @@
   consumeTokenMethod("((?!.*_with_recover).*_recover)")="consumeTokenFast"
 }
 browserslistFile ::= (EOL|COMMENT| fullSection | headlessSection)*
-fake section ::= sectionHeader? sectionQueries?
+fake section ::= sectionHeader? sectionQueries? {methods=[getSectionName]}
 fullSection ::= sectionHeader COMMENT? (EOL sectionQueries)? {pin=1 extends=section}
 headlessSection ::= sectionQueries {extends=section}
-sectionHeader ::= '[' IDENTIFIER+ ']' {pin=1 recoverWhile="sectionHeader_recover"}
+// Cannot use name, because it clashes with a built it method
+sectionHeader ::= '[' IDENTIFIER ']' {pin=1 recoverWhile="sectionHeader_recover" methods=[nameElement="IDENTIFIER"]}
 private sectionHeader_recover ::= !(COMMENT | EOL)
 private sectionQueries ::= (EOL|COMMENT)* queries_
 

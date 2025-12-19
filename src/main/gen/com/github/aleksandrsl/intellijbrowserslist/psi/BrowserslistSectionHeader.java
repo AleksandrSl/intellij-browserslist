@@ -7,4 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface BrowserslistSectionHeader extends PsiElement {
 
+  @Nullable
+  PsiElement getNameElement();
+
 }

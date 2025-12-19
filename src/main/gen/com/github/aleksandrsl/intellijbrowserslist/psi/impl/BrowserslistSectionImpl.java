@@ -39,4 +39,9 @@ public class BrowserslistSectionImpl extends ASTWrapperPsiElement implements Bro
     return findChildByClass(BrowserslistSectionHeader.class);
   }
 
+  @Override
+  public @NotNull String getSectionName() {
+    return BrowserslistPsiImplUtilKt.getSectionName(this);
+  }
+
 }
