@@ -17,8 +17,9 @@ fun collectQueriesBySection(file: BrowserslistFile): List<Section> {
 
     return sections.mapNotNull { section ->
         val queries = joinQueries(section.queryExpressionList.map { it.text })
-        // TODO (AleksandrSl 19/12/2025): If there are same named section we will calculate results incorrectly
-        // TODO (AleksandrSl 19/12/2025): Support custom stats
+        // TODO (AleksandrSl 19/12/2025): If there are same named section
+        //  we may calculate results incorrectly - https://github.com/AleksandrSl/intellij-browserslist/issues/25
+        // There is a deduplication being done currently
         if (queries.isBlank()) null else Section(
             SectionName(section.sectionName),
             queries,
