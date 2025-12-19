@@ -12,6 +12,8 @@
   elementTypeClass="com.github.aleksandrsl.intellijbrowserslist.psi.BrowserslistElementType"
   tokenTypeClass="com.github.aleksandrsl.intellijbrowserslist.psi.BrowserslistTokenType"
 
+  parserUtilClass="com.github.aleksandrsl.intellijbrowserslist.parser.BrowserslistParserUtil"
+
   tokens=[
     EOL="regexp:\R"
     LBRACKET="["
@@ -75,9 +77,10 @@ query ::=
     | defaultsQuery
 private query_recover ::= !(EOL|COMMENT|OR|AND|'[')
 
+
 private version ::= 'version' | 'versions'
 // TODO: Cover in custom stats like `cover 5% in browserslist-config-mycompany stats` should be supported?
-statsQuery ::= (COMPARE|'cover') PERCENT ('in' IDENTIFIER 'stats'?)? {pin=1}
+statsQuery ::= (COMPARE|'cover') PERCENT ('in' <<parseStats>>)? {pin=1}
 lastQuery ::= 'last' INTEGER TARGET? 'major'? version
 unreleasedQuery ::= 'unreleased' TARGET? version {pin=1}
 timeQuery ::= timeQueryLast_ | timeQuerySince_

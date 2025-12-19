@@ -4,7 +4,7 @@ package com.github.aleksandrsl.intellijbrowserslist.parser;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiBuilder.Marker;
 import static com.github.aleksandrsl.intellijbrowserslist.psi.BrowserslistTypes.*;
-import static com.intellij.lang.parser.GeneratedParserUtilBase.*;
+import static com.github.aleksandrsl.intellijbrowserslist.parser.BrowserslistParserUtil.*;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.tree.TokenSet;
@@ -533,11 +533,11 @@ public class BrowserslistParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (COMPARE|'cover') PERCENT ('in' IDENTIFIER 'stats'?)?
+  // (COMPARE|'cover') PERCENT ('in' <<parseStats>>)?
   public static boolean statsQuery(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "statsQuery")) return false;
     boolean r, p;
-    Marker m = enter_section_(b, l, _NONE_, STATS_QUERY, "<stats query>");
+    Marker m = enter_section_(b, l, _COLLAPSE_, STATS_QUERY, "<stats query>");
     r = statsQuery_0(b, l + 1);
     p = r; // pin = 1
     r = r && report_error_(b, consumeToken(b, PERCENT));
@@ -555,30 +555,22 @@ public class BrowserslistParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ('in' IDENTIFIER 'stats'?)?
+  // ('in' <<parseStats>>)?
   private static boolean statsQuery_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "statsQuery_2")) return false;
     statsQuery_2_0(b, l + 1);
     return true;
   }
 
-  // 'in' IDENTIFIER 'stats'?
+  // 'in' <<parseStats>>
   private static boolean statsQuery_2_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "statsQuery_2_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, "in");
-    r = r && consumeToken(b, IDENTIFIER);
-    r = r && statsQuery_2_0_2(b, l + 1);
+    r = r && parseStats(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
-  }
-
-  // 'stats'?
-  private static boolean statsQuery_2_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "statsQuery_2_0_2")) return false;
-    consumeToken(b, "stats");
-    return true;
   }
 
   /* ********************************************************** */
