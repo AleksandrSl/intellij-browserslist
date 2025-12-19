@@ -13,4 +13,6 @@ public interface BrowserslistSection extends PsiElement {
   @Nullable
   BrowserslistSectionHeader getSectionHeader();
 
+  @NotNull String getSectionName();
+
 }

@@ -437,32 +437,15 @@ public class BrowserslistParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // '[' IDENTIFIER+ ']'
+  // '[' IDENTIFIER ']'
   public static boolean sectionHeader(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "sectionHeader")) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _NONE_, SECTION_HEADER, "<section header>");
-    r = consumeToken(b, LBRACKET);
+    r = consumeTokens(b, 1, LBRACKET, IDENTIFIER, RBRACKET);
     p = r; // pin = 1
-    r = r && report_error_(b, sectionHeader_1(b, l + 1));
-    r = p && consumeToken(b, RBRACKET) && r;
     exit_section_(b, l, m, r, p, BrowserslistParser::sectionHeader_recover);
     return r || p;
-  }
-
-  // IDENTIFIER+
-  private static boolean sectionHeader_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "sectionHeader_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, IDENTIFIER);
-    while (r) {
-      int c = current_position_(b);
-      if (!consumeToken(b, IDENTIFIER)) break;
-      if (!empty_element_parsed_guard_(b, "sectionHeader_1", c)) break;
-    }
-    exit_section_(b, m, null, r);
-    return r;
   }
 
   /* ********************************************************** */

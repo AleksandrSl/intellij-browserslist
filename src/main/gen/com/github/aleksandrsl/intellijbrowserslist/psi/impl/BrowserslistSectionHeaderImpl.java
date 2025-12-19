@@ -27,4 +27,10 @@ public class BrowserslistSectionHeaderImpl extends ASTWrapperPsiElement implemen
     else super.accept(visitor);
   }
 
+  @Override
+  @Nullable
+  public PsiElement getNameElement() {
+    return findChildByType(IDENTIFIER);
+  }
+
 }

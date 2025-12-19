@@ -64,5 +64,11 @@
                          groupKey="browserslist.files.inspection.group.display.name"
                          bundle="messages.Browserslist"
                          implementationClass="com.github.aleksandrsl.intellijbrowserslist.inspections.BrowserslistMissingNotDeadInspection"/>
+        <config.codeVisionGroupSettingProvider
+                implementation="com.github.aleksandrsl.intellijbrowserslist.codevision.BrowserslistCodeVisionGroupSettingProvider"/>
+        <codeInsight.daemonBoundCodeVisionProvider
+                implementation="com.github.aleksandrsl.intellijbrowserslist.codevision.BrowserslistCoverageStatsLinkCodeVisionProvider"/>
+        <codeInsight.daemonBoundCodeVisionProvider
+                implementation="com.github.aleksandrsl.intellijbrowserslist.codevision.BrowserslistSectionStatsCodeVisionProvider"/>
     </extensions>
 </idea-plugin>
