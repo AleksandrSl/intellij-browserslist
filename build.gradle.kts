@@ -146,20 +146,6 @@ tasks {
         purgeOldFiles.set(true)
     }
 
-    generateParser {
-        // source bnf file
-        sourceFile.set(file("src/main/grammar/Browserslist.bnf"))
-        // path to a parser file, relative to the targetRoot
-        targetRootOutputDir.set(file("src/main/gen"))
-        pathToParser.set("/com/github/aleksandrsl/intellijbrowserslist/parser/BrowserslistParserGenerated.java")
-
-        // path to a directory with generated psi files, relative to the targetRoot
-        pathToPsiRoot.set("/com/github/aleksandrsl/intellijbrowserslist/psi")
-
-        // if set, plugin will remove a parser output file and psi output directory before generating new ones. Default: false
-        purgeOldFiles.set(true)
-    }
-
     publishPlugin {
         dependsOn(patchChangelog)
     }
