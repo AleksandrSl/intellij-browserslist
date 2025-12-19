@@ -3,6 +3,22 @@
 # Browserslist Changelog
 
 ## [Unreleased]
+### Added
+- Inspection: missing not dead query to avoid support for browsers without security updates
+- browserslist section in `package.json` is now also recognized as browserslist config
+- Code vision for config coverage and with a link to https://browsersl.ist
+- 
+### Changed
+- The minimal supported version changed to 2024.1
+- Parsing was reworked. Scope selections work more reasonable, section names can be any other identifier now. Almost all of the language keywords are considered soft and not reserved.
+- Improved error recovery and error messages
+
+### Fixed
+- Error parsing baseline queries, like `baseline widely available`
+- Error parsing `partially/fully support`
+
+
+## [1.0.2]
 ### Fixed
 - Remove upper IDE version bound
 
