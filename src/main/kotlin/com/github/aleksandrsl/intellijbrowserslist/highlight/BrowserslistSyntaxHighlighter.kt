@@ -24,16 +24,19 @@ class BrowserslistSyntaxHighlighter : SyntaxHighlighterBase() {
             BrowserslistTypes.OR -> {
                 OPERATOR_KEYS
             }
+
             BrowserslistTypes.COMMENT -> {
                 COMMENT_KEYS
             }
-            BrowserslistTypes.IDENTIFIER,
-            BrowserslistTypes.FEATURE -> {
+
+            BrowserslistTypes.IDENTIFIER -> {
                 IDENTIFIER_KEYS
             }
+
             TokenType.BAD_CHARACTER -> {
                 BAD_CHAR_KEYS
             }
+
             else -> {
                 EMPTY_KEYS
             }

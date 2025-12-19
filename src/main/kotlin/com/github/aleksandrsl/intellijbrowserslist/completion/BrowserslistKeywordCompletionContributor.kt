@@ -19,7 +19,7 @@ class BrowserslistKeywordCompletionContributor : CompletionContributor(), DumbAw
                 psiElement().afterLeaf(psiElement(BrowserslistTypes.EOL)),
                 psiElement().afterLeafSkipping(
                     psiElement().andOr(psiElement(BrowserslistTypes.INTEGER), psiElement().whitespace()),
-                    psiElement(BrowserslistTypes.LAST)
+                    psiElement(BrowserslistTypes.IDENTIFIER).withText("last")
                 )
             ),
             object : CompletionProvider<CompletionParameters>() {

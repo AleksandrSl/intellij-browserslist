@@ -33,10 +33,4 @@ public class BrowserslistTargetQueryImpl extends BrowserslistQueryImpl implement
     return findChildByType(COMPARE);
   }
 
-  @Override
-  @Nullable
-  public PsiElement getVersions() {
-    return findChildByType(VERSIONS);
-  }
-
 }

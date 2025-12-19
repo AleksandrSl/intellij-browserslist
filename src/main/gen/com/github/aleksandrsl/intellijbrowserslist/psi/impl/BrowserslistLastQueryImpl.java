@@ -33,10 +33,4 @@ public class BrowserslistLastQueryImpl extends BrowserslistQueryImpl implements 
     return findNotNullChildByType(INTEGER);
   }
 
-  @Override
-  @NotNull
-  public PsiElement getVersions() {
-    return findNotNullChildByType(VERSIONS);
-  }
-
 }
