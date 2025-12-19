@@ -7,8 +7,6 @@ import com.intellij.openapi.diagnostic.logger
 
 val countryCodeRegex = Regex("(alt-)?[a-z]{2}", option = RegexOption.IGNORE_CASE)
 
-private val LOG = logger<BrowserslistParserUtil>()
-
 object BrowserslistParserUtil : GeneratedParserUtilBase() {
 
     /**

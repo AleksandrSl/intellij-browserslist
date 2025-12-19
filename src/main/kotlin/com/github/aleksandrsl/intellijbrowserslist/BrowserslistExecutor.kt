@@ -41,7 +41,7 @@ object BrowserslistExecutor {
      * Finds the browserslist package in the project
      * Returns null if browserslist is not installed.
      */
-    fun findBrowserslistPackage(project: Project, contextFile: VirtualFile? = null): NodePackage? {
+    private fun findBrowserslistPackage(project: Project, contextFile: VirtualFile? = null): NodePackage? {
         val interpreter = NodeJsInterpreterManager.getInstance(project).interpreter
         if (interpreter !is NodeJsLocalInterpreter) {
             return null
