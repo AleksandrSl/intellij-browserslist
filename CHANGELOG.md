@@ -9,7 +9,7 @@
 - Code vision for config coverage and with a link to https://browsersl.ist
 - 
 ### Changed
-- The minimal supported version changed to 2024.1
+- The minimal supported version changed to 2024.2 where java 21 is supported
 - Parsing was reworked. Scope selections work more reasonable, section names can be any other identifier now. Almost all of the language keywords are considered soft and not reserved.
 - Improved error recovery and error messages
 
