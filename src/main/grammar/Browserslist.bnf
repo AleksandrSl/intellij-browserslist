@@ -16,17 +16,13 @@
     EOL="regexp:\R"
     LBRACKET="["
     RBRACKET="]"
-    IN="in"
     PERCENT="regexp:\d*\.?\d+%"
-    DEFAULTS="defaults"
     COMPARE="regexp:>=?|<=?"
     space="regexp:\s+"
-    LAST="last"
     INTEGER="regexp:\d+"
-    VERSIONS="regexp:versions?"
-    YEARS="years"
     FLOAT="regexp:\d*\.?\d+"
     AND="and"
+    OR="or"
   ]
 
   extends("(.+Query)") = query
@@ -79,23 +75,25 @@ query ::=
     | defaultsQuery
 private query_recover ::= !(EOL|COMMENT|OR|AND|'[')
 
+private version ::= 'version' | 'versions'
 // TODO: Cover in custom stats like `cover 5% in browserslist-config-mycompany stats` should be supported?
-statsQuery ::= (COMPARE|COVER) PERCENT (IN STATS)? {pin=1}
-lastQuery ::= LAST INTEGER TARGET? MAJOR? VERSIONS {pin='VERSIONS'}
-unreleasedQuery ::= UNRELEASED TARGET? VERSIONS {pin=1}
+statsQuery ::= (COMPARE|'cover') PERCENT ('in' IDENTIFIER 'stats'?)? {pin=1}
+lastQuery ::= 'last' INTEGER TARGET? 'major'? version
+unreleasedQuery ::= 'unreleased' TARGET? version {pin=1}
 timeQuery ::= timeQueryLast_ | timeQuerySince_
-private timeQueryLast_ ::= (LAST (FLOAT|INTEGER) YEARS) {pin=3}
-private timeQuerySince_ ::= SINCE (TIME|INTEGER) {pin=1}
-supportsQuery ::= (PARTIALLY | FULLY)? SUPPORTS FEATURE {pin=2}
+private timeQueryLast_ ::= ('last' (FLOAT|INTEGER) 'years') {pin=3}
+private timeQuerySince_ ::= 'since' (TIME|INTEGER) {pin=1}
+// TODO (AleksandrSl 19/12/2025): Add lint for partially
+supportsQuery ::= ('partially' | 'fully')? 'supports' IDENTIFIER {pin=2}
 targetQuery ::=
     TARGET (COMPARE? TARGET_VERSION | TARGET_VERSIONS_RANGE)
-    | CURRENT_NODE_VERSION TARGET
-    | MAINTAINED_NODE_VERSIONS TARGET VERSIONS
+    | 'current' TARGET
+    | 'maintained' TARGET version
     {pin=1}
-extendsQuery ::= EXTENDS IDENTIFIER {pin=1}
-deadQuery ::= DEAD {pin=1}
-defaultsQuery ::= DEFAULTS {pin=1}
-baselineQuery ::= BASELINE (INTEGER | NEWLY AVAILABLE | WIDELY AVAILABLE (ON TIME)?) WITH_DOWNSTREAM? INCLUDING_KAIOS? {pin=1}
+extendsQuery ::= 'extends' IDENTIFIER {pin=1}
+deadQuery ::= 'dead' {pin=1}
+defaultsQuery ::= 'defaults' {pin=1}
+baselineQuery ::= 'baseline' (INTEGER | 'newly' 'available' | 'widely' 'available' ('on' TIME)?) ('with' 'downstream')? ('including' 'kaios')? {pin=1}
 /*
 wrong query - not recognized as query at all, i.e. pinned element is not reached)
 

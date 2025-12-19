@@ -29,46 +29,21 @@ public interface BrowserslistTypes {
   IElementType UNRELEASED_QUERY = new BrowserslistElementType("UNRELEASED_QUERY");
 
   IElementType AND = new BrowserslistTokenType("and");
-  IElementType AVAILABLE = new BrowserslistTokenType("AVAILABLE");
-  IElementType BASELINE = new BrowserslistTokenType("BASELINE");
   IElementType COMMENT = new BrowserslistTokenType("COMMENT");
   IElementType COMPARE = new BrowserslistTokenType("COMPARE");
-  IElementType COVER = new BrowserslistTokenType("COVER");
-  IElementType CURRENT_NODE_VERSION = new BrowserslistTokenType("CURRENT_NODE_VERSION");
-  IElementType DEAD = new BrowserslistTokenType("DEAD");
-  IElementType DEFAULTS = new BrowserslistTokenType("defaults");
   IElementType EOL = new BrowserslistTokenType("EOL");
-  IElementType EXTENDS = new BrowserslistTokenType("EXTENDS");
-  IElementType FEATURE = new BrowserslistTokenType("FEATURE");
   IElementType FLOAT = new BrowserslistTokenType("FLOAT");
-  IElementType FULLY = new BrowserslistTokenType("FULLY");
   IElementType IDENTIFIER = new BrowserslistTokenType("IDENTIFIER");
-  IElementType IN = new BrowserslistTokenType("in");
-  IElementType INCLUDING_KAIOS = new BrowserslistTokenType("INCLUDING_KAIOS");
   IElementType INTEGER = new BrowserslistTokenType("INTEGER");
-  IElementType LAST = new BrowserslistTokenType("last");
   IElementType LBRACKET = new BrowserslistTokenType("[");
-  IElementType MAINTAINED_NODE_VERSIONS = new BrowserslistTokenType("MAINTAINED_NODE_VERSIONS");
-  IElementType MAJOR = new BrowserslistTokenType("MAJOR");
-  IElementType NEWLY = new BrowserslistTokenType("NEWLY");
   IElementType NOT = new BrowserslistTokenType("NOT");
-  IElementType ON = new BrowserslistTokenType("ON");
-  IElementType OR = new BrowserslistTokenType("OR");
-  IElementType PARTIALLY = new BrowserslistTokenType("PARTIALLY");
+  IElementType OR = new BrowserslistTokenType("or");
   IElementType PERCENT = new BrowserslistTokenType("PERCENT");
   IElementType RBRACKET = new BrowserslistTokenType("]");
-  IElementType SINCE = new BrowserslistTokenType("SINCE");
-  IElementType STATS = new BrowserslistTokenType("STATS");
-  IElementType SUPPORTS = new BrowserslistTokenType("SUPPORTS");
   IElementType TARGET = new BrowserslistTokenType("TARGET");
   IElementType TARGET_VERSION = new BrowserslistTokenType("TARGET_VERSION");
   IElementType TARGET_VERSIONS_RANGE = new BrowserslistTokenType("TARGET_VERSIONS_RANGE");
   IElementType TIME = new BrowserslistTokenType("TIME");
-  IElementType UNRELEASED = new BrowserslistTokenType("UNRELEASED");
-  IElementType VERSIONS = new BrowserslistTokenType("VERSIONS");
-  IElementType WIDELY = new BrowserslistTokenType("WIDELY");
-  IElementType WITH_DOWNSTREAM = new BrowserslistTokenType("WITH_DOWNSTREAM");
-  IElementType YEARS = new BrowserslistTokenType("years");
 
   class Factory {
     public static PsiElement createElement(ASTNode node) {

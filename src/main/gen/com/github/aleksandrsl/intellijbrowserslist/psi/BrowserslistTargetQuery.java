@@ -10,7 +10,4 @@ public interface BrowserslistTargetQuery extends BrowserslistQuery {
   @Nullable
   PsiElement getCompare();
 
-  @Nullable
-  PsiElement getVersions();
-
 }

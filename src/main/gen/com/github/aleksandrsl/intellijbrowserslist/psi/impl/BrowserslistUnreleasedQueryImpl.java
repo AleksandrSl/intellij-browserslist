@@ -27,10 +27,4 @@ public class BrowserslistUnreleasedQueryImpl extends BrowserslistQueryImpl imple
     else super.accept(visitor);
   }
 
-  @Override
-  @Nullable
-  public PsiElement getVersions() {
-    return findChildByType(VERSIONS);
-  }
-
 }

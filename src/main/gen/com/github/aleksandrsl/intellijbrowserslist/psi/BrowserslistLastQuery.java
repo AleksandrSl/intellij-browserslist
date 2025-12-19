@@ -10,7 +10,4 @@ public interface BrowserslistLastQuery extends BrowserslistQuery {
   @NotNull
   PsiElement getInteger();
 
-  @NotNull
-  PsiElement getVersions();
-
 }

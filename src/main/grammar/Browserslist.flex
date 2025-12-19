@@ -29,7 +29,6 @@ COMPARE=>=?|<=?
 INTEGER=\d+
 FLOAT=\d*\.?\d+
 PERCENT={FLOAT}%
-STATS=(my\s+stats)|({IDENTIFIER}\s+stats)|((alt-)?\w\w)
 FIREFOX=firefox|fx|ff|FirefoxAndroid|and_ff
 SAFARI=safari|iOS|ios_saf
 EXPLORER=explorer|ie|ExplorerMobile|ie_mob
@@ -39,7 +38,6 @@ CHROME=chrome|ChromeAndroid|and_chr
 BROWSER={FIREFOX}|{CHROME}|{SAFARI}|{EXPLORER}|{BLACKBERRY}|{OPERA}|android|baidu|edge|samsung|UCAndroid|and_uc|QQAndroid|and_qq|kaios
 TARGET={BROWSER}|electron|node|phantomjs
 TIME=\d+(-\d+){1,2}
-FEATURE=[-\w]+
 
 /*
 electron\s+([\d.]+)\s*-\s*([\d.]+)
@@ -71,11 +69,7 @@ phantomjs\s+1.9 phantomjs\s+2.1
 TARGET_VERSION=(tp|[\d.]+|all|esr|ESR)
 TARGET_VERSIONS_RANGE={TARGET_VERSION}\s*-\s*{TARGET_VERSION}
 
-WITH_DOWNSTREAM=with\s+downstream
-INCLUDING_KAIOS=including\s+kaios
-
 %state TARGET
-%state SUPPORTS
 
 %%
 
@@ -86,29 +80,6 @@ or|,                                 { yybegin(YYINITIAL); return BrowserslistTy
 <YYINITIAL> {
     "["                              { return BrowserslistTypes.LBRACKET; }
     "]"                              { return BrowserslistTypes.RBRACKET; }
-    "in"                             { return BrowserslistTypes.IN; }
-    "last"                           { return BrowserslistTypes.LAST; }
-    "major"                          { return BrowserslistTypes.MAJOR; }
-    versions?                        { return BrowserslistTypes.VERSIONS; }
-    "unreleased"                     { return BrowserslistTypes.UNRELEASED; }
-    "dead"                           { return BrowserslistTypes.DEAD; }
-    "years"                          { return BrowserslistTypes.YEARS; }
-    "since"                          { return BrowserslistTypes.SINCE; }
-    "baseline"                       { return BrowserslistTypes.BASELINE; }
-    "available"                      { return BrowserslistTypes.AVAILABLE; }
-    "on"                             { return BrowserslistTypes.ON; }
-    "newly"                          { return BrowserslistTypes.NEWLY; }
-    "widely"                         { return BrowserslistTypes.WIDELY; }
-    {WITH_DOWNSTREAM}                { return BrowserslistTypes.WITH_DOWNSTREAM; }
-    {INCLUDING_KAIOS}                { return BrowserslistTypes.INCLUDING_KAIOS; }
-    "partially"                      { return BrowserslistTypes.PARTIALLY; }
-    "fully"                          { return BrowserslistTypes.FULLY; }
-    "supports"                       { yybegin(SUPPORTS); return BrowserslistTypes.SUPPORTS; }
-    "cover"                          { return BrowserslistTypes.COVER; }
-    "defaults"                       { return BrowserslistTypes.DEFAULTS; }
-    "maintained"                     { return BrowserslistTypes.MAINTAINED_NODE_VERSIONS; }
-    "current"                        { return BrowserslistTypes.CURRENT_NODE_VERSION; }
-    "extends"                        { return BrowserslistTypes.EXTENDS; }
     {TARGET}                         { yybegin(TARGET); return BrowserslistTypes.TARGET; }
     {END_OF_LINE_COMMENT}            { return BrowserslistTypes.COMMENT; }
     {COMPARE}                        { return BrowserslistTypes.COMPARE; }
@@ -116,23 +87,16 @@ or|,                                 { yybegin(YYINITIAL); return BrowserslistTy
     {INTEGER}                        { return BrowserslistTypes.INTEGER; }
     {FLOAT}                          { return BrowserslistTypes.FLOAT; }
     {PERCENT}                        { return BrowserslistTypes.PERCENT; }
-    {STATS}                          { return BrowserslistTypes.STATS; }
     {IDENTIFIER}                     { return BrowserslistTypes.IDENTIFIER; }
 }
 
 <TARGET> {
-    "major"                          { yybegin(YYINITIAL); return BrowserslistTypes.MAJOR; }
-    versions?                        { yybegin(YYINITIAL); return BrowserslistTypes.VERSIONS; }
     {COMPARE}                        { return BrowserslistTypes.COMPARE; }
     {TARGET_VERSIONS_RANGE}          { yybegin(YYINITIAL); return BrowserslistTypes.TARGET_VERSIONS_RANGE; }
     // `all` and `esr` will not be parsed as feature
     // How am i supposed to discern integer from version?
     {TARGET_VERSION}                 { yybegin(YYINITIAL); return BrowserslistTypes.TARGET_VERSION; }
-}
-
-<SUPPORTS> {
-    // Maybe abstract identifier should be used and meaning added after parsing level, or different states used
-    {FEATURE}                        { yybegin(YYINITIAL); return BrowserslistTypes.FEATURE; }
+    {IDENTIFIER}                     { yybegin(YYINITIAL); return BrowserslistTypes.IDENTIFIER; }
 }
 
 {END_OF_LINE_COMMENT}                { yybegin(YYINITIAL); return BrowserslistTypes.COMMENT; }
