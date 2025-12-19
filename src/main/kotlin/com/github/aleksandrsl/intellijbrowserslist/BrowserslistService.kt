@@ -62,21 +62,21 @@ class BrowserslistService(private val project: Project, cs: CoroutineScope) {
         cs.launch {
             evalRequests
                 .debounce(1.seconds)
-                // We do cache checks before requests, so if request is send then there is no need to deduplicated it
+                // We do cache checks before requests, so if request is send then there is no need to deduplicate it
                 .collectLatest { request ->
-                    LOG.warn("Processing request for sections: ${request.sections}")
+                    LOG.debug("Processing request for sections: ${request.sections}")
                     val results = request.sections.associateWith {
                         val result = withContext(Dispatchers.IO) {
                             BrowserslistExecutor.executeBrowserslist(
                                 project, queries = it.queries, configFile = request.file
                             )
                         }
-                        LOG.warn("Got results for scope [${it.name}] - ${it.queries}: ${result?.coverage?.global}.")
+                        LOG.debug("Got results for section [${it.name}] - ${it.queries}: ${result?.coverage?.global}.")
                         result
                     }
                     ensureActive()
                     results.forEach { (section, result) ->
-                        LOG.warn("Updating cache scope [${section.name}] - ${section.queries}: ${result?.coverage?.global}")
+                        LOG.debug("Updating section cache  [${section.name}] - ${section.queries}: ${result?.coverage?.global}")
                         request.cache[section.name] =
                             if (result != null) SectionResult.Success(
                                 section.name,
@@ -99,7 +99,6 @@ class BrowserslistService(private val project: Project, cs: CoroutineScope) {
                     val editors = EditorFactory.getInstance().allEditors
                     for (editor in editors) {
                         if (editor.project == project) {
-                            // Trigger code vision update
                             FileContentUtilCore.reparseFiles(editor.virtualFile)
                         }
                     }
@@ -109,12 +108,12 @@ class BrowserslistService(private val project: Project, cs: CoroutineScope) {
     }
 
     /**
-     * Gets browserslist result for a specific section.
+     * Gets browserslist result for given sections
      * Returns cached result if available, otherwise triggers async computation.
      */
     fun getFileResult(file: VirtualFile, sections: Collection<Section>): Collection<SectionResult>? {
         if (!file.isInLocalFileSystem || !file.isValid) return null
-        LOG.warn("Getting section result for sections: $sections")
+        LOG.debug("Getting section result for sections: $sections")
 
         // Get or create cache for this file
         var fileCache = cache[file.path]
@@ -128,22 +127,16 @@ class BrowserslistService(private val project: Project, cs: CoroutineScope) {
         }
             .takeIf { it.isNotEmpty() }
             ?.let {
-                LOG.warn("Triggering update for sections: $it")
+                LOG.debug("Triggering update for sections: $it")
                 triggerUpdate(file, it, fileCache)
             }
         return fileCache.values
     }
-//    /**
-//     * Checks if browserslist is available.
-//     */
-//    fun isBrowserslistAvailable(): Boolean {
-//        return BrowserslistExecutor.isBrowserslistAvailable(project)
-//    }
 
     private fun triggerUpdate(
         file: VirtualFile, sections: Collection<Section>, cache: MutableMap<SectionName, SectionResult>
     ) {
-        evalRequests.tryEmit(EvalRequest(file, sections, cache)).also { LOG.warn("Request emitted: $it") }
+        evalRequests.tryEmit(EvalRequest(file, sections, cache))
     }
 
     private data class EvalRequest(
