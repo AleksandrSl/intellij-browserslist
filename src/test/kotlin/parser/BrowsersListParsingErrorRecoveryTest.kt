@@ -1,6 +1,5 @@
 package parser
 
-import com.github.aleksandrsl.intellijbrowserslist.psi.BrowserslistQuery
 import com.github.aleksandrsl.intellijbrowserslist.psi.BrowserslistQueryExpression
 import com.github.aleksandrsl.intellijbrowserslist.psi.BrowserslistSimpleExpression
 import com.intellij.psi.PsiElement
@@ -10,7 +9,7 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.util.parents
 import java.io.IOException
 
-class LuauParserRecoveryTest : BrowserslistParsingBaseTestCase("recovery") {
+class BrowsersListParsingErrorRecoveryTest : BrowserslistParsingBaseTestCase("recovery") {
 
     fun testQuery() = doTest(BrowserslistSimpleExpression::class.java)
     fun testQueryExpression() = doTest(BrowserslistQueryExpression::class.java)
