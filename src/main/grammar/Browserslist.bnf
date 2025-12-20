@@ -25,6 +25,7 @@
     FLOAT="regexp:\d*\.?\d+"
     AND="and"
     OR="or"
+    COMMENT="regexp:#[^\\R]*"
   ]
 
   extends("(.+Query)") = query
@@ -32,17 +33,17 @@
   // and expression with fast consume is a standard practice
   consumeTokenMethod("((?!.*_with_recover).*_recover)")="consumeTokenFast"
 }
-browserslistFile ::= (EOL|COMMENT| fullSection | headlessSection)*
+browserslistFile ::= (EOL| fullSection | headlessSection)*
 fake section ::= sectionHeader? sectionQueries? {methods=[getSectionName]}
-fullSection ::= sectionHeader COMMENT? (EOL sectionQueries)? {pin=1 extends=section}
+fullSection ::= sectionHeader (EOL sectionQueries)? {pin=1 extends=section}
 headlessSection ::= sectionQueries {extends=section}
 // Cannot use name, because it clashes with a built it method
 sectionHeader ::= '[' IDENTIFIER ']' {pin=1 recoverWhile="sectionHeader_recover" methods=[nameElement="IDENTIFIER"]}
-private sectionHeader_recover ::= !(COMMENT | EOL)
-private sectionQueries ::= (EOL|COMMENT)* queries_
+private sectionHeader_recover ::= !(EOL)
+private sectionQueries ::= (EOL)* queries_
 
-// Could I not include COMMENT or EOL if there are no queries after it?
-private queries_ ::= !(EOL | COMMENT | '[' | <<eof>>) queryExpression (EOL queryExpression|COMMENT|EOL !'[')* {pin = 1}
+// Could I not include EOL if there are no queries after it?
+private queries_ ::= !(EOL | '[' | <<eof>>) queryExpression (EOL queryExpression|EOL !'[')* {pin = 1}
 
 queryExpression ::=
  orExpression
@@ -63,7 +64,7 @@ andExpression ::= queryExpression AND queryExpression { extends=binaryExpression
 notExpression ::= NOT simpleExpression { extends=queryExpression }
 simpleExpression ::= query_with_recover { extends=queryExpression }
 
-private query_with_recover ::= !(EOL | COMMENT | OR | AND | '[' | <<eof>>) query {pin=1 recoverWhile="query_recover"}
+private query_with_recover ::= !(EOL | OR | AND | '[' | <<eof>>) query {pin=1 recoverWhile="query_recover"}
 query ::=
     baselineQuery
     | statsQuery
@@ -75,7 +76,7 @@ query ::=
     | extendsQuery
     | deadQuery
     | defaultsQuery
-private query_recover ::= !(EOL|COMMENT|OR|AND|'[')
+private query_recover ::= !(EOL|OR|AND|'[')
 
 
 private version ::= 'version' | 'versions'
@@ -86,7 +87,6 @@ unreleasedQuery ::= 'unreleased' TARGET? version {pin=1}
 timeQuery ::= timeQueryLast_ | timeQuerySince_
 private timeQueryLast_ ::= ('last' (FLOAT|INTEGER) 'years') {pin=3}
 private timeQuerySince_ ::= 'since' (TIME|INTEGER) {pin=1}
-// TODO (AleksandrSl 19/12/2025): Add lint for partially
 supportsQuery ::= ('partially' | 'fully')? 'supports' IDENTIFIER {pin=2}
 targetQuery ::=
     TARGET (COMPARE? TARGET_VERSION | TARGET_VERSIONS_RANGE)
