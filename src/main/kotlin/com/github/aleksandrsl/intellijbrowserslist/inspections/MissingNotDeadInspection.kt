@@ -24,7 +24,7 @@ class BrowserslistMissingNotDeadInspection : BrowserslistInspectionBase() {
             override fun visitElement(element: PsiElement) {
                 super.visitElement(element)
                 if (element is BrowserslistSection) {
-                    // Not likely but we may have a bunch of last query
+                    // Not likely, but we may have a bunch of last queries
                     val lastQuery =
                         PsiTreeUtil.findChildrenOfType(element, BrowserslistLastQuery::class.java).lastOrNull()
                             ?: return
@@ -35,7 +35,7 @@ class BrowserslistMissingNotDeadInspection : BrowserslistInspectionBase() {
                     }
 
                     if (!hasNotDeadAfter) {
-                        // If there is more than one already, it's a different kind of decease and needs another quick fix. We can just add one more instead of moving the last one for now.
+                        // If there is more than one already, it's a different kind of disease and needs another quick fix. We can just add one more instead of moving the last one for now.
                         val quickFix = if (findNotDeadExpressions(element).size == 1) {
                             moveNotDeadQuickFix
                         } else {
