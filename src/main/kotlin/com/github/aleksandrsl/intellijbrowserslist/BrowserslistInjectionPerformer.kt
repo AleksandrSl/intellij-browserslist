@@ -7,6 +7,7 @@ import com.intellij.json.psi.JsonStringLiteral
 import com.intellij.lang.injection.MultiHostRegistrar
 import com.intellij.lang.injection.general.Injection
 import com.intellij.lang.injection.general.LanguageInjectionPerformer
+import com.intellij.openapi.util.TextRange
 import com.intellij.psi.ElementManipulators
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiLanguageInjectionHost
@@ -20,22 +21,31 @@ class BrowserslistInjectionPerformer : LanguageInjectionPerformer {
         registrar: MultiHostRegistrar, injection: Injection, context: PsiElement
     ): Boolean {
         val property = context as? JsonProperty ?: return false
-        registrar.startInjecting(BrowserslistLanguage.INSTANCE)
         val value = property.value
+        val injections = mutableListOf<InjectionEntry>()
         if (value is JsonArray) {
-            processQueryExpressions(value, registrar)
+            injections.addAll(processQueryExpressions(value))
         } else if (value is JsonObject) {
             value.propertyList.forEach { property ->
-                registrar.addPlace(
-                    "[",
-                    "]\n",
-                    property.nameElement as PsiLanguageInjectionHost,
-                    ElementManipulators.getValueTextRange(property.nameElement)
+                injections.add(
+                    InjectionEntry.SectionHeader(
+                        property.nameElement as PsiLanguageInjectionHost,
+                        ElementManipulators.getValueTextRange(property.nameElement)
+                    )
                 )
                 val value = property.value
                 if (value is JsonArray) {
-                    processQueryExpressions(value, registrar)
+                    injections.addAll(processQueryExpressions(value))
                 }
+            }
+        }
+        if (injections.isEmpty()) return false
+
+        registrar.startInjecting(BrowserslistLanguage.INSTANCE)
+        injections.forEach {
+            when (it) {
+                is InjectionEntry.SectionHeader -> registrar.addPlace("[", "]\n", it.host, it.range)
+                is InjectionEntry.QueryExpression -> registrar.addPlace(null, "\n", it.host, it.range)
             }
         }
         registrar.doneInjecting()
@@ -44,11 +54,22 @@ class BrowserslistInjectionPerformer : LanguageInjectionPerformer {
 }
 
 private fun processQueryExpressions(
-    value: JsonArray, registrar: MultiHostRegistrar
-) {
-    value.valueList.forEach {
+    value: JsonArray
+): List<InjectionEntry> {
+    return value.valueList.mapNotNull {
         if (it is JsonStringLiteral) {
-            registrar.addPlace("", "\n", it as PsiLanguageInjectionHost, ElementManipulators.getValueTextRange(it))
+            InjectionEntry.QueryExpression(it as PsiLanguageInjectionHost, ElementManipulators.getValueTextRange(it))
+        } else {
+            null
         }
     }
 }
+
+
+sealed class InjectionEntry(
+    val host: PsiLanguageInjectionHost, val range: TextRange
+) {
+    class SectionHeader(host: PsiLanguageInjectionHost, range: TextRange) : InjectionEntry(host, range)
+    class QueryExpression(host: PsiLanguageInjectionHost, range: TextRange) : InjectionEntry(host, range)
+}
+
