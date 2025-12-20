@@ -1,6 +1,7 @@
 import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
+import org.jetbrains.kotlin.gradle.dsl.JvmDefaultMode
 
 fun properties(key: String) = providers.gradleProperty(key)
 fun environment(key: String) = providers.environmentVariable(key)
@@ -22,6 +23,9 @@ version = properties("pluginVersion").get()
 // Set the JVM language level used to build the project.
 kotlin {
     jvmToolchain(21)
+    compilerOptions {
+        jvmDefault.set(JvmDefaultMode.NO_COMPATIBILITY)
+    }
 }
 
 // Configure project's dependencies
@@ -43,7 +47,8 @@ dependencies {
     // IntelliJ Platform Gradle Plugin Dependencies Extension - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-dependencies-extension.html
     intellijPlatform {
         // Comment this if you want to run webstorm. But at the same time webstorm fails to run tests.
-        intellijIdea(properties("platformVersion"))
+//        intellijIdea(properties("platformVersion"))
+        webstorm("2024.2")
         // Plugin Dependencies. Uses `platformBundledPlugins` property from the gradle.properties file for bundled IntelliJ Platform plugins.
         bundledPlugins(properties("platformBundledPlugins").map { it.split(',') })
 
